@@ -6,6 +6,7 @@ Features:
 - sleek look
 - [asynchronous](https://github.com/mafredri/zsh-async) git information display using [git-radar](https://github.com/michaeldfallen/git-radar)
 - the right amount of information at the right time
+- the prompt symbol is colored red, when all asynchronous tasks are finished it turns white
 
 ![](screenshot.png)
 
