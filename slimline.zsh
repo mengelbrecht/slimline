@@ -54,14 +54,14 @@ prompt_slimline_precmd() {
 }
 
 prompt_slimline_async_git_radar() {
-  if (( $+commands[git-radar] )); then
+  (( $+commands[git-radar] )) && {
     cd $1
     echo "$(git-radar --zsh --fetch)"
-  fi
+  }
 }
 
 prompt_slimline_async_tasks() {
-  ((!${prompt_slimline_async_init:-0})) && {
+  (( !${prompt_slimline_async_init:-0} )) && {
     async_start_worker "prompt_slimline" -u -n
     async_register_callback "prompt_slimline" prompt_slimline_async_callback
     prompt_slimline_async_init=1
