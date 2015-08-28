@@ -11,7 +11,7 @@
 # MIT License
 #-------------------------------------------------------------------------------
 
-set_prompt() {
+prompt_slimline_set_prompt() {
   local symbol_color=${1:-red}
 
   # clear prompt
@@ -31,7 +31,7 @@ set_prompt() {
   PROMPT+="%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
 }
 
-set_rprompt() {
+prompt_slimline_set_rprompt() {
   # clear prompt
   RPROMPT=""
 
@@ -41,18 +41,18 @@ set_rprompt() {
   fi
 
   # add git radar output
-  RPROMPT+="${git_radar_output:-}"
+  RPROMPT+="${prompt_slimline_git_radar_output:-}"
 }
 
-set_sprompt() {
+prompt_slimline_set_sprompt() {
   SPROMPT="zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? "
 }
 
 prompt_slimline_precmd() {
-  unset git_radar_output
+  unset prompt_slimline_git_radar_output
 
-  set_prompt
-  set_rprompt
+  prompt_slimline_set_prompt
+  prompt_slimline_set_rprompt
 
   prompt_slimline_async_tasks
 }
@@ -80,9 +80,9 @@ prompt_slimline_async_callback() {
 
   case "${job}" in
     prompt_slimline_async_git_radar)
-      git_radar_output="$output"
-      set_prompt white
-      set_rprompt
+      prompt_slimline_git_radar_output="$output"
+      prompt_slimline_set_prompt white
+      prompt_slimline_set_rprompt
       zle && zle reset-prompt
       ;;
   esac
@@ -96,9 +96,9 @@ prompt_slimline_setup() {
 
   add-zsh-hook precmd prompt_slimline_precmd
 
-  set_prompt
-  set_rprompt
-  set_sprompt
+  prompt_slimline_set_prompt
+  prompt_slimline_set_rprompt
+  prompt_slimline_set_sprompt
 }
 
 prompt_slimline_setup "$@"
