@@ -55,15 +55,15 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 ### `SLIMLINE_PROMPT_SYMBOL`
 
-Defines the symbol of the prompt. Default is `∙`
-
-### `SLIMLINE_DISPLAY_SSH_INFO`
-
-Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `YES`.
+Defines the symbol of the prompt. Default is `∙`.
 
 ### `SLIMLINE_DISPLAY_EXIT_STATUS`
 
-Defines whether the exit status is displayed if the exit code is not zero. Default is `YES`.
+Defines whether the exit status is displayed if the exit code is not zero. Default is `1`.
+
+### `SLIMLINE_DISPLAY_SSH_INFO`
+
+Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `1`.
 
 ## Thanks to
 

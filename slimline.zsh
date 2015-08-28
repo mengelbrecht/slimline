@@ -18,11 +18,8 @@ prompt_slimline_set_prompt() {
   PROMPT=""
 
   # add ssh info
-  if [[ "${SLIMLINE_DISPLAY_SSH_INFO:-YES}" == "YES" ]]; then
-    if [[ "$SSH_TTY" != '' ]]; then
-      PROMPT+="%F{red}%n%f@%F{yellow}%m%f "
-    fi
-  fi
+  (( ${SLIMLINE_DISPLAY_SSH_INFO:-1} )) && [[ "$SSH_TTY" != "" ]] && \
+    PROMPT+="%F{red}%n%f@%F{yellow}%m%f "
 
   # add cwd
   PROMPT+="%F{cyan}%3~%f "
@@ -36,9 +33,8 @@ prompt_slimline_set_rprompt() {
   RPROMPT=""
 
   # add exit status
-  if [[ "${SLIMLINE_DISPLAY_EXIT_STATUS:-YES}" == "YES" ]]; then
-     RPROMPT+="%(?::%F{red}%? ↵%f )"
-  fi
+  (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )) && \
+    RPROMPT+="%(?::%F{red}%? ↵%f )"
 
   # add git radar output
   RPROMPT+="${prompt_slimline_git_radar_output:-}"
