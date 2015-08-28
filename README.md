@@ -50,12 +50,19 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 ```source <path-to-slimline>/slimline.zsh```
 
-
 ## Options
 
 ### `SLIMLINE_PROMPT_SYMBOL`
 
 Defines the symbol of the prompt. Default is `∙`.
+
+### `SLIMLINE_DISPLAY_EXEC_TIME`
+
+Defines whether the runtime of a process is displayed if it exceeds the maximum execution time specified by the option below. Default is `1`.
+
+### `SLIMLINE_MAX_EXEC_TIME`
+
+Defines the maximum execution time of a process until its run time is displayed on exit. Default is `5` seconds.
 
 ### `SLIMLINE_DISPLAY_EXIT_STATUS`
 
