@@ -56,6 +56,10 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 Defines the symbol of the prompt. Default is `∙`.
 
+### `SLIMLINE_PERFORM_GIT_FETCH`
+
+Defines whether git-radar shall perform a `git fetch` automatically every 5 minutes for the current git repository (on prompt rendering). Default is `1`.
+
 ### `SLIMLINE_DISPLAY_EXEC_TIME`
 
 Defines whether the runtime of a process is displayed if it exceeds the maximum execution time specified by the option below. Default is `1`.

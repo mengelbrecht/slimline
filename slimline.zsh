@@ -90,7 +90,9 @@ prompt_slimline_preexec() {
 prompt_slimline_async_git_radar() {
   (( $+commands[git-radar] )) && {
     cd $1
-    echo "$(git-radar --zsh --fetch)"
+    local parameters="--zsh"
+    (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
+    echo "$(git-radar ${=parameters})"
   }
 }
 
