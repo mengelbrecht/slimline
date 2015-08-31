@@ -1,16 +1,18 @@
 # slimline
 
-Minimal and fast ZSH prompt.
+Minimal and fast ZSH prompt. Displays the right information at the right time.
 
 Features:
 - sleek look
 - [asynchronous](https://github.com/mafredri/zsh-async) git information display using [git-radar](https://github.com/michaeldfallen/git-radar)
-- the right amount of information at the right time
 - the prompt symbol is colored red, when all asynchronous tasks are finished it turns white
+- exit code of last command if the exit code is not zero
+- runtime of executed command if it exceeds a threshold
+- username and host name if connected to a ssh server
 
 ![](screenshot.png)
 
-With all information (connected to ssh server and exit status from last command):
+With all information (connected to ssh server, runtime and exit status from last command):
 ![](screenshot_full.png)
 
 ## Requirements
