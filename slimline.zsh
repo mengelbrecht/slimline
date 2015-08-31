@@ -34,6 +34,10 @@ prompt_slimline_check_cmd_exec_time() {
     prompt_slimline_cmd_exec_time="$(prompt_slimline_human_time $elapsed)"
 }
 
+prompt_slimline_reformat_git_radar() {
+  ([[ "$1" =~ " git:\(([^)]+)\)(.*)" ]] && echo "$match[1]$match[2]") || echo "$1"
+}
+
 prompt_slimline_set_prompt() {
   local symbol_color=${1:-red}
 
@@ -112,7 +116,7 @@ prompt_slimline_async_callback() {
 
   case "${job}" in
     prompt_slimline_async_git_radar)
-      prompt_slimline_git_radar_output="$output"
+      prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
       prompt_slimline_set_prompt white
       prompt_slimline_set_rprompt
       zle && zle reset-prompt
