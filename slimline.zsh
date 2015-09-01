@@ -93,45 +93,53 @@ prompt_slimline_preexec() {
 
 prompt_slimline_async_git_radar() {
   (( $+commands[git-radar] )) && {
-    cd $1
     local parameters="--zsh"
     (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
-    echo "$(git-radar ${=parameters})"
+    local output="$(git-radar ${=parameters})"
+    local _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
+    typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
   }
+
+  kill -WINCH $$ # Signal completion to parent process.
 }
 
 prompt_slimline_async_tasks() {
-  (( !${_prompt_slimline_async_init:-0} )) && {
-    async_start_worker "prompt_slimline" -u -n
-    async_register_callback "prompt_slimline" prompt_slimline_async_callback
-    _prompt_slimline_async_init=1
-  }
+  # Kill the old process of slow commands if it is still running.
+  (( __prompt_slimline_async_pid > 0 )) && kill -KILL "$_prompt_slimline_async_pid" &>/dev/null
 
-  async_job "prompt_slimline" prompt_slimline_async_git_radar $PWD
+  trap prompt_slimline_async_callback WINCH
+  prompt_slimline_async_git_radar &!
+  _prompt_slimline_async_pid=$!
 }
 
 prompt_slimline_async_callback() {
-  local job=$1
-  local output=$3
+  (( _prompt_slimline_async_pid > 0 )) && {
+    [[ -s "$_prompt_slimline_async_data" ]] && {
+      alias typeset='typeset -g'
+      source "$_prompt_slimline_async_data"
+      unalias typeset
+    }
+    _prompt_slimline_async_pid=0
+    prompt_slimline_set_prompt white
+    prompt_slimline_set_rprompt
+    zle && zle reset-prompt
+  }
+}
 
-  case "${job}" in
-    prompt_slimline_async_git_radar)
-      _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
-      prompt_slimline_set_prompt white
-      prompt_slimline_set_rprompt
-      zle && zle reset-prompt
-      ;;
-  esac
+prompt_slimeline_async_init() {
+  _prompt_slimline_async_pid=0
+  _prompt_slimline_async_data="${TMPPREFIX}-prompt_slimline_data"
 }
 
 prompt_slimline_setup() {
   prompt_opts=(cr percent subst)
 
   autoload -Uz add-zsh-hook
-  autoload -Uz async && async
 
   add-zsh-hook precmd prompt_slimline_precmd
   add-zsh-hook preexec prompt_slimline_preexec
+
+  prompt_slimeline_async_init
 
   prompt_slimline_set_prompt
   prompt_slimline_set_rprompt

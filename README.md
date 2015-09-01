@@ -4,7 +4,7 @@ Minimal and fast ZSH prompt. Displays the right information at the right time.
 
 Features:
 - sleek look
-- [asynchronous](https://github.com/mafredri/zsh-async) git information display using [git-radar](https://github.com/michaeldfallen/git-radar)
+- asynchronous git information display using [git-radar](https://github.com/michaeldfallen/git-radar)
 - the prompt symbol is colored red, when all asynchronous tasks are finished it turns white
 - exit code of last command if the exit code is not zero
 - runtime of executed command if it exceeds a threshold
@@ -18,7 +18,6 @@ With all information (connected to ssh server, runtime and exit status from last
 ## Requirements
 
 * zsh
-* [zsh-async](https://github.com/mafredri/zsh-async)
 * [git-radar](https://github.com/michaeldfallen/git-radar) (optional, enables git info display)
 
 ## Install
@@ -29,20 +28,16 @@ Then choose one of the methods below.
 ### [antigen](https://github.com/zsh-users/antigen)
 
 ```
-antigen bundle mafredri/zsh-async
 antigen bundle mgee/slimline
 ```
 
 ### [zgen](https://github.com/tarjoilija/zgen)
 
 ```
-zgen load mafredri/zsh-async
 zgen load mgee/slimline
 ```
 
 ### Manually
-
-Install [zsh-async](https://github.com/mafredri/zsh-async).
 
 Clone the repository:
 
@@ -82,7 +77,6 @@ Defines whether the `user@host` part is displayed if connected to a ssh server. 
 
 - [sindresorhus/pure](https://github.com/sindresorhus/pure)
 - [sorin-ionescu/prezto](https://github.com/sorin-ionescu/prezto.git)
-- [zsh-async](https://github.com/mafredri/zsh-async)
 - [git-radar](https://github.com/michaeldfallen/git-radar)
 
 ## License
