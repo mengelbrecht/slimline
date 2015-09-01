@@ -28,10 +28,10 @@ prompt_slimline_human_time() {
 
 prompt_slimline_check_cmd_exec_time() {
   local integer elapsed
-  (( elapsed = EPOCHSECONDS - ${prompt_slimline_cmd_timestamp:-$EPOCHSECONDS} ))
-  prompt_slimline_cmd_exec_time=
+  (( elapsed = EPOCHSECONDS - ${_prompt_slimline_cmd_timestamp:-$EPOCHSECONDS} ))
+  _prompt_slimline_cmd_exec_time=
   (( elapsed > ${SLIMLINE_MAX_EXEC_TIME:-5} )) && \
-    prompt_slimline_cmd_exec_time="$(prompt_slimline_human_time $elapsed)"
+    _prompt_slimline_cmd_exec_time="$(prompt_slimline_human_time $elapsed)"
 }
 
 prompt_slimline_reformat_git_radar() {
@@ -60,15 +60,15 @@ prompt_slimline_set_rprompt() {
   RPROMPT=""
 
   # add elapsed time if treshold is exceeded
-  (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ "${prompt_slimline_cmd_exec_time}" != "" ]] && \
-    RPROMPT+="%F{yellow}${prompt_slimline_cmd_exec_time}%f"
+  (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ "${_prompt_slimline_cmd_exec_time}" != "" ]] && \
+    RPROMPT+="%F{yellow}${_prompt_slimline_cmd_exec_time}%f"
 
   # add exit status
   (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )) && \
     RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ↵%f)"
 
   # add git radar output
-  RPROMPT+="${RPROMPT:+ }${prompt_slimline_git_radar_output:-}"
+  RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_radar_output:-}"
 }
 
 prompt_slimline_set_sprompt() {
@@ -78,8 +78,8 @@ prompt_slimline_set_sprompt() {
 prompt_slimline_precmd() {
   prompt_slimline_check_cmd_exec_time
 
-  unset prompt_slimline_cmd_timestamp
-  unset prompt_slimline_git_radar_output
+  unset _prompt_slimline_cmd_timestamp
+  unset _prompt_slimline_git_radar_output
 
   prompt_slimline_set_prompt
   prompt_slimline_set_rprompt
@@ -88,7 +88,7 @@ prompt_slimline_precmd() {
 }
 
 prompt_slimline_preexec() {
-  prompt_slimline_cmd_timestamp=$EPOCHSECONDS
+  _prompt_slimline_cmd_timestamp=$EPOCHSECONDS
 }
 
 prompt_slimline_async_git_radar() {
@@ -101,10 +101,10 @@ prompt_slimline_async_git_radar() {
 }
 
 prompt_slimline_async_tasks() {
-  (( !${prompt_slimline_async_init:-0} )) && {
+  (( !${_prompt_slimline_async_init:-0} )) && {
     async_start_worker "prompt_slimline" -u -n
     async_register_callback "prompt_slimline" prompt_slimline_async_callback
-    prompt_slimline_async_init=1
+    _prompt_slimline_async_init=1
   }
 
   async_job "prompt_slimline" prompt_slimline_async_git_radar $PWD
@@ -116,7 +116,7 @@ prompt_slimline_async_callback() {
 
   case "${job}" in
     prompt_slimline_async_git_radar)
-      prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
+      _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
       prompt_slimline_set_prompt white
       prompt_slimline_set_rprompt
       zle && zle reset-prompt
