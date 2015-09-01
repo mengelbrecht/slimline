@@ -77,7 +77,7 @@ Defines whether the `user@host` part is displayed if connected to a ssh server. 
 
 - [sindresorhus/pure](https://github.com/sindresorhus/pure)
 - [sorin-ionescu/prezto](https://github.com/sorin-ionescu/prezto.git)
-- [git-radar](https://github.com/michaeldfallen/git-radar)
+- [michaeldfallen/git-radar](https://github.com/michaeldfallen/git-radar)
 
 ## License
 
