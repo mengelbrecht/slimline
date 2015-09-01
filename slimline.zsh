@@ -59,7 +59,7 @@ prompt_slimline_set_rprompt() {
   # clear prompt
   RPROMPT=""
 
-  # add elapsed time if treshold is exceeded
+  # add elapsed time if threshold is exceeded
   (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ "${_prompt_slimline_cmd_exec_time}" != "" ]] && \
     RPROMPT+="%F{yellow}${_prompt_slimline_cmd_exec_time}%f"
 
