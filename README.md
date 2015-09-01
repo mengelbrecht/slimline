@@ -22,7 +22,8 @@ With all information (connected to ssh server, runtime and exit status from last
 
 ## Install
 
-First, install [git-radar](https://github.com/michaeldfallen/git-radar).
+Recommended: Install [git-radar](https://github.com/michaeldfallen/git-radar).
+
 Then choose one of the methods below.
 
 ### [antigen](https://github.com/zsh-users/antigen)
