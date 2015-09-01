@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------
 # Slimlime
-# Minimal and fast ZSH prompt
+# Minimal, fast and elegant ZSH prompt
 # by Markus Engelbrecht
 # https://github.com/mgee/slimline
 #

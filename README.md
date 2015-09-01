@@ -1,6 +1,6 @@
 # slimline
 
-Minimal and fast ZSH prompt. Displays the right information at the right time.
+Minimal, fast and elegant ZSH prompt. Displays the right information at the right time.
 
 Features:
 - sleek look
