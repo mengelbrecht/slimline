@@ -11,6 +11,8 @@
 # MIT License
 #-------------------------------------------------------------------------------
 
+prompt_slimline_path="$(dirname $0:A:H)"
+
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
 # https://github.com/sindresorhus/pretty-time-zsh
@@ -92,13 +94,11 @@ prompt_slimline_preexec() {
 }
 
 prompt_slimline_async_git_radar() {
-  (( $+commands[git-radar] )) && {
-    local parameters="--zsh"
-    (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
-    local output="$(git-radar ${=parameters})"
-    local _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
-    typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
-  }
+  local parameters="--zsh"
+  (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
+  local output="`${_prompt_slimline_git_radar_executable} ${=parameters}`"
+  local _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
+  typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
 
   kill -WINCH $$ # Signal completion to parent process.
 }
@@ -141,6 +141,8 @@ prompt_slimline_setup() {
 
   add-zsh-hook precmd prompt_slimline_precmd
   add-zsh-hook preexec prompt_slimline_preexec
+  
+  _prompt_slimline_git_radar_executable="$prompt_slimline_path/git-radar/git-radar"
 
   prompt_slimeline_async_init
 
