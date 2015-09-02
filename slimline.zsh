@@ -134,6 +134,9 @@ prompt_slimeline_async_init() {
 prompt_slimline_setup() {
   prompt_opts=(cr percent subst)
 
+  zmodload zsh/datetime
+  zmodload zsh/zle
+
   autoload -Uz add-zsh-hook
 
   add-zsh-hook precmd prompt_slimline_precmd
