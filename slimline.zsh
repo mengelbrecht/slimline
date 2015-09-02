@@ -70,7 +70,8 @@ prompt_slimline_set_rprompt() {
     RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ↵%f)"
 
   # add git radar output
-  RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_radar_output:-}"
+  (( ${SLIMLINE_ENABLE_GIT_RADAR:-1} )) && \
+    RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_radar_output:-}"
 }
 
 prompt_slimline_set_sprompt() {
@@ -94,11 +95,13 @@ prompt_slimline_preexec() {
 }
 
 prompt_slimline_async_git_radar() {
-  local parameters="--zsh"
-  (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
-  local output="`${_prompt_slimline_git_radar_executable} ${=parameters}`"
-  local _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
-  typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
+  (( ${SLIMLINE_ENABLE_GIT_RADAR:-1} )) && {
+    local parameters="--zsh"
+    (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
+    local output="`${_prompt_slimline_git_radar_executable} ${=parameters}`"
+    local _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
+    typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
+  }
 
   kill -WINCH $$ # Signal completion to parent process.
 }

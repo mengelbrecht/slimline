@@ -54,6 +54,10 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 Defines the symbol of the prompt. Default is `∙`.
 
+### `SLIMLINE_ENABLE_GIT_RADAR`
+
+Defines whether git-radar shall be used to display git information. Default is `1`.
+
 ### `SLIMLINE_PERFORM_GIT_FETCH`
 
 Defines whether git-radar shall perform a `git fetch` automatically every 5 minutes for the current git repository (on prompt rendering). Default is `1`.
