@@ -18,13 +18,10 @@ With all information (connected to ssh server, runtime and exit status from last
 ## Requirements
 
 * zsh
-* [git-radar](https://github.com/michaeldfallen/git-radar) (optional, enables git info display)
 
 ## Install
 
-Recommended: Install [git-radar](https://github.com/michaeldfallen/git-radar).
-
-Then choose one of the methods below.
+Choose one of the methods below.
 
 ### [antigen](https://github.com/zsh-users/antigen)
 
@@ -42,7 +39,7 @@ zgen load mgee/slimline
 
 Clone the repository:
 
-```git clone https://github.com/mgee/slimline```
+```git clone --recursive https://github.com/mgee/slimline```
 
 Source the prompt in your `.zshrc` (or other appropriate) file:
 
@@ -53,6 +50,10 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 ### `SLIMLINE_PROMPT_SYMBOL`
 
 Defines the symbol of the prompt. Default is `∙`.
+
+### `SLIMLINE_ENABLE_GIT_RADAR`
+
+Defines whether git-radar shall be used to display git information. Default is `1`.
 
 ### `SLIMLINE_PERFORM_GIT_FETCH`
 
