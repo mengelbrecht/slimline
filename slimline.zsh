@@ -145,7 +145,7 @@ prompt_slimline_setup() {
 
   add-zsh-hook precmd prompt_slimline_precmd
   add-zsh-hook preexec prompt_slimline_preexec
-  
+
   _prompt_slimline_git_radar_executable="$prompt_slimline_path/git-radar/git-radar"
 
   prompt_slimeline_async_init
