@@ -75,6 +75,18 @@ Defines whether the exit status is displayed if the exit code is not zero. Defau
 
 Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `1`.
 
+## Git Radar Options
+
+### Colors
+
+Git Radar colors can be configured via environment variables. See [this page](https://github.com/michaeldfallen/git-radar/blob/3884b1fdf423f4e8655dd47bef0ccb2ebdd68c6d/README.md#configuring-colours) for details.
+
+**Note:** Use `%F` to specify the color.
+For example to color the branch name yellow use this line before sourcing the prompt:
+```shell
+export GIT_RADAR_COLOR_BRANCH="%F{yellow}"
+```
+
 ## Thanks to
 
 - [sindresorhus/pure](https://github.com/sindresorhus/pure)
