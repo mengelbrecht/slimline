@@ -19,7 +19,7 @@ With all information (connected to ssh server, runtime and exit status from last
 
 * zsh
 
-## Install
+## Installation
 
 Choose one of the methods below.
 
@@ -39,7 +39,7 @@ zgen load mgee/slimline
 
 Clone the repository:
 
-```git clone --recursive https://github.com/mgee/slimline```
+```git clone --recursive https://github.com/mgee/slimline.git```
 
 Source the prompt in your `.zshrc` (or other appropriate) file:
 
