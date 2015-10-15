@@ -36,10 +36,6 @@ prompt_slimline_check_cmd_exec_time() {
     _prompt_slimline_cmd_exec_time="$(prompt_slimline_human_time $elapsed)"
 }
 
-prompt_slimline_reformat_git_radar() {
-  ([[ "$1" =~ " git:\(([^)]+)\)(.*)" ]] && echo "$match[1]$match[2]") || echo "$1"
-}
-
 prompt_slimline_set_prompt() {
   local symbol_color=${1:-red}
 
@@ -99,8 +95,7 @@ prompt_slimline_async_git_radar() {
   (( ${SLIMLINE_ENABLE_GIT_RADAR:-1} )) && {
     local parameters="--zsh"
     (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
-    local output="`${_prompt_slimline_git_radar_executable} ${=parameters}`"
-    _prompt_slimline_git_radar_output="$(prompt_slimline_reformat_git_radar $output)"
+    _prompt_slimline_git_radar_output="`${_prompt_slimline_git_radar_executable} ${=parameters}`"
   }
   typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
 
@@ -147,6 +142,9 @@ prompt_slimline_setup() {
   add-zsh-hook preexec prompt_slimline_preexec
 
   _prompt_slimline_git_radar_executable="$prompt_slimline_path/git-radar/git-radar"
+
+  [[ -z "$GIT_RADAR_FORMAT" ]] && \
+    export GIT_RADAR_FORMAT="%{remote: }%{branch}%{ :local}%{ :changes}"
 
   prompt_slimeline_async_init
 
