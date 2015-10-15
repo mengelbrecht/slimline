@@ -77,9 +77,18 @@ Defines whether the `user@host` part is displayed if connected to a ssh server. 
 
 ## Git Radar Options
 
+### Format
+
+Git Radar allows customizing the output format via the `GIT_RADAR_FORMAT` environment variable.
+See [this page](https://github.com/michaeldfallen/git-radar/blob/42135ad00014387b6937242563b920a7cf640866/README.md#customise-your-prompt) for details.
+
+Slimline uses a custom format for Git Radar output. However, if you set a custom
+format via `GIT_RADAR_FORMAT` before sourcing Slimline this format will be used instead.
+
 ### Colors
 
-Git Radar colors can be configured via environment variables. See [this page](https://github.com/michaeldfallen/git-radar/blob/3884b1fdf423f4e8655dd47bef0ccb2ebdd68c6d/README.md#configuring-colours) for details.
+Git Radar colors can be configured via environment variables.
+See [this page](https://github.com/michaeldfallen/git-radar/blob/42135ad00014387b6937242563b920a7cf640866/README.md#configuring-colours) for details.
 
 **Note:** Use `%F{color}` to specify the color.
 For example to color the branch name yellow use this line in your zsh configuration:
