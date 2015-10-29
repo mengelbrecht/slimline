@@ -57,7 +57,7 @@ Defines whether git-radar shall be used to display git information. Default is `
 
 ### `SLIMLINE_PERFORM_GIT_FETCH`
 
-Defines whether git-radar shall perform a `git fetch` automatically every 5 minutes for the current git repository (on prompt rendering). Default is `1`.
+Defines whether git-radar shall perform a `git fetch` automatically (default: every 5 minutes) for the current git repository (on prompt rendering). Default is `1`.
 
 ### `SLIMLINE_DISPLAY_EXEC_TIME`
 
@@ -95,6 +95,12 @@ For example to color the branch name yellow use this line in your zsh configurat
 ```shell
 export GIT_RADAR_COLOR_BRANCH="%F{yellow}"
 ```
+
+### Auto-fetch time
+
+Git Radar can automatically perform a `git fetch`, see option `SLIMLINE_PERFORM_GIT_FETCH`.
+The interval of the fetch can be customized using the environment variable `GIT_RADAR_FETCH_TIME`.
+See [this page](https://github.com/michaeldfallen/git-radar/tree/47addd8b811e77f3be815fea56bcaeddd89edea0#optional-auto-fetch-repos) for details.
 
 ## Thanks to
 
