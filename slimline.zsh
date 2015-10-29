@@ -144,7 +144,7 @@ prompt_slimline_setup() {
   _prompt_slimline_git_radar_executable="$prompt_slimline_path/git-radar/git-radar"
 
   [[ -z "$GIT_RADAR_FORMAT" ]] && \
-    export GIT_RADAR_FORMAT="%{remote: }%{branch}%{ :local}%{ :changes}"
+    export GIT_RADAR_FORMAT="%{remote: }%{branch}%{ :local}%{ :changes}%{ :stash}"
 
   prompt_slimeline_async_init
 
