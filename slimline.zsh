@@ -43,7 +43,7 @@ prompt_slimline_set_prompt() {
   PROMPT=""
 
   # add ssh info
-  (( ${SLIMLINE_DISPLAY_SSH_INFO:-1} )) && [[ "$SSH_TTY" != "" ]] && \
+  (( ${SLIMLINE_DISPLAY_SSH_INFO:-1} )) && [[ -n "$SSH_TTY" ]] && \
     PROMPT+="%F{red}%n%f@%F{yellow}%m%f "
 
   # add cwd
@@ -58,7 +58,7 @@ prompt_slimline_set_rprompt() {
   RPROMPT=""
 
   # add elapsed time if threshold is exceeded
-  (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ "${_prompt_slimline_cmd_exec_time}" != "" ]] && \
+  (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ -n "${_prompt_slimline_cmd_exec_time}" ]] && \
     RPROMPT+="%F{yellow}${_prompt_slimline_cmd_exec_time}%f"
 
   # add exit status
@@ -66,7 +66,7 @@ prompt_slimline_set_rprompt() {
     RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ↵%f)"
 
   # add git radar output
-  [[ "${_prompt_slimline_git_radar_output:-}" != '' ]] && \
+  [[ -n "${_prompt_slimline_git_radar_output:-}" ]] && \
     RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_radar_output}"
 }
 
