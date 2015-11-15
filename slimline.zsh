@@ -95,7 +95,7 @@ prompt_slimline_async_git_radar() {
   (( ${SLIMLINE_ENABLE_GIT_RADAR:-1} )) && {
     local parameters="--zsh"
     (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
-    _prompt_slimline_git_radar_output="`${_prompt_slimline_git_radar_executable} ${=parameters}`"
+    _prompt_slimline_git_radar_output="$(${_prompt_slimline_git_radar_executable} ${=parameters})"
   }
   typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
 
