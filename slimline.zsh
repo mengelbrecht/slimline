@@ -121,7 +121,7 @@ prompt_slimline_async_callback() {
     _prompt_slimline_async_pid=0
     prompt_slimline_set_prompt white
     prompt_slimline_set_rprompt
-    zle && zle reset-prompt
+    zle && zle .reset-prompt
   }
 }
 
