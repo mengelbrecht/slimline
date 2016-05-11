@@ -66,7 +66,7 @@ prompt_slimline_set_rprompt() {
 
   # add exit status
   if (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
-    RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ↵%f)"
+    RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
   fi
 
   # add git radar output
