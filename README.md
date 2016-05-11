@@ -51,6 +51,10 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 Defines the symbol of the prompt. Default is `∙`.
 
+### `SLIMLINE_EXIT_STATUS_SYMBOL`
+
+Defines the symbol of the exit status glyph. Default is `↵`.
+
 ### `SLIMLINE_ENABLE_GIT_RADAR`
 
 Defines whether git-radar shall be used to display git information. Default is `1`.
