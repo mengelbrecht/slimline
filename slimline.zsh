@@ -13,6 +13,12 @@
 
 prompt_slimline_path="$(dirname $0:A:H)"
 
+# If python is not installed, disable the git functionality.
+if ! which python &> /dev/null || ! which git &> /dev/null; then
+  echo "slimline: python and/or git not installed or not in PATH, disabling git information"
+  SLIMLINE_ENABLE_GIT=0
+fi
+
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
 # https://github.com/sindresorhus/pretty-time-zsh
@@ -69,9 +75,9 @@ prompt_slimline_set_rprompt() {
     RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
   fi
 
-  # add git radar output
-  if [[ -n "${_prompt_slimline_git_radar_output:-}" ]]; then
-    RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_radar_output}"
+  # add git output
+  if [[ -n "${_prompt_slimline_git_output:-}" ]]; then
+    RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_output}"
   fi
 }
 
@@ -83,7 +89,7 @@ prompt_slimline_precmd() {
   prompt_slimline_check_cmd_exec_time
 
   unset _prompt_slimline_cmd_timestamp
-  unset _prompt_slimline_git_radar_output
+  unset _prompt_slimline_git_output
 
   prompt_slimline_set_prompt
   prompt_slimline_set_rprompt
@@ -95,14 +101,12 @@ prompt_slimline_preexec() {
   _prompt_slimline_cmd_timestamp=$EPOCHSECONDS
 }
 
-prompt_slimline_async_git_radar() {
-  local _prompt_slimline_git_radar_output=""
-  if (( ${SLIMLINE_ENABLE_GIT_RADAR:-1} )); then
-    local parameters="--zsh"
-    (( ${SLIMLINE_PERFORM_GIT_FETCH:-1} )) && parameters+=" --fetch"
-    _prompt_slimline_git_radar_output="$(${_prompt_slimline_git_radar_executable} ${=parameters})"
+prompt_slimline_async_git() {
+  local _prompt_slimline_git_output=""
+  if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
+    _prompt_slimline_git_output="$(python ${prompt_slimline_path}/gitline.py)"
   fi
-  typeset -p _prompt_slimline_git_radar_output >! "$_prompt_slimline_async_data"
+  typeset -p _prompt_slimline_git_output >! "$_prompt_slimline_async_data"
 
   kill -WINCH $$ # Signal completion to parent process.
 }
@@ -130,7 +134,7 @@ prompt_slimline_async_tasks() {
   fi
 
   trap prompt_slimline_async_callback WINCH
-  prompt_slimline_async_git_radar &!
+  prompt_slimline_async_git &!
   _prompt_slimline_async_pid=$!
 }
 
@@ -149,12 +153,6 @@ prompt_slimline_setup() {
 
   add-zsh-hook precmd prompt_slimline_precmd
   add-zsh-hook preexec prompt_slimline_preexec
-
-  _prompt_slimline_git_radar_executable="$prompt_slimline_path/git-radar/git-radar"
-
-  if [[ -z "$GIT_RADAR_FORMAT" ]]; then
-    export GIT_RADAR_FORMAT="%{remote: }%{branch}%{ :local}%{ :changes}%{ :stash}"
-  fi
 
   prompt_slimline_async_init
 

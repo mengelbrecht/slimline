@@ -4,7 +4,7 @@ Minimal, fast and elegant ZSH prompt. Displays the right information at the righ
 
 Features:
 - sleek look
-- asynchronous git information display using [git-radar](https://github.com/michaeldfallen/git-radar)
+- asynchronous git information display using a custom python script
 - the prompt symbol is colored red, when all asynchronous tasks are finished it turns white
 - exit code of last command if the exit code is not zero
 - runtime of executed command if it exceeds a threshold
@@ -18,6 +18,10 @@ With all information (connected to ssh server, runtime and exit status from last
 ## Requirements
 
 * zsh
+
+## Optional
+
+* python 2.7+ to enable git information display
 
 ## Installation
 
@@ -55,21 +59,15 @@ Defines the symbol of the prompt. Default is `∙`.
 
 Defines the symbol of the exit status glyph. Default is `↵`.
 
-### `SLIMLINE_ENABLE_GIT_RADAR`
-
-Defines whether git-radar shall be used to display git information. Default is `1`.
-
-### `SLIMLINE_PERFORM_GIT_FETCH`
-
-Defines whether git-radar shall perform a `git fetch` automatically (default: every 5 minutes) for the current git repository (on prompt rendering). Default is `1`.
-
 ### `SLIMLINE_DISPLAY_EXEC_TIME`
 
-Defines whether the runtime of a process is displayed if it exceeds the maximum execution time specified by the option below. Default is `1`.
+Defines whether the runtime of a process is displayed if it exceeds the maximum execution time
+specified by the option below. Default is `1`.
 
 ### `SLIMLINE_MAX_EXEC_TIME`
 
-Defines the maximum execution time of a process until its run time is displayed on exit. Default is `5` seconds.
+Defines the maximum execution time of a process until its run time is displayed on exit.
+Default is `5` seconds.
 
 ### `SLIMLINE_DISPLAY_EXIT_STATUS`
 
@@ -79,38 +77,103 @@ Defines whether the exit status is displayed if the exit code is not zero. Defau
 
 Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `1`.
 
-## Git Radar Options
+### `SLIMLINE_ENABLE_GIT`
 
-### Format
+Defines whether git information shall be displayed (requires python). Default is `1`.
 
-Git Radar allows customizing the output format via the `GIT_RADAR_FORMAT` environment variable.
-See [this page](https://github.com/michaeldfallen/git-radar/blob/47addd8b811e77f3be815fea56bcaeddd89edea0/README.md#customise-your-prompt) for details.
+### `SLIMLINE_GIT_REPO_INDICATOR`
 
-Slimline uses a custom format for Git Radar output. However, if you set a custom
-format via `GIT_RADAR_FORMAT` before sourcing Slimline this format will be used instead.
+Defines the git repository indicator text. Default is `%fᚴ`.
 
-### Colors
+### `SLIMLINE_GIT_NO_TRACKED_UPSTREAM`
 
-Git Radar colors can be configured via environment variables.
-See [this page](https://github.com/michaeldfallen/git-radar/blob/47addd8b811e77f3be815fea56bcaeddd89edea0/README.md#configuring-colours) for details.
+Defines the text which is displayed if the branch has no remote tracking branch.
+Default is `upstream %F{red}⚡%f`.
 
-**Note:** Use `%F{color}` to specify the color.
-For example to color the branch name yellow use this line in your zsh configuration:
-```shell
-export GIT_RADAR_COLOR_BRANCH="%F{yellow}"
-```
+### `SLIMLINE_GIT_REMOTE_COMMITS_PUSH_PULL`
 
-### Auto-fetch time
+Defines the format used to display commits which can be pushed and pulled to/from `origin/master`.
+Default is `𝘮 ${remote_commits_to_pull} %F{yellow}⇄%f ${remote_commits_to_push}`.
 
-Git Radar can automatically perform a `git fetch`, see option `SLIMLINE_PERFORM_GIT_FETCH`.
-The interval of the fetch can be customized using the environment variable `GIT_RADAR_FETCH_TIME`.
-See [this page](https://github.com/michaeldfallen/git-radar/tree/47addd8b811e77f3be815fea56bcaeddd89edea0#optional-auto-fetch-repos) for details.
+### `SLIMLINE_GIT_REMOTE_COMMITS_PULL`
+
+Defines the format used to display commits which can be pulled from `origin/master`.
+Default is `𝘮 %F{red}→%f${remote_commits_to_pull}`.
+
+### `SLIMLINE_GIT_REMOTE_COMMITS_PUSH`
+
+Defines the format used to display commits which can be pushed to `origin/master`.
+Default is `𝘮 %F{green}←%f${remote_commits_to_push}`.
+
+### `SLIMLINE_GIT_BRANCH`
+
+Defines the format for the local branch. Default is `${branch}`.
+
+### `SLIMLINE_GIT_DETACHED`
+
+Defines the format if the repository is not on a branch. Default is `%F{red}detached@${sha1}%f`.
+
+### `SLIMLINE_GIT_LOCAL_COMMITS_PUSH_PULL`
+
+Defines the format used to display commits which can be pushed and pulled to/from the remote tracking
+branch. Default is `${local_commits_to_pull} %F{yellow}⥯%f ${local_commits_to_push}`.
+
+### `SLIMLINE_GIT_LOCAL_COMMITS_PULL`
+
+Defines the format used to display commits which can be pulled from the remote tracking branch.
+Default is `${local_commits_to_pull}%F{red}↓%f`.
+
+### `SLIMLINE_GIT_LOCAL_COMMITS_PUSH`
+
+Defines the format used to display commits which can be pushed to the remote tracking branch.
+Default is `${local_commits_to_push}%F{green}↑%f`.
+
+### `SLIMLINE_GIT_STAGED_ADDED`
+
+Defines the format used to display staged added files. Default is `${staged_added}%F{green}A%f`.
+
+### `SLIMLINE_GIT_STAGED_MODIFIED`
+
+Defines the format used to display staged modified files. Default is `${staged_modified}%F{green}M%f`.
+
+### `SLIMLINE_GIT_STAGED_DELETED`
+
+Defines the format used to display staged deleted files. Default is `${staged_deleted}%F{green}D%f`.
+
+### `SLIMLINE_GIT_STAGED_RENAMED`
+
+Defines the format used to display staged renamed files. Default is `${staged_renamed}%F{green}R%f`.
+
+### `SLIMLINE_GIT_STAGED_COPIED`
+
+Defines the format used to display staged copied files. Default is `${staged_copied}%F{green}C%f`.
+
+### `SLIMLINE_GIT_UNSTAGED_MODIFIED`
+
+Defines the format used to display unstaged modified files. Default is `${unstaged_modified}%F{red}M%f`.
+
+### `SLIMLINE_GIT_UNSTAGED_DELETED`
+
+Defines the format used to display unstaged deleted files. Default is `${unstaged_deleted}%F{red}D%f`.
+
+### `SLIMLINE_GIT_UNTRACKED`
+
+Defines the format used to display untracked files. Default is `${untracked}%F{white}A%f`.
+
+### `SLIMLINE_GIT_UNMERGED`
+
+Defines the format used to display unmerged files. Default is `${unmerged}%F{yellow}U%f`.
+
+### `SLIMLINE_GIT_STASHES`
+
+Defines the format used to display the number of stashes. Default is `${stashes}%F{yellow}≡%f`.
 
 ## Thanks to
 
 - [sindresorhus/pure](https://github.com/sindresorhus/pure)
 - [sorin-ionescu/prezto](https://github.com/sorin-ionescu/prezto.git)
 - [michaeldfallen/git-radar](https://github.com/michaeldfallen/git-radar)
+- [gbataille/gitHUD](https://github.com/gbataille/gitHUD)
 
 ## License
 

@@ -1,4 +1,0 @@
-[submodule "git-radar"]
-	path = git-radar
-	url = https://github.com/michaeldfallen/git-radar.git
-	branch = master
