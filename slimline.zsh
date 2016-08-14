@@ -44,18 +44,18 @@ prompt_slimline_check_cmd_exec_time() {
 }
 
 prompt_slimline_set_prompt() {
-  local symbol_color=${1:-red}
+  local symbol_color=${1:-${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}
 
   # clear prompt
   PROMPT=""
 
   # add ssh info
   if (( ${SLIMLINE_DISPLAY_SSH_INFO:-1} )) && [[ -n "$SSH_TTY" ]]; then
-    PROMPT+="%F{red}%n%f@%F{yellow}%m%f "
+    PROMPT+="%F{${SLIMLINE_SSH_INFO_USER_COLOR:-red}}%n%f@%F{${SLIMLINE_SSH_INFO_HOST_COLOR:-yellow}}%m%f "
   fi
 
   # add cwd
-  PROMPT+="%F{cyan}%3~%f "
+  PROMPT+="%F{${SLIMLINE_CWD_COLOR:-cyan}}%3~%f "
 
   # add prompt symbol
   PROMPT+="%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
@@ -67,12 +67,12 @@ prompt_slimline_set_rprompt() {
 
   # add elapsed time if threshold is exceeded
   if (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ -n "${_prompt_slimline_cmd_exec_time}" ]]; then
-    RPROMPT+="%F{yellow}${_prompt_slimline_cmd_exec_time}%f"
+    RPROMPT+="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f"
   fi
 
   # add exit status
   if (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
-    RPROMPT+="%(?::${RPROMPT:+ }%F{red}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
+    RPROMPT+="%(?::${RPROMPT:+ }%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
   fi
 
   # add git output
@@ -82,7 +82,7 @@ prompt_slimline_set_rprompt() {
 }
 
 prompt_slimline_set_sprompt() {
-  SPROMPT="zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? "
+  SPROMPT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}%R%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}%r%f [nyae]? "
 }
 
 prompt_slimline_precmd() {
@@ -122,7 +122,7 @@ prompt_slimline_async_callback() {
     unalias typeset
   fi
   _prompt_slimline_async_pid=0
-  prompt_slimline_set_prompt white
+  prompt_slimline_set_prompt ${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}
   prompt_slimline_set_rprompt
   zle && zle .reset-prompt
 }

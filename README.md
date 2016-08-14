@@ -55,9 +55,29 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 Defines the symbol of the prompt. Default is `∙`.
 
+### `SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING`
+
+Defines the color of the prompt when asynchronous tasks are running. Default is `red`.
+
+### `SLIMLINE_PROMPT_SYMBOL_COLOR_READY`
+
+Defines the color of the prompt when all asynchronous tasks are finished. Default is `white`.
+
+### `SLIMLINE_CWD_COLOR`
+
+Defines the color of the current working directory. Default is `cyan`.
+
+### `SLIMLINE_DISPLAY_EXIT_STATUS`
+
+Defines whether the exit status is displayed if the exit code is not zero. Default is `1`.
+
 ### `SLIMLINE_EXIT_STATUS_SYMBOL`
 
 Defines the symbol of the exit status glyph. Default is `↵`.
+
+### `SLIMLINE_EXIT_STATUS_COLOR`
+
+Defines the color of the exit status information. Default is `red`.
 
 ### `SLIMLINE_DISPLAY_EXEC_TIME`
 
@@ -69,13 +89,29 @@ specified by the option below. Default is `1`.
 Defines the maximum execution time of a process until its run time is displayed on exit.
 Default is `5` seconds.
 
-### `SLIMLINE_DISPLAY_EXIT_STATUS`
+### `SLIMLINE_EXEC_TIME_COLOR`
 
-Defines whether the exit status is displayed if the exit code is not zero. Default is `1`.
+Defines the color of the execution time. Default is `yellow`.
 
 ### `SLIMLINE_DISPLAY_SSH_INFO`
 
 Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `1`.
+
+### `SLIMLINE_SSH_INFO_USER_COLOR`
+
+Defines the color of the ssh user. Default is `red`.
+
+### `SLIMLINE_SSH_INFO_HOST_COLOR`
+
+Defines the color of the ssh host. Default is `yellow`.
+
+### `SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR`
+
+Defines the color of the misspelled string for which is correction is proposed. Default is `red`.
+
+### `SLIMLINE_AUTOCORRECT_PROPOSED_COLOR`
+
+Defines the color of the proposed correction of a misspelled string. Default is `green`.
 
 ### `SLIMLINE_ENABLE_GIT`
 
