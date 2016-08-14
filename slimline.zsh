@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# Slimlime
+# Slimline
 # Minimal, fast and elegant ZSH prompt
 # by Markus Engelbrecht
 # https://github.com/mgee/slimline
@@ -107,17 +107,6 @@ prompt_slimline_async_git_radar() {
   kill -WINCH $$ # Signal completion to parent process.
 }
 
-prompt_slimline_async_tasks() {
-  # Kill the old process of slow commands if it is still running.
-  if (( __prompt_slimline_async_pid > 0 )); then
-    kill -KILL "$_prompt_slimline_async_pid" &>/dev/null
-  fi
-
-  trap prompt_slimline_async_callback WINCH
-  prompt_slimline_async_git_radar &!
-  _prompt_slimline_async_pid=$!
-}
-
 prompt_slimline_async_callback() {
   if (( _prompt_slimline_async_pid == 0 )); then
     return
@@ -134,7 +123,18 @@ prompt_slimline_async_callback() {
   zle && zle .reset-prompt
 }
 
-prompt_slimeline_async_init() {
+prompt_slimline_async_tasks() {
+  # Kill the old process of slow commands if it is still running.
+  if (( __prompt_slimline_async_pid > 0 )); then
+    kill -KILL "$_prompt_slimline_async_pid" &>/dev/null
+  fi
+
+  trap prompt_slimline_async_callback WINCH
+  prompt_slimline_async_git_radar &!
+  _prompt_slimline_async_pid=$!
+}
+
+prompt_slimline_async_init() {
   _prompt_slimline_async_pid=0
   _prompt_slimline_async_data="${TMPPREFIX}-prompt_slimline_data"
 }
@@ -156,7 +156,7 @@ prompt_slimline_setup() {
     export GIT_RADAR_FORMAT="%{remote: }%{branch}%{ :local}%{ :changes}%{ :stash}"
   fi
 
-  prompt_slimeline_async_init
+  prompt_slimline_async_init
 
   prompt_slimline_set_prompt
   prompt_slimline_set_rprompt
