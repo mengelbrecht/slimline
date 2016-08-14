@@ -158,7 +158,7 @@ Defines the color of the proposed correction of a misspelled string. Default is 
 
 ##### `SLIMLINE_ENABLE_GIT`
 
-Defines whether git information shall be displayed (requires python). Defa Reult is `1`.
+Defines whether git information shall be displayed (requires python). Default is `1`.
 
 #### Repo Indicator
 
