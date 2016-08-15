@@ -51,7 +51,7 @@ With all information (connected to ssh server, runtime and exit status from last
 
 ### Optional
 
-* python 2.7+ to enable git information display
+* python 2.6+ to enable git information display
 
 ## Installation
 
