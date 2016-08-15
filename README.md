@@ -4,11 +4,12 @@ Minimal, fast and elegant ZSH prompt. Displays the right information at the righ
 
 Features:
 - sleek look
-- asynchronous git information display using a custom python script
-- the prompt symbol is colored red, when all asynchronous tasks are finished it turns white
+- customizable non-blocking git information display
+- prompt symbol indicates if prompt background tasks are running
 - exit code of last command if the exit code is not zero
 - runtime of executed command if it exceeds a threshold
 - username and host name if connected to a ssh server
+- very customizable
 
 ![](screenshot.png)
 
@@ -18,7 +19,7 @@ With all information (connected to ssh server, runtime and exit status from last
 ## Table Of Contents
 
 - [Requirements](#requirements)
-- [Optional](#optional)
+	- [Optional](#optional)
 - [Installation](#installation)
 	- [antigen](#antigen)
 	- [zgen](#zgen)
@@ -48,7 +49,7 @@ With all information (connected to ssh server, runtime and exit status from last
 
 * zsh
 
-## Optional
+### Optional
 
 * python 2.7+ to enable git information display
 
