@@ -20,11 +20,8 @@ from threading import Thread
 
 def parse_repository():
     def execute(command):
-        try:
-            with open(os.devnull) as DEVNULL:
-                return subprocess.check_output(command, stderr=DEVNULL, universal_newlines=True)
-        except subprocess.CalledProcessError:
-            return ''
+        with open(os.devnull) as DEVNULL:
+            return subprocess.Popen(command, stdout=subprocess.PIPE, stderr=DEVNULL).communicate()[0]
 
     repo = dict(
         directory="", branch="", remote="", remote_tracking_branch="", sha1="",
