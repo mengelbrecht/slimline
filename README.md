@@ -42,6 +42,7 @@ With all information (connected to ssh server, runtime and exit status from last
 		- [Untracked](#untracked)
 		- [Unmerged](#unmerged)
 		- [Stashes](#stashes)
+- [Example](#example)
 - [Thanks](#thanks)
 - [License](#license)
 
@@ -267,6 +268,22 @@ Defines the format used to display unmerged files. Default is `${unmerged}%F{yel
 ##### `SLIMLINE_GIT_STASHES`
 
 Defines the format used to display the number of stashes. Default is `${stashes}%F{yellow}≡%f`.
+
+## Example
+
+Here is an example for customizing the prompt symbol as well as the git repository indicator and
+branch format:
+
+```shell
+export SLIMLINE_PROMPT_SYMBOL='$'
+# If you have a powerline compatible font you can also use the alternative repo indicator ''.
+export SLIMLINE_GIT_REPO_INDICATOR='git'
+export SLIMLINE_GIT_BRANCH='[%F{blue}${branch}%f]'
+
+source "<path-to-slimline>/slimline.plugin.zsh"
+```
+
+![](screenshot_example.png)
 
 ## Thanks
 
