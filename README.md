@@ -82,6 +82,9 @@ Source the prompt in your `.zshrc` (or other appropriate) file:
 
 ## Options
 
+Slimline can be customized using a variety of environment variables.
+For an example on how to do so see the [example](#example).
+
 ### Prompt Symbol
 
 ##### `SLIMLINE_PROMPT_SYMBOL`
