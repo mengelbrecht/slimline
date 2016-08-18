@@ -103,6 +103,8 @@ def parse_repository():
                                                                                             repo['remote'], 1)
     if execute(['git', 'merge-base', repo['remote_tracking_branch'], 'origin/master']).rstrip():
         execute_tasks(local_commits_to_pull, local_commits_to_push, remote_commits_to_pull, remote_commits_to_push)
+    else:
+        execute_tasks(local_commits_to_pull, local_commits_to_push)
     return repo
 
 
