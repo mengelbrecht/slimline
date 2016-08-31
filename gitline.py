@@ -13,6 +13,7 @@
 
 
 import os
+import sys
 import subprocess
 from string import Template
 from threading import Thread
@@ -149,6 +150,9 @@ def build_prompt(repo):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        os.chdir(sys.argv[1])
+
     r = parse_repository()
     if r:
         prompt = build_prompt(r)
