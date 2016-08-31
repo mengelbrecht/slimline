@@ -21,7 +21,7 @@ from threading import Thread
 def parse_repository():
     def execute(command):
         with open(os.devnull) as DEVNULL:
-            return subprocess.Popen(command, stdout=subprocess.PIPE, stderr=DEVNULL).communicate()[0]
+            return subprocess.Popen(command, stdout=subprocess.PIPE, stderr=DEVNULL, universal_newlines=True).communicate()[0]
 
     repo = dict(
         directory="", branch="", remote="", remote_tracking_branch="", sha1="",
@@ -50,7 +50,7 @@ def parse_repository():
         repo['stashes'] = execute(['git', 'stash', 'list']).count('\n')
 
     def status():
-        for code in map(lambda x: x[0:2], execute(['git', 'status', '-z']).split('\0')):
+        for code in [x[0:2] for x in execute(['git', 'status', '-z']).split('\0')]:
             if code in ["A ", "AD", "AM"]:
                 repo['staged_added'] += 1
             if code in [" M", "AM", "CM", "RM"]:
@@ -118,7 +118,7 @@ def build_prompt(repo):
     def choose(formats, *args):
         return expand((True, formats[sum(1 << i for i, v in enumerate(reversed(args)) if v)]))
 
-    parts = filter(bool, [
+    parts = [
         expand((True, env_str('REPO_INDICATOR', '%fᚴ'))),
         expand((not repo['remote_tracking_branch'], env_str('NO_TRACKED_UPSTREAM', 'upstream %F{red}⚡%f'))),
         choose(['',
@@ -143,12 +143,13 @@ def build_prompt(repo):
         expand((repo['untracked'], env_str('UNTRACKED', '${untracked}%F{white}A%f'))),
         expand((repo['unmerged'], env_str('UNMERGED', '${unmerged}%F{yellow}U%f'))),
         expand((repo['stashes'], env_str('STASHES', '${stashes}%F{yellow}≡%f')))
-    ])
+    ]
 
-    return ' '.join(parts)
+    return ' '.join(filter(bool, parts))
 
 
 if __name__ == '__main__':
     r = parse_repository()
     if r:
-        print(build_prompt(r))
+        prompt = build_prompt(r)
+        print(prompt)
