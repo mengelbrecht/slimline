@@ -13,12 +13,6 @@
 
 prompt_slimline_path="$(dirname $0:A:H)"
 
-# If python is not installed, disable the git functionality.
-if ! which python &> /dev/null || ! which git &> /dev/null; then
-  echo "slimline: python and/or git not installed or not in PATH, disabling git information"
-  SLIMLINE_ENABLE_GIT=0
-fi
-
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
 # https://github.com/sindresorhus/pretty-time-zsh
@@ -144,6 +138,12 @@ prompt_slimline_async_init() {
 }
 
 prompt_slimline_setup() {
+  # If python is not installed, disable the git functionality.
+  if ! which python &> /dev/null || ! which git &> /dev/null; then
+    echo "slimline: python and/or git not installed or not in PATH, disabling git information"
+    SLIMLINE_ENABLE_GIT=0
+  fi
+
   prompt_opts=(cr percent subst)
 
   zmodload zsh/datetime
