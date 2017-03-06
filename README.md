@@ -30,6 +30,7 @@ With all information (connected to ssh server, runtime and exit status from last
 	- [Exit Status](#exit-status)
 	- [Execution Time](#execution-time)
 	- [SSH Info](#ssh-info)
+	- [AWS Profile Info](#aws-profile-info)
 	- [Auto Correction](#auto-correction)
 	- [Git Information](#git-information)
 		- [Repo Indicator](#repo-indicator)
@@ -148,6 +149,16 @@ Defines the color of the ssh user. Default is `red`.
 ##### `SLIMLINE_SSH_INFO_HOST_COLOR`
 
 Defines the color of the ssh host. Default is `yellow`.
+
+### AWS Profile Info
+
+##### SLIMLINE_DISPLAY_AWS_INFO
+
+Defines whether value of AWS_PROFILE environment variable should be displayed. Default is `0`.
+
+##### `SLIMLINE_AWS_COLOR`
+
+Defines the color of AWS_PROFILE. Default is `cyan`.
 
 ### Auto Correction
 

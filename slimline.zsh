@@ -37,6 +37,12 @@ prompt_slimline_check_cmd_exec_time() {
   fi
 }
 
+prompt_slimline_aws_profile() {
+  if [ -n "${AWS_PROFILE}" ]; then
+    echo "${AWS_PROFILE} "
+  fi
+}
+
 prompt_slimline_set_prompt() {
   local symbol_color=${1:-${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}
 
@@ -50,6 +56,11 @@ prompt_slimline_set_prompt() {
 
   # add cwd
   PROMPT+="%F{${SLIMLINE_CWD_COLOR:-cyan}}%3~%f "
+
+  # add AWS profile info
+  if (( ${SLIMLINE_DISPLAY_AWS_INFO:-0} )); then
+    PROMPT+="%F{${SLIMLINE_AWS_COLOR:-blue}}$(prompt_slimline_aws_profile)%f"
+  fi
 
   # add prompt symbol
   PROMPT+="%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
