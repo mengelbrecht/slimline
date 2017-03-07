@@ -152,13 +152,13 @@ Defines the color of the ssh host. Default is `yellow`.
 
 ### AWS Profile Info
 
-##### SLIMLINE_DISPLAY_AWS_INFO
+##### `SLIMLINE_DISPLAY_AWS_INFO`
 
-Defines whether value of AWS_PROFILE environment variable should be displayed. Default is `0`.
+Defines whether value of `AWS_PROFILE` environment variable should be displayed. Default is `0`.
 
 ##### `SLIMLINE_AWS_COLOR`
 
-Defines the color of AWS_PROFILE. Default is `cyan`.
+Defines the color of aws profile info. Default is `blue`.
 
 ### Auto Correction
 
