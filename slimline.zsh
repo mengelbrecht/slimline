@@ -149,8 +149,8 @@ prompt_slimline_async_init() {
 }
 
 prompt_slimline_setup() {
-  # If python is not installed, disable the git functionality.
-  if ! which python &> /dev/null || ! which git &> /dev/null; then
+  # If python or git are not installed, disable the git functionality.
+  if ! (( $+commands[python] && $+commands[git] )); then
     echo "slimline: python and/or git not installed or not in PATH, disabling git information"
     SLIMLINE_ENABLE_GIT=0
   fi
