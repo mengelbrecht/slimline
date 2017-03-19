@@ -11,10 +11,11 @@ Features:
 - username and host name if connected to a ssh server
 - very customizable
 
-![](screenshot.png)
+<img src="screenshot.png" width="682" height="299">
 
-With all information (connected to ssh server, runtime and exit status from last command):
-![](screenshot_full.png)
+With most information (connected to ssh server, runtime and exit status from last command):
+
+<img src="screenshot_full.png" width="682" height="299">
 
 ## Table Of Contents
 
@@ -304,7 +305,7 @@ export SLIMLINE_GIT_BRANCH='[%F{blue}${branch}%f]'
 source "<path-to-slimline>/slimline.plugin.zsh"
 ```
 
-![](screenshot_example.png)
+<img src="screenshot_example.png" width="682" height="299">
 
 ## Thanks
 
