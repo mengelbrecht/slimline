@@ -17,6 +17,8 @@ With most information (connected to ssh server, runtime and exit status from las
 
 <img src="screenshot_full.png" width="682" height="299">
 
+For a fish compatible version of this theme have a look at [slimfish](https://github.com/mgee/slimfish).
+
 ## Table Of Contents
 
 - [Requirements](#requirements)
