@@ -301,7 +301,7 @@ branch format:
 ```shell
 export SLIMLINE_PROMPT_SYMBOL='$'
 # If you have a powerline compatible font you can also use the alternative repo indicator ''.
-export SLIMLINE_GIT_REPO_INDICATOR='git'
+export SLIMLINE_GIT_REPO_INDICATOR='%fgit'
 export SLIMLINE_GIT_BRANCH='[%F{blue}${branch}%f]'
 
 source "<path-to-slimline>/slimline.plugin.zsh"
