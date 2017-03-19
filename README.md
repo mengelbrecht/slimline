@@ -22,6 +22,7 @@ With all information (connected to ssh server, runtime and exit status from last
 	- [Optional](#optional)
 - [Installation](#installation)
 	- [antigen](#antigen)
+	- [zplugin](#zplugin)
 	- [zgen](#zgen)
 	- [Manually](#manually)
 - [Options](#options)
@@ -63,6 +64,12 @@ Choose one of the methods below.
 
 ```
 antigen bundle mgee/slimline
+```
+
+### [zplugin](https://github.com/zdharma/zplugin)
+
+```
+zplugin load mgee/slimline
 ```
 
 ### [zgen](https://github.com/tarjoilija/zgen)
