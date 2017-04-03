@@ -1,0 +1,3 @@
+[submodule "gitline"]
+	path = gitline
+	url = https://github.com/mgee/gitline.git

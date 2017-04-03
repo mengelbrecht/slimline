@@ -109,7 +109,7 @@ prompt_slimline_preexec() {
 prompt_slimline_async_git() {
   local _prompt_slimline_git_output=""
   if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
-    _prompt_slimline_git_output="$(python ${prompt_slimline_path}/gitline.py)"
+    _prompt_slimline_git_output="$(python ${prompt_slimline_path}/gitline/gitline.py --shell=zsh)"
   fi
   typeset -p _prompt_slimline_git_output >! "$_prompt_slimline_async_data"
 
