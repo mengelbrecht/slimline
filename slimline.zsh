@@ -90,16 +90,22 @@ prompt_slimline_set_sprompt() {
   SPROMPT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}%R%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}%r%f [nyae]? "
 }
 
+prompt_slimline_chpwd() {
+  prompt_slimline_async_tasks
+}
+
 prompt_slimline_precmd() {
   prompt_slimline_check_cmd_exec_time
 
   unset _prompt_slimline_cmd_timestamp
   unset _prompt_slimline_git_output
 
-  prompt_slimline_set_prompt
-  prompt_slimline_set_rprompt
+  if (( ${EPOCHREALTIME} - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
+    prompt_slimline_set_prompt
+    prompt_slimline_set_rprompt
 
-  prompt_slimline_async_tasks
+    prompt_slimline_async_tasks
+  fi
 }
 
 prompt_slimline_preexec() {
@@ -133,6 +139,7 @@ prompt_slimline_async_callback() {
 }
 
 prompt_slimline_async_tasks() {
+  _prompt_slimline_last_async_call=${EPOCHREALTIME}
   # Kill the old process of slow commands if it is still running.
   if (( __prompt_slimline_async_pid > 0 )); then
     kill -KILL "$_prompt_slimline_async_pid" &>/dev/null
@@ -162,6 +169,7 @@ prompt_slimline_setup() {
 
   autoload -Uz add-zsh-hook
 
+  add-zsh-hook chpwd prompt_slimline_chpwd
   add-zsh-hook precmd prompt_slimline_precmd
   add-zsh-hook preexec prompt_slimline_preexec
 
