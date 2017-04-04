@@ -33,7 +33,7 @@ For a fish compatible version of this theme have a look at [slimfish](https://gi
     - [Current Working Directory](#current-working-directory)
     - [Exit Status](#exit-status)
     - [Execution Time](#execution-time)
-    - [SSH Info](#ssh-info)
+    - [User and Host Info](#user-and-host-info)
     - [AWS Profile Info](#aws-profile-info)
     - [Auto Correction](#auto-correction)
     - [Git Information](#git-information)
@@ -147,17 +147,21 @@ Defines the color of the execution time. Default is `yellow`.
 
 ### SSH Info
 
-##### `SLIMLINE_DISPLAY_SSH_INFO`
+##### `SLIMLINE_DISPLAY_USER_HOST_INFO`
 
-Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `1`.
+Defines whether the `user@host` part is displayed if the user differs from the default user or if connected to a ssh server. Default is `1`.
 
-##### `SLIMLINE_SSH_INFO_USER_COLOR`
+##### `SLIMLINE_USER_COLOR`
 
-Defines the color of the ssh user. Default is `red`.
+Defines the color of the user. Default is `green`.
 
-##### `SLIMLINE_SSH_INFO_HOST_COLOR`
+##### `SLIMLINE_USER_ROOT_COLOR`
 
-Defines the color of the ssh host. Default is `yellow`.
+Defines the color of the user if the user is root. Default is `red`.
+
+##### `SLIMLINE_HOST_COLOR`
+
+Defines the color of the host. Default is `yellow`.
 
 ### AWS Profile Info
 

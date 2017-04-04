@@ -12,6 +12,7 @@
 #-------------------------------------------------------------------------------
 
 prompt_slimline_path="$(dirname $0:A:H)"
+prompt_slimline_default_user="$(whoami)"
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
@@ -38,9 +39,39 @@ prompt_slimline_check_cmd_exec_time() {
 }
 
 prompt_slimline_aws_profile() {
-  if [ -n "${AWS_PROFILE}" ]; then
-    echo "${AWS_PROFILE} "
+  # add AWS profile info
+  if (( ! ${SLIMLINE_DISPLAY_AWS_INFO:-0} )) || [[ -z "${AWS_PROFILE}" ]]; then
+    return
   fi
+  echo "%F{${SLIMLINE_AWS_COLOR:-blue}}${AWS_PROFILE}%f "
+}
+
+prompt_slimline_user_host_info() {
+  if (( ! ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then
+    return
+  fi
+
+  if [[ -z "$SSH_TTY" && "$(whoami)" == "${prompt_slimline_default_user}" ]]; then
+    return
+  fi
+
+  local user_color=''
+  if [[ $UID -eq 0 ]]; then
+    user_color="${SLIMLINE_USER_ROOT_COLOR:-red}"
+  else
+    user_color="${SLIMLINE_USER_COLOR:-green}"
+  fi
+  echo "%F{${user_color}}%n%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}%m%f "
+}
+
+prompt_slimline_cwd() {
+  local cwd_color=''
+  if [[ "$(builtin pwd)" == "/" ]]; then
+    cwd_color="${SLIMLINE_CWD_ROOT_COLOR:-red}"
+  else
+    cwd_color="${SLIMLINE_CWD_COLOR:-cyan}"
+  fi
+  echo "%F{${cwd_color}}%3~%f "
 }
 
 prompt_slimline_set_prompt() {
@@ -49,24 +80,9 @@ prompt_slimline_set_prompt() {
   # clear prompt
   PROMPT=""
 
-  # add ssh info
-  if (( ${SLIMLINE_DISPLAY_SSH_INFO:-1} )) && [[ -n "$SSH_TTY" ]]; then
-    PROMPT+="%F{${SLIMLINE_SSH_INFO_USER_COLOR:-red}}%n%f@%F{${SLIMLINE_SSH_INFO_HOST_COLOR:-yellow}}%m%f "
-  fi
-
-  # add cwd
-  local cwd_color=''
-  if [[ "$(builtin pwd)" == "/" ]]; then
-    cwd_color="${SLIMLINE_CWD_ROOT_COLOR:-red}"
-  else
-    cwd_color="${SLIMLINE_CWD_COLOR:-cyan}"
-  fi
-  PROMPT+="%F{${cwd_color}}%3~%f "
-
-  # add AWS profile info
-  if (( ${SLIMLINE_DISPLAY_AWS_INFO:-0} )); then
-    PROMPT+="%F{${SLIMLINE_AWS_COLOR:-blue}}$(prompt_slimline_aws_profile)%f"
-  fi
+  PROMPT+="$(prompt_slimline_user_host_info)"
+  PROMPT+="$(prompt_slimline_cwd)"
+  PROMPT+="$(prompt_slimline_aws_profile)"
 
   # add prompt symbol
   PROMPT+="%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
