@@ -76,11 +76,15 @@ zgen load mgee/slimline
 
 Clone the repository:
 
-```git clone --recursive https://github.com/mgee/slimline.git```
+```shell
+git clone --recursive https://github.com/mgee/slimline.git
+```
 
 Source the prompt in your `.zshrc` (or other appropriate) file:
 
-```source <path-to-slimline>/slimline.zsh```
+```shell
+source <path-to-slimline>/slimline.zsh
+```
 
 ## Options
 
