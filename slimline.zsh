@@ -55,7 +55,13 @@ prompt_slimline_set_prompt() {
   fi
 
   # add cwd
-  PROMPT+="%F{${SLIMLINE_CWD_COLOR:-cyan}}%3~%f "
+  local cwd_color=''
+  if [[ "$(builtin pwd)" == "/" ]]; then
+    cwd_color="${SLIMLINE_CWD_ROOT_COLOR:-red}"
+  else
+    cwd_color="${SLIMLINE_CWD_COLOR:-cyan}"
+  fi
+  PROMPT+="%F{${cwd_color}}%3~%f "
 
   # add AWS profile info
   if (( ${SLIMLINE_DISPLAY_AWS_INFO:-0} )); then

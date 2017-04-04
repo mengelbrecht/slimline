@@ -107,6 +107,10 @@ Defines the color of the prompt when all asynchronous tasks are finished. Defaul
 
 Defines the color of the current working directory. Default is `cyan`.
 
+##### `SLIMLINE_CWD_ROOT_COLOR`
+
+Defines the color of the current working directory if it equals the root directory `/`. Default is `red`.
+
 ### Exit Status
 
 ##### `SLIMLINE_DISPLAY_EXIT_STATUS`
