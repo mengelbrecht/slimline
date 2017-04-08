@@ -33,20 +33,11 @@ For a fish compatible version of this theme have a look at [slimfish](https://gi
     - [Current Working Directory](#current-working-directory)
     - [Exit Status](#exit-status)
     - [Execution Time](#execution-time)
-    - [SSH Info](#ssh-info)
+    - [User and Host Info](#user-and-host-info)
     - [AWS Profile Info](#aws-profile-info)
     - [Auto Correction](#auto-correction)
     - [Git Information](#git-information)
-        - [Repo Indicator](#repo-indicator)
-        - [No Tracked Upstream](#no-tracked-upstream)
-        - [Remote Commits](#remote-commits)
-        - [Branch](#branch)
-        - [Local Commits](#local-commits)
-        - [Staged Changes](#staged-changes)
-        - [Unstaged Changes](#unstaged-changes)
-        - [Untracked](#untracked)
-        - [Unmerged](#unmerged)
-        - [Stashes](#stashes)
+        - [Gitline](#gitline)
 - [Example](#example)
 - [Thanks](#thanks)
 - [License](#license)
@@ -85,11 +76,15 @@ zgen load mgee/slimline
 
 Clone the repository:
 
-```git clone --recursive https://github.com/mgee/slimline.git```
+```shell
+git clone --recursive https://github.com/mgee/slimline.git
+```
 
 Source the prompt in your `.zshrc` (or other appropriate) file:
 
-```source <path-to-slimline>/slimline.zsh```
+```shell
+source <path-to-slimline>/slimline.zsh
+```
 
 ## Options
 
@@ -115,6 +110,10 @@ Defines the color of the prompt when all asynchronous tasks are finished. Defaul
 ##### `SLIMLINE_CWD_COLOR`
 
 Defines the color of the current working directory. Default is `cyan`.
+
+##### `SLIMLINE_CWD_ROOT_COLOR`
+
+Defines the color of the current working directory if it equals the root directory `/`. Default is `red`.
 
 ### Exit Status
 
@@ -148,17 +147,21 @@ Defines the color of the execution time. Default is `yellow`.
 
 ### SSH Info
 
-##### `SLIMLINE_DISPLAY_SSH_INFO`
+##### `SLIMLINE_DISPLAY_USER_HOST_INFO`
 
-Defines whether the `user@host` part is displayed if connected to a ssh server. Default is `1`.
+Defines whether the `user@host` part is displayed if the user differs from the default user or if connected to a ssh server. Default is `1`.
 
-##### `SLIMLINE_SSH_INFO_USER_COLOR`
+##### `SLIMLINE_USER_COLOR`
 
-Defines the color of the ssh user. Default is `red`.
+Defines the color of the user. Default is `green`.
 
-##### `SLIMLINE_SSH_INFO_HOST_COLOR`
+##### `SLIMLINE_USER_ROOT_COLOR`
 
-Defines the color of the ssh host. Default is `yellow`.
+Defines the color of the user if the user is root. Default is `red`.
+
+##### `SLIMLINE_HOST_COLOR`
+
+Defines the color of the host. Default is `yellow`.
 
 ### AWS Profile Info
 
@@ -186,112 +189,10 @@ Defines the color of the proposed correction of a misspelled string. Default is 
 
 Defines whether git information shall be displayed (requires python). Default is `1`.
 
-#### Repo Indicator
+#### Gitline
 
-##### `SLIMLINE_GIT_REPO_INDICATOR`
-
-Defines the git repository indicator text. Default is `%fᚴ`.
-
-#### No Tracked Upstream
-
-##### `SLIMLINE_GIT_NO_TRACKED_UPSTREAM`
-
-Defines the text which is displayed if the branch has no remote tracking branch.
-Default is `upstream %F{red}⚡%f`.
-
-#### Remote Commits
-
-##### `SLIMLINE_GIT_REMOTE_COMMITS_PUSH_PULL`
-
-Defines the format used to display commits which can be pushed and pulled to/from `origin/master`.
-Default is `𝘮 ${remote_commits_to_pull} %F{yellow}⇄%f ${remote_commits_to_push}`.
-
-##### `SLIMLINE_GIT_REMOTE_COMMITS_PULL`
-
-Defines the format used to display commits which can be pulled from `origin/master`.
-Default is `𝘮 %F{red}→%f${remote_commits_to_pull}`.
-
-##### `SLIMLINE_GIT_REMOTE_COMMITS_PUSH`
-
-Defines the format used to display commits which can be pushed to `origin/master`.
-Default is `𝘮 %F{green}←%f${remote_commits_to_push}`.
-
-#### Branch
-
-##### `SLIMLINE_GIT_BRANCH`
-
-Defines the format for the local branch. Default is `${branch}`.
-
-##### `SLIMLINE_GIT_DETACHED`
-
-Defines the format if the repository is not on a branch. Default is `%F{red}detached@${sha1}%f`.
-
-#### Local Commits
-
-##### `SLIMLINE_GIT_LOCAL_COMMITS_PUSH_PULL`
-
-Defines the format used to display commits which can be pushed and pulled to/from the remote tracking
-branch. Default is `${local_commits_to_pull} %F{yellow}⥯%f ${local_commits_to_push}`.
-
-##### `SLIMLINE_GIT_LOCAL_COMMITS_PULL`
-
-Defines the format used to display commits which can be pulled from the remote tracking branch.
-Default is `${local_commits_to_pull}%F{red}↓%f`.
-
-##### `SLIMLINE_GIT_LOCAL_COMMITS_PUSH`
-
-Defines the format used to display commits which can be pushed to the remote tracking branch.
-Default is `${local_commits_to_push}%F{green}↑%f`.
-
-#### Staged Changes
-
-##### `SLIMLINE_GIT_STAGED_ADDED`
-
-Defines the format used to display staged added files. Default is `${staged_added}%F{green}A%f`.
-
-##### `SLIMLINE_GIT_STAGED_MODIFIED`
-
-Defines the format used to display staged modified files. Default is `${staged_modified}%F{green}M%f`.
-
-##### `SLIMLINE_GIT_STAGED_DELETED`
-
-Defines the format used to display staged deleted files. Default is `${staged_deleted}%F{green}D%f`.
-
-##### `SLIMLINE_GIT_STAGED_RENAMED`
-
-Defines the format used to display staged renamed files. Default is `${staged_renamed}%F{green}R%f`.
-
-##### `SLIMLINE_GIT_STAGED_COPIED`
-
-Defines the format used to display staged copied files. Default is `${staged_copied}%F{green}C%f`.
-
-#### Unstaged Changes
-
-##### `SLIMLINE_GIT_UNSTAGED_MODIFIED`
-
-Defines the format used to display unstaged modified files. Default is `${unstaged_modified}%F{red}M%f`.
-
-##### `SLIMLINE_GIT_UNSTAGED_DELETED`
-
-Defines the format used to display unstaged deleted files. Default is `${unstaged_deleted}%F{red}D%f`.
-
-#### Untracked
-
-##### `SLIMLINE_GIT_UNTRACKED`
-
-Defines the format used to display untracked files. Default is `${untracked}%F{white}A%f`.
-
-#### Unmerged
-
-##### `SLIMLINE_GIT_UNMERGED`
-
-Defines the format used to display unmerged files. Default is `${unmerged}%F{yellow}U%f`.
-
-#### Stashes
-
-##### `SLIMLINE_GIT_STASHES`
-
-Defines the format used to display the number of stashes. Default is `${stashes}%F{yellow}≡%f`.
+slimline uses [gitline](https://github.com/mgee/gitline) to display git information.
+gitline can be extensively customized. Have a look at the [gitline options](https://github.com/mgee/gitline#options).
 
 ## Example
 
@@ -301,8 +202,8 @@ branch format:
 ```shell
 export SLIMLINE_PROMPT_SYMBOL='$'
 # If you have a powerline compatible font you can also use the alternative repo indicator ''.
-export SLIMLINE_GIT_REPO_INDICATOR='%fgit'
-export SLIMLINE_GIT_BRANCH='[%F{blue}${branch}%f]'
+export GITLINE_REPO_INDICATOR='${reset}git'
+export GITLINE_BRANCH='[${blue}${branch}${reset}]'
 
 source "<path-to-slimline>/slimline.plugin.zsh"
 ```
@@ -313,8 +214,6 @@ source "<path-to-slimline>/slimline.plugin.zsh"
 
 - [sindresorhus/pure](https://github.com/sindresorhus/pure)
 - [sorin-ionescu/prezto](https://github.com/sorin-ionescu/prezto.git)
-- [michaeldfallen/git-radar](https://github.com/michaeldfallen/git-radar)
-- [gbataille/gitHUD](https://github.com/gbataille/gitHUD)
 
 ## License
 
