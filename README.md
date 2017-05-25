@@ -36,6 +36,7 @@ For a fish compatible version of this theme have a look at [slimfish](https://gi
     - [User and Host Info](#user-and-host-info)
     - [AWS Profile Info](#aws-profile-info)
     - [Auto Correction](#auto-correction)
+    - [Python Virtualenv](#python-virtualenv)
     - [Git Information](#git-information)
         - [Gitline](#gitline)
 - [Example](#example)
