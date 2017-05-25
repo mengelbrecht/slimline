@@ -77,7 +77,7 @@ prompt_slimline_cwd() {
 prompt_slimline_virtualenv() {
   local parens_color='008'
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
-  [ $VIRTUAL_ENV ] && echo "%F{parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{parens_color})%f"
+  [ $VIRTUAL_ENV ] && echo "%F{$parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{$parens_color})%f"
 }
 
 prompt_slimline_set_prompt() {
