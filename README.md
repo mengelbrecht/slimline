@@ -194,6 +194,10 @@ Defines whether active python virtualenv shall be displayed. Default is `1`.
 
 Defines the color of the virtualenv name. Default is `cyan`.
 
+##### `SLIMLINE_VIRTUALENV_PARENS_COLOR`
+
+Defines the color of the parens surrounding the virtualenv name. Default is `white`.
+
 ### Git Information
 
 ##### `SLIMLINE_ENABLE_GIT`
