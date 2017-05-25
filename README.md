@@ -36,6 +36,7 @@ For a fish compatible version of this theme have a look at [slimfish](https://gi
     - [User and Host Info](#user-and-host-info)
     - [AWS Profile Info](#aws-profile-info)
     - [Auto Correction](#auto-correction)
+    - [Python Virtualenv](#python-virtualenv)
     - [Git Information](#git-information)
         - [Gitline](#gitline)
 - [Example](#example)
@@ -182,6 +183,20 @@ Defines the color of the misspelled string for which is correction is proposed. 
 ##### `SLIMLINE_AUTOCORRECT_PROPOSED_COLOR`
 
 Defines the color of the proposed correction of a misspelled string. Default is `green`.
+
+### Python Virtualenv
+
+##### `SLIMLINE_DISPLAY_VIRTUALENV`
+
+Defines whether active python virtualenv shall be displayed. Default is `1`.
+
+##### `SLIMLINE_VIRTUALENV_COLOR`
+
+Defines the color of the virtualenv name. Default is `cyan`.
+
+##### `SLIMLINE_VIRTUALENV_PARENS_COLOR`
+
+Defines the color of the parens surrounding the virtualenv name. Default is `white`.
 
 ### Git Information
 
