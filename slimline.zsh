@@ -74,6 +74,12 @@ prompt_slimline_cwd() {
   echo "%F{${cwd_color}}%3~%f "
 }
 
+prompt_slimline_virtualenv() {
+  local parens_color='008'
+  local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
+  [ $VIRTUAL_ENV ] && echo "%F{parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{parens_color})%f"
+}
+
 prompt_slimline_set_prompt() {
   local symbol_color=${1:-${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}
 
@@ -105,6 +111,11 @@ prompt_slimline_set_rprompt() {
   # add git output
   if [[ -n "${_prompt_slimline_git_output:-}" ]]; then
     RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_output}"
+  fi
+
+  # add virtualenv (if active)
+  if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
+    RPROMPT+="${RPROMPT:+ }$(prompt_slimline_virtualenv)"
   fi
 }
 

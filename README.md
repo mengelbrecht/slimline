@@ -183,6 +183,16 @@ Defines the color of the misspelled string for which is correction is proposed. 
 
 Defines the color of the proposed correction of a misspelled string. Default is `green`.
 
+### Python Virtualenv
+
+##### `SLIMLINE_DISPLAY_VIRTUALENV`
+
+Defines whether active python virtualenv shall be displayed. Default is `1`.
+
+##### `SLIMLINE_VIRTUALENV_COLOR`
+
+Defines the color of the virtualenv name. Default is `cyan`.
+
 ### Git Information
 
 ##### `SLIMLINE_ENABLE_GIT`
