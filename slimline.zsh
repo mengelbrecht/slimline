@@ -113,9 +113,12 @@ prompt_slimline_set_rprompt() {
     RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_output}"
   fi
 
-  # add virtualenv (if active)
+  # add virtualenv (if active and not empty)
   if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
-    RPROMPT+="${RPROMPT:+ }$(prompt_slimline_virtualenv)"
+    local virtual_env="$(prompt_slimline_virtualenv)"
+    if [[ -n "${virtual_env}" ]]; then
+      RPROMPT+="${RPROMPT:+ }${virtual_env}"
+    fi
   fi
 }
 
