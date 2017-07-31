@@ -188,7 +188,7 @@ prompt_slimline_async_tasks() {
 
 prompt_slimline_async_init() {
   _prompt_slimline_async_pid=0
-  _prompt_slimline_async_data="${TMPPREFIX}-prompt_slimline_data"
+  _prompt_slimline_async_data="${TMPPREFIX}-${prompt_slimline_default_user}-prompt_slimline_data"
 }
 
 prompt_slimline_setup() {
