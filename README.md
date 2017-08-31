@@ -146,7 +146,7 @@ Default is `5` seconds.
 
 Defines the color of the execution time. Default is `yellow`.
 
-### SSH Info
+### User and Host Info
 
 ##### `SLIMLINE_DISPLAY_USER_HOST_INFO`
 
