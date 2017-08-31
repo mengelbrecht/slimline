@@ -164,6 +164,10 @@ Defines the color of the user if the user is root. Default is `red`.
 
 Defines the color of the host. Default is `yellow`.
 
+##### `SLIMLINE_DEFAULT_USER`
+
+Username to consider as the default user. By default this is the current effective user (i.e. the output of `whoami`)
+
 ### AWS Profile Info
 
 ##### `SLIMLINE_DISPLAY_AWS_INFO`

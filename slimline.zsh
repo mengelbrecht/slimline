@@ -12,7 +12,7 @@
 #-------------------------------------------------------------------------------
 
 prompt_slimline_path="$(dirname $0:A:H)"
-prompt_slimline_default_user="$(whoami)"
+prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-$(whoami)}"
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
