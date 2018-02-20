@@ -84,21 +84,21 @@ prompt_slimline_execution_time() {
   if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then
     return
   fi
-  echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f"
+  echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f "
 }
 
 prompt_slimline_exit_status() {
   if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
     return
   fi
-  echo "%(?::${RPROMPT:+ }%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
+  echo "%(?::%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f) "
 }
 
 prompt_slimline_git() {
   if [[ -z "${_prompt_slimline_git_output:-}" ]]; then
     return
   fi
-  echo "${RPROMPT:+ }${_prompt_slimline_git_output}"
+  echo "${_prompt_slimline_git_output} "
 }
 
 prompt_slimline_virtualenv() {
@@ -108,7 +108,7 @@ prompt_slimline_virtualenv() {
 
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
-  echo "${RPROMPT:+ }%F{$parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{$parens_color})%f"
+  echo "%F{$parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{$parens_color})%f "
 }
 
 prompt_slimline_set_prompt() {
@@ -129,6 +129,8 @@ prompt_slimline_set_rprompt() {
   RPROMPT+="$(prompt_slimline_exit_status)"
   RPROMPT+="$(prompt_slimline_git)"
   RPROMPT+="$(prompt_slimline_virtualenv)"
+  # Trim trailing space
+  RPROMPT="${${RPROMPT}%%[[:blank:]]#}"
 }
 
 prompt_slimline_set_sprompt() {
@@ -206,6 +208,8 @@ prompt_slimline_setup() {
     echo "slimline: python and/or git not installed or not in PATH, disabling git information"
     SLIMLINE_ENABLE_GIT=0
   fi
+
+  setopt extended_glob
 
   prompt_opts=(cr percent subst)
 
