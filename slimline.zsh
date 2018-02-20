@@ -74,6 +74,11 @@ prompt_slimline_cwd() {
   echo "%F{${cwd_color}}%3~%f "
 }
 
+prompt_slimline_symbol() {
+  local symbol_color=${1:-${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}
+  echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
+}
+
 prompt_slimline_virtualenv() {
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
@@ -81,17 +86,13 @@ prompt_slimline_virtualenv() {
 }
 
 prompt_slimline_set_prompt() {
-  local symbol_color=${1:-${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}
-
   # clear prompt
   PROMPT=""
 
   PROMPT+="$(prompt_slimline_user_host_info)"
   PROMPT+="$(prompt_slimline_cwd)"
   PROMPT+="$(prompt_slimline_aws_profile)"
-
-  # add prompt symbol
-  PROMPT+="%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
+  PROMPT=+"$(prompt_slimline_symbol $1)"
 }
 
 prompt_slimline_set_rprompt() {
