@@ -79,10 +79,36 @@ prompt_slimline_symbol() {
   echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
 }
 
+prompt_slimline_execution_time() {
+  # add elapsed time if threshold is exceeded
+  if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then
+    return
+  fi
+  echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f"
+}
+
+prompt_slimline_exit_status() {
+  if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
+    return
+  fi
+  echo "%(?::${RPROMPT:+ }%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
+}
+
+prompt_slimline_git() {
+  if [[ -z "${_prompt_slimline_git_output:-}" ]]; then
+    return
+  fi
+  echo "${RPROMPT:+ }${_prompt_slimline_git_output}"
+}
+
 prompt_slimline_virtualenv() {
+  if (( ! ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )) || [[ -z $VIRTUAL_ENV ]]; then
+    return
+  fi
+
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
-  [ $VIRTUAL_ENV ] && echo "%F{$parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{$parens_color})%f"
+  echo "${RPROMPT:+ }%F{$parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{$parens_color})%f"
 }
 
 prompt_slimline_set_prompt() {
@@ -99,28 +125,10 @@ prompt_slimline_set_rprompt() {
   # clear prompt
   RPROMPT=""
 
-  # add elapsed time if threshold is exceeded
-  if (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) && [[ -n "${_prompt_slimline_cmd_exec_time}" ]]; then
-    RPROMPT+="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f"
-  fi
-
-  # add exit status
-  if (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
-    RPROMPT+="%(?::${RPROMPT:+ }%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
-  fi
-
-  # add git output
-  if [[ -n "${_prompt_slimline_git_output:-}" ]]; then
-    RPROMPT+="${RPROMPT:+ }${_prompt_slimline_git_output}"
-  fi
-
-  # add virtualenv (if active and not empty)
-  if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
-    local virtual_env="$(prompt_slimline_virtualenv)"
-    if [[ -n "${virtual_env}" ]]; then
-      RPROMPT+="${RPROMPT:+ }${virtual_env}"
-    fi
-  fi
+  RPROMPT+="$(prompt_slimline_execution_time)"
+  RPROMPT+="$(prompt_slimline_exit_status)"
+  RPROMPT+="$(prompt_slimline_git)"
+  RPROMPT+="$(prompt_slimline_virtualenv)"
 }
 
 prompt_slimline_set_sprompt() {
