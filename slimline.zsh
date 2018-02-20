@@ -118,7 +118,7 @@ prompt_slimline_set_prompt() {
   PROMPT+="$(prompt_slimline_user_host_info)"
   PROMPT+="$(prompt_slimline_cwd)"
   PROMPT+="$(prompt_slimline_aws_profile)"
-  PROMPT=+"$(prompt_slimline_symbol $1)"
+  PROMPT+="$(prompt_slimline_symbol $1)"
 }
 
 prompt_slimline_set_rprompt() {
