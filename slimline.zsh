@@ -12,7 +12,7 @@
 #-------------------------------------------------------------------------------
 
 prompt_slimline_path="$(dirname $0:A:H)"
-prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-$(whoami)}"
+prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
@@ -51,7 +51,7 @@ prompt_slimline_user_host_info() {
     return
   fi
 
-  if [[ -z "$SSH_TTY" && "$(whoami)" == "${prompt_slimline_default_user}" ]]; then
+  if [[ -z "$SSH_TTY" && "${USER}" == "${prompt_slimline_default_user}" ]]; then
     return
   fi
 
