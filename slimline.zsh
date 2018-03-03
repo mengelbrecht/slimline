@@ -91,7 +91,7 @@ prompt_slimline_section_exit_status() {
 }
 
 prompt_slimline_section_git() {
-  if [[ -z "${_prompt_slimline_git_output:-}" ]]; then return; fi
+  if [[ -z "${_prompt_slimline_git_output}" ]]; then return; fi
   echo "${_prompt_slimline_git_output}"
 }
 
@@ -126,18 +126,16 @@ prompt_slimline_get_sections() {
 }
 
 prompt_slimline_set_prompt() {
-  local sections="${SLIMLINE_PROMPT_SECTIONS:-user_host_info cwd aws_profile symbol}"
   local separator="${SLIMLINE_PROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_sections "_prompt_slimline_prompt_sections_output" "${sections}" "${separator}" "$*"
+  prompt_slimline_get_sections "_prompt_slimline_prompt_sections_output" "${_prompt_slimline_prompt_sections}" "${separator}" "$*"
 
   PROMPT="${_prompt_slimline_prompt_sections_output} "
   unset _prompt_slimline_prompt_sections_output
 }
 
 prompt_slimline_set_rprompt() {
-  local sections=${SLIMLINE_RPROMPT_SECTIONS:-execution_time exit_status git virtualenv}
   local separator="${SLIMLINE_RPROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_sections "_prompt_slimline_rprompt_sections_output" "${sections}" "${separator}" "$*"
+  prompt_slimline_get_sections "_prompt_slimline_rprompt_sections_output" "${_prompt_slimline_rprompt_sections}" "${separator}" "$*"
 
   RPROMPT="${_prompt_slimline_rprompt_sections_output}"
   unset _prompt_slimline_rprompt_sections_output
@@ -174,7 +172,7 @@ prompt_slimline_exit_status() {
 }
 
 prompt_slimline_async_git() {
-  if (( ! ${SLIMLINE_ENABLE_GIT:-1} )); then return; fi
+  if (( ! _prompt_slimline_task_git_enabled )); then return; fi
   command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
 }
 
@@ -216,6 +214,14 @@ prompt_slimline_setup() {
   if ! (( $+commands[python] && $+commands[git] )); then
     echo "slimline: python and/or git not installed or not in PATH, disabling git information"
     SLIMLINE_ENABLE_GIT=0
+  fi
+
+  _prompt_slimline_prompt_sections="${SLIMLINE_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
+  _prompt_slimline_rprompt_sections="${SLIMLINE_RPROMPT_SECTIONS-execution_time exit_status git virtualenv}"
+  if (( ${=_prompt_slimline_prompt_sections[(I)git]} || ${=_prompt_slimline_rprompt_sections[(I)git]} )); then
+    _prompt_slimline_task_git_enabled=1
+  else
+    _prompt_slimline_task_git_enabled=0
   fi
 
   prompt_opts=(cr percent subst)
