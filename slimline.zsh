@@ -204,6 +204,13 @@ prompt_slimline_async_init() {
   async_register_callback "prompt_slimline" prompt_slimline_async_callback
 }
 
+prompt_slimline_evaluate_legacy_options() {
+  local prompt_sections=(user_host_info cwd aws_profile symbol)
+  local rprompt_sections=(execution_time exit_status git virtualenv)
+  SLIMLINE_PROMPT_SECTIONS="${(j: :)prompt_sections}"
+  SLIMLINE_RPROMPT_SECTIONS="${(j: :)rprompt_sections}"
+}
+
 prompt_slimline_check_git_support() {
   if (( ${=_prompt_slimline_prompt_sections[(I)git]} || ${=_prompt_slimline_rprompt_sections[(I)git]} )); then
     # If python or git are not installed, disable the git functionality.
@@ -234,6 +241,9 @@ prompt_slimline_expand_sections() {
 }
 
 prompt_slimline_setup() {
+  if (( ${SLIMLINE_PROMPT_VERSION:-1} < 2 )); then
+    prompt_slimline_evaluate_legacy_options
+  fi
 
   _prompt_slimline_prompt_sections="${SLIMLINE_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
   _prompt_slimline_rprompt_sections="${SLIMLINE_RPROMPT_SECTIONS-execution_time exit_status git virtualenv}"
