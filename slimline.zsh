@@ -160,46 +160,42 @@ prompt_slimline_preexec() {
 }
 
 prompt_slimline_async_git() {
-  local _prompt_slimline_git_output=""
   if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
-    _prompt_slimline_git_output="$(python ${prompt_slimline_path}/gitline/gitline.py --shell=zsh)"
+    command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
   fi
-  typeset -p _prompt_slimline_git_output >! "$_prompt_slimline_async_data"
-
-  kill -WINCH $$ # Signal completion to parent process.
 }
 
 prompt_slimline_async_callback() {
-  if (( _prompt_slimline_async_pid == 0 )); then
-    return
-  fi
+  local job=${1}
+  local output=${3}
+  local has_next=${6}
 
-  if [[ -s "$_prompt_slimline_async_data" ]]; then
-    alias typeset='typeset -g'
-    source "$_prompt_slimline_async_data"
-    unalias typeset
+  case "${job}" in
+    prompt_slimline_async_git)
+      _prompt_slimline_git_output="${output}"
+      prompt_slimline_set_prompt ${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}
+      prompt_slimline_set_rprompt
+    ;;
+  esac
+
+  if (( ! ${has_next} )); then
+    zle && zle .reset-prompt
   fi
-  _prompt_slimline_async_pid=0
-  prompt_slimline_set_prompt ${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}
-  prompt_slimline_set_rprompt
-  zle && zle .reset-prompt
 }
 
 prompt_slimline_async_tasks() {
   _prompt_slimline_last_async_call=${EPOCHREALTIME}
-  # Kill the old process of slow commands if it is still running.
-  if (( __prompt_slimline_async_pid > 0 )); then
-    kill -KILL "$_prompt_slimline_async_pid" &>/dev/null
-  fi
-
-  trap prompt_slimline_async_callback WINCH
-  prompt_slimline_async_git &!
-  _prompt_slimline_async_pid=$!
+  async_flush_jobs "prompt_slimline"
+  async_job "prompt_slimline" prompt_slimline_async_git "$(builtin pwd)"
 }
 
 prompt_slimline_async_init() {
-  _prompt_slimline_async_pid=0
-  _prompt_slimline_async_data="${TMPPREFIX}-${prompt_slimline_default_user}-prompt_slimline_data"
+  if (( ${SLIMLINE_ENABLE_ASYNC_AUTOLOAD:-1} && !$+functions[async_init] && !$+functions[async_start_worker] )); then
+    source "${prompt_slimline_path}/zsh-async/async.zsh"
+  fi
+  async_init
+  async_start_worker "prompt_slimline" -u
+  async_register_callback "prompt_slimline" prompt_slimline_async_callback
 }
 
 prompt_slimline_setup() {

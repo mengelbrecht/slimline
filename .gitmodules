@@ -1,3 +1,6 @@
 [submodule "gitline"]
 	path = gitline
 	url = https://github.com/mgee/gitline.git
+[submodule "zsh-async"]
+	path = zsh-async
+	url = https://github.com/mafredri/zsh-async.git
