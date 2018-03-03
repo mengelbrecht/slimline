@@ -111,12 +111,7 @@ prompt_slimline_get_sections() {
 
   outputs=()
   for section in ${=sections}; do
-    local function_name="prompt_slimline_section_${section}"
-    if (( ! $+functions[${function_name}] )); then
-      echo "'${section}' is not a valid section!"
-      continue
-    fi
-    local output="$(${function_name} "$*")"
+    local output="$(${section} "$*")"
     if [[ -n ${output} ]]; then
       outputs+=("${output}")
     fi
@@ -209,6 +204,21 @@ prompt_slimline_async_init() {
   async_register_callback "prompt_slimline" prompt_slimline_async_callback
 }
 
+prompt_slimline_expand_sections() {
+  local var=${1}
+  local expanded_sections=()
+  for section in ${=${(P)var}}; do
+    local function_name="prompt_slimline_section_${section}"
+    if (( ! $+functions[${function_name}] )); then
+      print -P "%F{red}slimline%f: '${section}' is not a valid section!"
+      continue
+    fi
+    expanded_sections+=("${function_name}")
+  done
+
+  typeset -g "${var}"="${(j: :)expanded_sections}"
+}
+
 prompt_slimline_setup() {
   # If python or git are not installed, disable the git functionality.
   if ! (( $+commands[python] && $+commands[git] )); then
@@ -223,6 +233,8 @@ prompt_slimline_setup() {
   else
     _prompt_slimline_task_git_enabled=0
   fi
+  prompt_slimline_expand_sections "_prompt_slimline_prompt_sections"
+  prompt_slimline_expand_sections "_prompt_slimline_rprompt_sections"
 
   prompt_opts=(cr percent subst)
 
