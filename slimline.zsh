@@ -41,7 +41,7 @@ prompt_slimline_check_cmd_exec_time() {
 prompt_slimline_section_aws_profile() {
   # add AWS profile info
   if (( ! ${SLIMLINE_DISPLAY_AWS_INFO:-0} )) || [[ -z "${AWS_PROFILE}" ]]; then return; fi
-  echo "%F{${SLIMLINE_AWS_COLOR:-blue}}${AWS_PROFILE}%f "
+  echo "%F{${SLIMLINE_AWS_COLOR:-blue}}${AWS_PROFILE}%f"
 }
 
 prompt_slimline_section_user_host_info() {
@@ -54,7 +54,7 @@ prompt_slimline_section_user_host_info() {
   else
     user_color="${SLIMLINE_USER_COLOR:-green}"
   fi
-  echo "%F{${user_color}}%n%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}%m%f "
+  echo "%F{${user_color}}%n%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}%m%f"
 }
 
 prompt_slimline_section_cwd() {
@@ -64,7 +64,7 @@ prompt_slimline_section_cwd() {
   else
     cwd_color="${SLIMLINE_CWD_COLOR:-cyan}"
   fi
-  echo "%F{${cwd_color}}%3~%f "
+  echo "%F{${cwd_color}}%3~%f"
 }
 
 prompt_slimline_section_symbol() {
@@ -75,23 +75,23 @@ prompt_slimline_section_symbol() {
   else
     symbol_color=${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}
   fi
-  echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
+  echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
 }
 
 prompt_slimline_section_execution_time() {
   # add elapsed time if threshold is exceeded
   if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then return; fi
-  echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f "
+  echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f"
 }
 
 prompt_slimline_section_exit_status() {
   if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then return; fi
-  echo "%(?::%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f) "
+  echo "%(?::%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
 }
 
 prompt_slimline_section_git() {
   if [[ -z "${_prompt_slimline_git_output:-}" ]]; then return; fi
-  echo "${_prompt_slimline_git_output} "
+  echo "${_prompt_slimline_git_output}"
 }
 
 prompt_slimline_section_virtualenv() {
@@ -99,29 +99,47 @@ prompt_slimline_section_virtualenv() {
 
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
-  echo "%F{$parens_color}(%f%F{$virtualenv_color}$(basename "${VIRTUAL_ENV}")%f%F{$parens_color})%f "
+  echo "%F{$parens_color}(%f%F{$virtualenv_color}$(basename "${VIRTUAL_ENV}")%f%F{$parens_color})%f"
+}
+
+prompt_slimline_get_sections() {
+  local var=${1}
+  local sections=${2}
+  local separator=${3}
+  shift 3
+
+  outputs=()
+  for section in ${=sections}; do
+    local function_name="prompt_slimline_section_${section}"
+    if (( ! $+functions[${function_name}] )); then
+      echo "'${section}' is not a valid section!"
+      continue
+    fi
+    local output="$(${function_name} "$*")"
+    if [[ -n ${output} ]]; then
+      outputs+=("${output}")
+    fi
+  done
+
+  typeset -g "${var}"="${(epj:${separator}:)outputs}"
 }
 
 prompt_slimline_set_prompt() {
-  # clear prompt
-  PROMPT=""
+  local sections="${SLIMLINE_PROMPT_SECTIONS:-user_host_info cwd aws_profile symbol}"
+  local separator="${SLIMLINE_PROMPT_SECTION_SEPARATOR:- }"
+  prompt_slimline_get_sections "_prompt_slimline_prompt_sections_output" "${sections}" "${separator}" "$*"
 
-  PROMPT+="$(prompt_slimline_section_user_host_info)"
-  PROMPT+="$(prompt_slimline_section_cwd)"
-  PROMPT+="$(prompt_slimline_section_aws_profile)"
-  PROMPT+="$(prompt_slimline_section_symbol "$*")"
+  PROMPT="${_prompt_slimline_prompt_sections_output} "
+  unset _prompt_slimline_prompt_sections_output
 }
 
 prompt_slimline_set_rprompt() {
-  # clear prompt
-  RPROMPT=""
+  local sections=${SLIMLINE_RPROMPT_SECTIONS:-execution_time exit_status git virtualenv}
+  local separator="${SLIMLINE_RPROMPT_SECTION_SEPARATOR:- }"
+  prompt_slimline_get_sections "_prompt_slimline_rprompt_sections_output" "${sections}" "${separator}" "$*"
 
-  RPROMPT+="$(prompt_slimline_section_execution_time)"
-  RPROMPT+="$(prompt_slimline_section_exit_status)"
-  RPROMPT+="$(prompt_slimline_section_git)"
-  RPROMPT+="$(prompt_slimline_section_virtualenv)"
-  # Trim trailing space
-  RPROMPT="${${RPROMPT}%%[[:blank:]]#}"
+  RPROMPT="${_prompt_slimline_rprompt_sections_output}"
+  unset _prompt_slimline_rprompt_sections_output
 }
 
 prompt_slimline_set_sprompt() {
@@ -194,8 +212,6 @@ prompt_slimline_setup() {
     echo "slimline: python and/or git not installed or not in PATH, disabling git information"
     SLIMLINE_ENABLE_GIT=0
   fi
-
-  setopt extended_glob
 
   prompt_opts=(cr percent subst)
 
