@@ -86,7 +86,8 @@ prompt_slimline_section_execution_time() {
 
 prompt_slimline_section_exit_status() {
   if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then return; fi
-  echo "%(?::%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f)"
+  if (( _prompt_slimline_last_exit_status == 0 )); then return; fi
+  echo "%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}${_prompt_slimline_last_exit_status} ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f"
 }
 
 prompt_slimline_section_git() {
@@ -168,6 +169,10 @@ prompt_slimline_preexec() {
   _prompt_slimline_cmd_timestamp=$EPOCHSECONDS
 }
 
+prompt_slimline_exit_status() {
+  _prompt_slimline_last_exit_status=$?
+}
+
 prompt_slimline_async_git() {
   if (( ! ${SLIMLINE_ENABLE_GIT:-1} )); then return; fi
   command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
@@ -223,6 +228,8 @@ prompt_slimline_setup() {
   add-zsh-hook chpwd prompt_slimline_chpwd
   add-zsh-hook precmd prompt_slimline_precmd
   add-zsh-hook preexec prompt_slimline_preexec
+
+  precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
 
   prompt_slimline_async_init
 
