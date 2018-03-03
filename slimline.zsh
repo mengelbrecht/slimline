@@ -11,7 +11,7 @@
 # MIT License
 #-------------------------------------------------------------------------------
 
-prompt_slimline_path="$(dirname $0:A:H)"
+prompt_slimline_path="${0:A:h}"
 prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
 # turns seconds into human readable time
@@ -99,7 +99,7 @@ prompt_slimline_virtualenv() {
 
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
-  echo "%F{$parens_color}(%f%F{$virtualenv_color}`basename $VIRTUAL_ENV`%f%F{$parens_color})%f "
+  echo "%F{$parens_color}(%f%F{$virtualenv_color}$(basename "${VIRTUAL_ENV}")%f%F{$parens_color})%f "
 }
 
 prompt_slimline_set_prompt() {
@@ -109,7 +109,7 @@ prompt_slimline_set_prompt() {
   PROMPT+="$(prompt_slimline_user_host_info)"
   PROMPT+="$(prompt_slimline_cwd)"
   PROMPT+="$(prompt_slimline_aws_profile)"
-  PROMPT+="$(prompt_slimline_symbol $1)"
+  PROMPT+="$(prompt_slimline_symbol "$*")"
 }
 
 prompt_slimline_set_rprompt() {
