@@ -40,20 +40,13 @@ prompt_slimline_check_cmd_exec_time() {
 
 prompt_slimline_aws_profile() {
   # add AWS profile info
-  if (( ! ${SLIMLINE_DISPLAY_AWS_INFO:-0} )) || [[ -z "${AWS_PROFILE}" ]]; then
-    return
-  fi
+  if (( ! ${SLIMLINE_DISPLAY_AWS_INFO:-0} )) || [[ -z "${AWS_PROFILE}" ]]; then return; fi
   echo "%F{${SLIMLINE_AWS_COLOR:-blue}}${AWS_PROFILE}%f "
 }
 
 prompt_slimline_user_host_info() {
-  if (( ! ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then
-    return
-  fi
-
-  if [[ -z "$SSH_TTY" && "${USER}" == "${prompt_slimline_default_user}" ]]; then
-    return
-  fi
+  if (( ! ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then return; fi
+  if [[ -z "$SSH_TTY" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
 
   local user_color=''
   if [[ $UID -eq 0 ]]; then
@@ -87,30 +80,22 @@ prompt_slimline_symbol() {
 
 prompt_slimline_execution_time() {
   # add elapsed time if threshold is exceeded
-  if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then
-    return
-  fi
+  if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then return; fi
   echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f "
 }
 
 prompt_slimline_exit_status() {
-  if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
-    return
-  fi
+  if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then return; fi
   echo "%(?::%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f) "
 }
 
 prompt_slimline_git() {
-  if [[ -z "${_prompt_slimline_git_output:-}" ]]; then
-    return
-  fi
+  if [[ -z "${_prompt_slimline_git_output:-}" ]]; then return; fi
   echo "${_prompt_slimline_git_output} "
 }
 
 prompt_slimline_virtualenv() {
-  if (( ! ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )) || [[ -z $VIRTUAL_ENV ]]; then
-    return
-  fi
+  if (( ! ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )) || [[ -z $VIRTUAL_ENV ]]; then return; fi
 
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
   local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
@@ -166,9 +151,8 @@ prompt_slimline_preexec() {
 }
 
 prompt_slimline_async_git() {
-  if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
-    command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
-  fi
+  if (( ! ${SLIMLINE_ENABLE_GIT:-1} )); then return; fi
+  command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
 }
 
 prompt_slimline_async_callback() {
