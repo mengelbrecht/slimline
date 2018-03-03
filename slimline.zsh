@@ -38,13 +38,13 @@ prompt_slimline_check_cmd_exec_time() {
   fi
 }
 
-prompt_slimline_aws_profile() {
+prompt_slimline_section_aws_profile() {
   # add AWS profile info
   if (( ! ${SLIMLINE_DISPLAY_AWS_INFO:-0} )) || [[ -z "${AWS_PROFILE}" ]]; then return; fi
   echo "%F{${SLIMLINE_AWS_COLOR:-blue}}${AWS_PROFILE}%f "
 }
 
-prompt_slimline_user_host_info() {
+prompt_slimline_section_user_host_info() {
   if (( ! ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then return; fi
   if [[ -z "$SSH_TTY" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
 
@@ -57,7 +57,7 @@ prompt_slimline_user_host_info() {
   echo "%F{${user_color}}%n%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}%m%f "
 }
 
-prompt_slimline_cwd() {
+prompt_slimline_section_cwd() {
   local cwd_color=''
   if [[ "$(builtin pwd)" == "/" ]]; then
     cwd_color="${SLIMLINE_CWD_ROOT_COLOR:-red}"
@@ -67,7 +67,7 @@ prompt_slimline_cwd() {
   echo "%F{${cwd_color}}%3~%f "
 }
 
-prompt_slimline_symbol() {
+prompt_slimline_section_symbol() {
   local stage=${1}
   local symbol_color=''
   if [[ "${stage}" == "async_callback" ]]; then
@@ -78,23 +78,23 @@ prompt_slimline_symbol() {
   echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
 }
 
-prompt_slimline_execution_time() {
+prompt_slimline_section_execution_time() {
   # add elapsed time if threshold is exceeded
   if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then return; fi
   echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f "
 }
 
-prompt_slimline_exit_status() {
+prompt_slimline_section_exit_status() {
   if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then return; fi
   echo "%(?::%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}%? ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f) "
 }
 
-prompt_slimline_git() {
+prompt_slimline_section_git() {
   if [[ -z "${_prompt_slimline_git_output:-}" ]]; then return; fi
   echo "${_prompt_slimline_git_output} "
 }
 
-prompt_slimline_virtualenv() {
+prompt_slimline_section_virtualenv() {
   if (( ! ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )) || [[ -z $VIRTUAL_ENV ]]; then return; fi
 
   local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
@@ -106,20 +106,20 @@ prompt_slimline_set_prompt() {
   # clear prompt
   PROMPT=""
 
-  PROMPT+="$(prompt_slimline_user_host_info)"
-  PROMPT+="$(prompt_slimline_cwd)"
-  PROMPT+="$(prompt_slimline_aws_profile)"
-  PROMPT+="$(prompt_slimline_symbol "$*")"
+  PROMPT+="$(prompt_slimline_section_user_host_info)"
+  PROMPT+="$(prompt_slimline_section_cwd)"
+  PROMPT+="$(prompt_slimline_section_aws_profile)"
+  PROMPT+="$(prompt_slimline_section_symbol "$*")"
 }
 
 prompt_slimline_set_rprompt() {
   # clear prompt
   RPROMPT=""
 
-  RPROMPT+="$(prompt_slimline_execution_time)"
-  RPROMPT+="$(prompt_slimline_exit_status)"
-  RPROMPT+="$(prompt_slimline_git)"
-  RPROMPT+="$(prompt_slimline_virtualenv)"
+  RPROMPT+="$(prompt_slimline_section_execution_time)"
+  RPROMPT+="$(prompt_slimline_section_exit_status)"
+  RPROMPT+="$(prompt_slimline_section_git)"
+  RPROMPT+="$(prompt_slimline_section_virtualenv)"
   # Trim trailing space
   RPROMPT="${${RPROMPT}%%[[:blank:]]#}"
 }
