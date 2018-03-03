@@ -75,7 +75,13 @@ prompt_slimline_cwd() {
 }
 
 prompt_slimline_symbol() {
-  local symbol_color=${1:-${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}
+  local stage=${1}
+  local symbol_color=''
+  if [[ "${stage}" == "async_callback" ]]; then
+    symbol_color=${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}
+  else
+    symbol_color=${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}
+  fi
   echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f "
 }
 
@@ -148,8 +154,8 @@ prompt_slimline_precmd() {
   unset _prompt_slimline_git_output
 
   if (( ${EPOCHREALTIME} - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
-    prompt_slimline_set_prompt
-    prompt_slimline_set_rprompt
+    prompt_slimline_set_prompt "precmd"
+    prompt_slimline_set_rprompt "precmd"
 
     prompt_slimline_async_tasks
   fi
@@ -173,8 +179,8 @@ prompt_slimline_async_callback() {
   case "${job}" in
     prompt_slimline_async_git)
       _prompt_slimline_git_output="${output}"
-      prompt_slimline_set_prompt ${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}
-      prompt_slimline_set_rprompt
+      prompt_slimline_set_prompt "async_callback"
+      prompt_slimline_set_rprompt "async_callback"
     ;;
   esac
 
@@ -220,8 +226,8 @@ prompt_slimline_setup() {
 
   prompt_slimline_async_init
 
-  prompt_slimline_set_prompt
-  prompt_slimline_set_rprompt
+  prompt_slimline_set_prompt "setup"
+  prompt_slimline_set_rprompt "setup"
   prompt_slimline_set_sprompt
 }
 
