@@ -23,9 +23,9 @@ prompt_slimline_human_time() {
   local hours=$(( tmp / 60 / 60 % 24 ))
   local minutes=$(( tmp / 60 % 60 ))
   local seconds=$(( tmp % 60 ))
-  (( $days > 0 )) && echo -n "${days}d "
-  (( $hours > 0 )) && echo -n "${hours}h "
-  (( $minutes > 0 )) && echo -n "${minutes}m "
+  (( days > 0 )) && echo -n "${days}d "
+  (( hours > 0 )) && echo -n "${hours}h "
+  (( minutes > 0 )) && echo -n "${minutes}m "
   echo "${seconds}s"
 }
 
@@ -138,7 +138,7 @@ prompt_slimline_precmd() {
   unset _prompt_slimline_cmd_timestamp
   unset _prompt_slimline_git_output
 
-  if (( ${EPOCHREALTIME} - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
+  if (( EPOCHREALTIME - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
     prompt_slimline_set_prompt "precmd"
     prompt_slimline_set_rprompt "precmd"
 
@@ -168,7 +168,7 @@ prompt_slimline_async_callback() {
     ;;
   esac
 
-  if (( ! ${has_next} )); then
+  if (( ! has_next )); then
     zle && zle .reset-prompt
   fi
 }
