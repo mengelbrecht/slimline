@@ -39,55 +39,65 @@ prompt_slimline_check_cmd_exec_time() {
 }
 
 prompt_slimline_section_aws_profile() {
-  # add AWS profile info
-  if (( ! ${SLIMLINE_DISPLAY_AWS_INFO:-0} )) || [[ -z "${AWS_PROFILE}" ]]; then return; fi
-  echo "%F{${SLIMLINE_AWS_COLOR:-blue}}${AWS_PROFILE}%f"
+  if [[ -z "${AWS_PROFILE}" ]]; then return; fi
+  local profile="${AWS_PROFILE}"
+  local format="%F{white}(%f%F{blue}|profile|%f%F{white})%f"
+  echo "${${SLIMLINE_AWS_PROFILE_FORMAT:-${format}}/|profile|/${profile}}"
 }
 
 prompt_slimline_section_user_host_info() {
-  if (( ! ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then return; fi
   if [[ -z "$SSH_TTY" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
 
-  local user_color=''
+  local user="%n"
+  local host="%m"
+  local format_root="%F{red}|user|%f@%F{yellow}|host|%f"
+  local format="%F{green}|user|%f@%F{yellow}|host|%f"
+  local selected=''
   if [[ $UID -eq 0 ]]; then
-    user_color="${SLIMLINE_USER_ROOT_COLOR:-red}"
+    selected="${SLIMLINE_USER_HOST_INFO_ROOT_FORMAT:-${format_root}}"
   else
-    user_color="${SLIMLINE_USER_COLOR:-green}"
+    selected="${SLIMLINE_USER_HOST_INFO_FORMAT:-${format}}"
   fi
-  echo "%F{${user_color}}%n%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}%m%f"
+  echo "${${selected/|user|/${user}}/|host|/${host}}"
 }
 
 prompt_slimline_section_cwd() {
-  local cwd_color=''
+  local path="%3~"
+  local format_root="%F{red}|path|%f"
+  local format="%F{cyan}|path|%f"
+  local selected=''
   if [[ "$(builtin pwd)" == "/" ]]; then
-    cwd_color="${SLIMLINE_CWD_ROOT_COLOR:-red}"
+    selected="${SLIMLINE_CWD_ROOT_FORMAT:-${format_root}}"
   else
-    cwd_color="${SLIMLINE_CWD_COLOR:-cyan}"
+    selected="${SLIMLINE_CWD_FORMAT:-${format}}"
   fi
-  echo "%F{${cwd_color}}%3~%f"
+  echo "${selected/|path|/${path}}"
 }
 
 prompt_slimline_section_symbol() {
   local stage=${1}
-  local symbol_color=''
+  local format_working="%F{red}∙%f"
+  local format_ready="%F{white}∙%f"
   if [[ "${stage}" == "async_callback" ]]; then
-    symbol_color=${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}
+    echo "${SLIMLINE_SYMBOL_READY_FORMAT:-${format_ready}}"
   else
-    symbol_color=${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}
+    echo "${SLIMLINE_SYMBOL_WORKING_FORMAT:-${format_working}}"
   fi
-  echo "%F{$symbol_color}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
 }
 
 prompt_slimline_section_execution_time() {
   # add elapsed time if threshold is exceeded
-  if (( ! ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )) || [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then return; fi
-  echo "%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}${_prompt_slimline_cmd_exec_time}%f"
+  if [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then return; fi
+  local exec_time="${_prompt_slimline_cmd_exec_time}"
+  local format="%F{yellow}|exec_time|%f"
+  echo "${${SLIMLINE_EXECUTION_TIME_FORMAT:-${format}}/|exec_time|/${exec_time}}"
 }
 
 prompt_slimline_section_exit_status() {
-  if (( ! ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then return; fi
   if (( _prompt_slimline_last_exit_status == 0 )); then return; fi
-  echo "%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}${_prompt_slimline_last_exit_status} ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f"
+  local exit_status=${_prompt_slimline_last_exit_status}
+  local format="%F{red}|exit_status| ↵%f"
+  echo "${${SLIMLINE_EXIT_STATUS_FORMAT:-${format}}/|exit_status|/${exit_status}}"
 }
 
 prompt_slimline_section_git() {
@@ -96,11 +106,11 @@ prompt_slimline_section_git() {
 }
 
 prompt_slimline_section_virtualenv() {
-  if (( ! ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )) || [[ -z $VIRTUAL_ENV ]]; then return; fi
+  if [[ -z $VIRTUAL_ENV ]]; then return; fi
 
-  local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
-  local virtualenv_color="${SLIMLINE_VIRTUALENV_COLOR:-cyan}"
-  echo "%F{$parens_color}(%f%F{$virtualenv_color}$(basename "${VIRTUAL_ENV}")%f%F{$parens_color})%f"
+  local virtualenv="$(basename "${VIRTUAL_ENV}")"
+  local format="%F{white}(%f%F{cyan}|virtualenv|%f%F{white})%f"
+  echo "${${SLIMLINE_VIRTUALENV_FORMAT:-${format}}/|virtualenv|/${virtualenv}}"
 }
 
 prompt_slimline_get_sections() {
@@ -124,8 +134,8 @@ prompt_slimline_set_prompt() {
   local separator="${SLIMLINE_PROMPT_SECTION_SEPARATOR:- }"
   prompt_slimline_get_sections "_prompt_slimline_prompt_sections_output" "${_prompt_slimline_prompt_sections}" "${separator}" "$*"
 
-  local format="${SLIMLINE_PROMPT_FORMAT:-|sections| }"
-  PROMPT="${format/|sections|/${_prompt_slimline_prompt_sections_output}}"
+  local format="|sections| "
+  PROMPT="${${SLIMLINE_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_prompt_sections_output}}"
   unset _prompt_slimline_prompt_sections_output
 }
 
@@ -133,13 +143,17 @@ prompt_slimline_set_rprompt() {
   local separator="${SLIMLINE_RPROMPT_SECTION_SEPARATOR:- }"
   prompt_slimline_get_sections "_prompt_slimline_rprompt_sections_output" "${_prompt_slimline_rprompt_sections}" "${separator}" "$*"
 
-  local format="${SLIMLINE_RPROMPT_FORMAT:-|sections|}"
-  RPROMPT="${format/|sections|/${_prompt_slimline_rprompt_sections_output}}"
+  local format="|sections|"
+  RPROMPT="${${SLIMLINE_RPROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_rprompt_sections_output}}"
   unset _prompt_slimline_rprompt_sections_output
 }
 
 prompt_slimline_set_sprompt() {
-  SPROMPT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}%R%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}%r%f [nyae]? "
+  local from="%R"
+  local to="%r"
+  local format="zsh: correct %F{red}|from|%f to %F{green}|to|%f [nyae]? "
+  local selected="${SLIMLINE_AUTOCORRECT_FORMAT:-${format}}"
+  SPROMPT="${${selected/|from|/${from}}/|to|/${to}}"
 }
 
 prompt_slimline_chpwd() {
@@ -207,8 +221,50 @@ prompt_slimline_async_init() {
 }
 
 prompt_slimline_evaluate_legacy_options() {
-  local prompt_sections=(user_host_info cwd aws_profile symbol)
-  local rprompt_sections=(execution_time exit_status git virtualenv)
+  local prompt_sections=()
+  local rprompt_sections=()
+
+  if (( ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then
+    SLIMLINE_USER_HOST_INFO_ROOT_FORMAT="%F{${SLIMLINE_USER_ROOT_COLOR:-red}}|user|%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}|host|%f"
+    SLIMLINE_USER_HOST_INFO_FORMAT="%F{${SLIMLINE_USER_COLOR:-green}}|user|%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}|host|%f"
+    prompt_sections+=("user_host_info")
+  fi
+
+  SLIMLINE_CWD_ROOT_FORMAT="%F{${SLIMLINE_CWD_ROOT_COLOR:-red}}|path|%f"
+  SLIMLINE_CWD_FORMAT="%F{${SLIMLINE_CWD_COLOR:-cyan}}|path|%f"
+  prompt_sections+=("cwd")
+
+  if (( ${SLIMLINE_DISPLAY_AWS_INFO:-0} )); then
+    SLIMLINE_AWS_PROFILE_FORMAT="%F{${SLIMLINE_AWS_COLOR:-blue}}|profile|%f"
+    prompt_sections+=("aws_profile");
+  fi
+
+  SLIMLINE_SYMBOL_READY_FORMAT="%F{${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
+  SLIMLINE_SYMBOL_WORKING_FORMAT="%F{${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
+  prompt_sections+=("symbol")
+
+  if (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )); then
+    SLIMLINE_EXECUTION_TIME_FORMAT="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}|exec_time|%f"
+    rprompt_sections+=("execution_time")
+  fi
+
+  if (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
+    SLIMLINE_EXIT_STATUS_FORMAT="%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}|exit_status| ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f"
+    rprompt_sections+=("exit_status")
+  fi
+
+  if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
+    rprompt_sections+=("git")
+  fi
+
+  if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
+    local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
+    SLIMLINE_VIRTUALENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|virtualenv|%f%F{$parens_color})%f"
+    rprompt_sections+=("virtualenv")
+  fi
+
+  SLIMLINE_AUTOCORRECT_FORMAT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}|from|%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}|to|%f [nyae]? "
+
   SLIMLINE_PROMPT_SECTIONS="${(j: :)prompt_sections}"
   SLIMLINE_RPROMPT_SECTIONS="${(j: :)rprompt_sections}"
 }
