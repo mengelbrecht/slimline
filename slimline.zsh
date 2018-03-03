@@ -167,7 +167,7 @@ prompt_slimline_exit_status() {
 }
 
 prompt_slimline_async_git() {
-  if (( ! _prompt_slimline_task_git_enabled )); then return; fi
+  if (( ! _prompt_slimline_enable_git_task )); then return; fi
   command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
 }
 
@@ -204,6 +204,20 @@ prompt_slimline_async_init() {
   async_register_callback "prompt_slimline" prompt_slimline_async_callback
 }
 
+prompt_slimline_check_git_support() {
+  if (( ${=_prompt_slimline_prompt_sections[(I)git]} || ${=_prompt_slimline_rprompt_sections[(I)git]} )); then
+    # If python or git are not installed, disable the git functionality.
+    if (( $+commands[python] && $+commands[git] )); then
+      _prompt_slimline_enable_git_task=1
+    else
+      print -P "%F{red}slimline%f: python and/or git not installed or not in PATH, disabling git information"
+      _prompt_slimline_enable_git_task=0
+    fi
+  else
+    _prompt_slimline_enable_git_task=0
+  fi
+}
+
 prompt_slimline_expand_sections() {
   local var=${1}
   local expanded_sections=()
@@ -220,19 +234,10 @@ prompt_slimline_expand_sections() {
 }
 
 prompt_slimline_setup() {
-  # If python or git are not installed, disable the git functionality.
-  if ! (( $+commands[python] && $+commands[git] )); then
-    echo "slimline: python and/or git not installed or not in PATH, disabling git information"
-    SLIMLINE_ENABLE_GIT=0
-  fi
 
   _prompt_slimline_prompt_sections="${SLIMLINE_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
   _prompt_slimline_rprompt_sections="${SLIMLINE_RPROMPT_SECTIONS-execution_time exit_status git virtualenv}"
-  if (( ${=_prompt_slimline_prompt_sections[(I)git]} || ${=_prompt_slimline_rprompt_sections[(I)git]} )); then
-    _prompt_slimline_task_git_enabled=1
-  else
-    _prompt_slimline_task_git_enabled=0
-  fi
+  prompt_slimline_check_git_support
   prompt_slimline_expand_sections "_prompt_slimline_prompt_sections"
   prompt_slimline_expand_sections "_prompt_slimline_rprompt_sections"
 
