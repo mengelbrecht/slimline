@@ -124,7 +124,8 @@ prompt_slimline_set_prompt() {
   local separator="${SLIMLINE_PROMPT_SECTION_SEPARATOR:- }"
   prompt_slimline_get_sections "_prompt_slimline_prompt_sections_output" "${_prompt_slimline_prompt_sections}" "${separator}" "$*"
 
-  PROMPT="${_prompt_slimline_prompt_sections_output} "
+  local format="${SLIMLINE_PROMPT_FORMAT:-|sections| }"
+  PROMPT="${format/|sections|/${_prompt_slimline_prompt_sections_output}}"
   unset _prompt_slimline_prompt_sections_output
 }
 
@@ -132,7 +133,8 @@ prompt_slimline_set_rprompt() {
   local separator="${SLIMLINE_RPROMPT_SECTION_SEPARATOR:- }"
   prompt_slimline_get_sections "_prompt_slimline_rprompt_sections_output" "${_prompt_slimline_rprompt_sections}" "${separator}" "$*"
 
-  RPROMPT="${_prompt_slimline_rprompt_sections_output}"
+  local format="${SLIMLINE_RPROMPT_FORMAT:-|sections|}"
+  RPROMPT="${format/|sections|/${_prompt_slimline_rprompt_sections_output}}"
   unset _prompt_slimline_rprompt_sections_output
 }
 
