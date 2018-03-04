@@ -130,25 +130,25 @@ prompt_slimline_get_sections() {
   typeset -g "${var}"="${(epj:${separator}:)outputs}"
 }
 
-prompt_slimline_set_prompt() {
-  local separator="${SLIMLINE_PROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_sections "_prompt_slimline_prompt_sections_output" "${_prompt_slimline_prompt_sections}" "${separator}" "$*"
+prompt_slimline_set_left_prompt() {
+  local separator="${SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR:- }"
+  prompt_slimline_get_sections "_prompt_slimline_left_prompt_sections_output" "${_prompt_slimline_left_prompt_sections}" "${separator}" "$*"
 
   local format="|sections| "
-  PROMPT="${${SLIMLINE_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_prompt_sections_output}}"
-  unset _prompt_slimline_prompt_sections_output
+  PROMPT="${${SLIMLINE_LEFT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_left_prompt_sections_output}}"
+  unset _prompt_slimline_left_prompt_sections_output
 }
 
-prompt_slimline_set_rprompt() {
-  local separator="${SLIMLINE_RPROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_sections "_prompt_slimline_rprompt_sections_output" "${_prompt_slimline_rprompt_sections}" "${separator}" "$*"
+prompt_slimline_set_right_prompt() {
+  local separator="${SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR:- }"
+  prompt_slimline_get_sections "_prompt_slimline_right_prompt_sections_output" "${_prompt_slimline_right_prompt_sections}" "${separator}" "$*"
 
   local format="|sections|"
-  RPROMPT="${${SLIMLINE_RPROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_rprompt_sections_output}}"
-  unset _prompt_slimline_rprompt_sections_output
+  RPROMPT="${${SLIMLINE_RIGHT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_right_prompt_sections_output}}"
+  unset _prompt_slimline_right_prompt_sections_output
 }
 
-prompt_slimline_set_sprompt() {
+prompt_slimline_set_spelling_prompt() {
   local from="%R"
   local to="%r"
   local format="zsh: correct %F{red}|from|%f to %F{green}|to|%f [nyae]? "
@@ -167,8 +167,8 @@ prompt_slimline_precmd() {
   unset _prompt_slimline_git_output
 
   if (( EPOCHREALTIME - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
-    prompt_slimline_set_prompt "precmd"
-    prompt_slimline_set_rprompt "precmd"
+    prompt_slimline_set_left_prompt "precmd"
+    prompt_slimline_set_right_prompt "precmd"
 
     prompt_slimline_async_tasks
   fi
@@ -199,8 +199,8 @@ prompt_slimline_async_callback() {
   esac
 
   if (( ! has_next )); then
-    prompt_slimline_set_prompt "async_callback"
-    prompt_slimline_set_rprompt "async_callback"
+    prompt_slimline_set_left_prompt "async_callback"
+    prompt_slimline_set_right_prompt "async_callback"
     zle && zle .reset-prompt
   fi
 }
@@ -221,56 +221,56 @@ prompt_slimline_async_init() {
 }
 
 prompt_slimline_evaluate_legacy_options() {
-  local prompt_sections=()
-  local rprompt_sections=()
+  local left_prompt_sections=()
+  local right_prompt_sections=()
 
   if (( ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then
     SLIMLINE_USER_HOST_INFO_ROOT_FORMAT="%F{${SLIMLINE_USER_ROOT_COLOR:-red}}|user|%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}|host|%f"
     SLIMLINE_USER_HOST_INFO_FORMAT="%F{${SLIMLINE_USER_COLOR:-green}}|user|%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}|host|%f"
-    prompt_sections+=("user_host_info")
+    left_prompt_sections+=("user_host_info")
   fi
 
   SLIMLINE_CWD_ROOT_FORMAT="%F{${SLIMLINE_CWD_ROOT_COLOR:-red}}|path|%f"
   SLIMLINE_CWD_FORMAT="%F{${SLIMLINE_CWD_COLOR:-cyan}}|path|%f"
-  prompt_sections+=("cwd")
+  left_prompt_sections+=("cwd")
 
   if (( ${SLIMLINE_DISPLAY_AWS_INFO:-0} )); then
     SLIMLINE_AWS_PROFILE_FORMAT="%F{${SLIMLINE_AWS_COLOR:-blue}}|profile|%f"
-    prompt_sections+=("aws_profile");
+    left_prompt_sections+=("aws_profile");
   fi
 
   SLIMLINE_SYMBOL_READY_FORMAT="%F{${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
   SLIMLINE_SYMBOL_WORKING_FORMAT="%F{${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
-  prompt_sections+=("symbol")
+  left_prompt_sections+=("symbol")
 
   if (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )); then
     SLIMLINE_EXECUTION_TIME_FORMAT="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}|exec_time|%f"
-    rprompt_sections+=("execution_time")
+    right_prompt_sections+=("execution_time")
   fi
 
   if (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
     SLIMLINE_EXIT_STATUS_FORMAT="%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}|exit_status| ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f"
-    rprompt_sections+=("exit_status")
+    right_prompt_sections+=("exit_status")
   fi
 
   if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
-    rprompt_sections+=("git")
+    right_prompt_sections+=("git")
   fi
 
   if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
     local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
     SLIMLINE_VIRTUALENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|virtualenv|%f%F{$parens_color})%f"
-    rprompt_sections+=("virtualenv")
+    right_prompt_sections+=("virtualenv")
   fi
 
   SLIMLINE_AUTOCORRECT_FORMAT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}|from|%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}|to|%f [nyae]? "
 
-  SLIMLINE_PROMPT_SECTIONS="${(j: :)prompt_sections}"
-  SLIMLINE_RPROMPT_SECTIONS="${(j: :)rprompt_sections}"
+  SLIMLINE_LEFT_PROMPT_SECTIONS="${(j: :)left_prompt_sections}"
+  SLIMLINE_RIGHT_PROMPT_SECTIONS="${(j: :)right_prompt_sections}"
 }
 
 prompt_slimline_check_git_support() {
-  if (( ${=_prompt_slimline_prompt_sections[(I)git]} || ${=_prompt_slimline_rprompt_sections[(I)git]} )); then
+  if (( ${=_prompt_slimline_left_prompt_sections[(I)git]} || ${=_prompt_slimline_right_prompt_sections[(I)git]} )); then
     # If python or git are not installed, disable the git functionality.
     if (( $+commands[python] && $+commands[git] )); then
       _prompt_slimline_enable_git_task=1
@@ -303,11 +303,11 @@ prompt_slimline_setup() {
     prompt_slimline_evaluate_legacy_options
   fi
 
-  _prompt_slimline_prompt_sections="${SLIMLINE_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
-  _prompt_slimline_rprompt_sections="${SLIMLINE_RPROMPT_SECTIONS-execution_time exit_status git virtualenv}"
+  _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
+  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git virtualenv}"
   prompt_slimline_check_git_support
-  prompt_slimline_expand_sections "_prompt_slimline_prompt_sections"
-  prompt_slimline_expand_sections "_prompt_slimline_rprompt_sections"
+  prompt_slimline_expand_sections "_prompt_slimline_left_prompt_sections"
+  prompt_slimline_expand_sections "_prompt_slimline_right_prompt_sections"
 
   prompt_opts=(cr percent subst)
 
@@ -324,9 +324,9 @@ prompt_slimline_setup() {
 
   prompt_slimline_async_init
 
-  prompt_slimline_set_prompt "setup"
-  prompt_slimline_set_rprompt "setup"
-  prompt_slimline_set_sprompt
+  prompt_slimline_set_left_prompt "setup"
+  prompt_slimline_set_right_prompt "setup"
+  prompt_slimline_set_spelling_prompt
 }
 
 prompt_slimline_setup "$@"
