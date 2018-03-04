@@ -14,114 +14,6 @@
 prompt_slimline_path="${0:A:h}"
 prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
-# turns seconds into human readable time
-# 165392 => 1d 21h 56m 32s
-# https://github.com/sindresorhus/pretty-time-zsh
-prompt_slimline_human_time() {
-  local tmp=$1
-  local days=$(( tmp / 60 / 60 / 24 ))
-  local hours=$(( tmp / 60 / 60 % 24 ))
-  local minutes=$(( tmp / 60 % 60 ))
-  local seconds=$(( tmp % 60 ))
-  (( days > 0 )) && echo -n "${days}d "
-  (( hours > 0 )) && echo -n "${hours}h "
-  (( minutes > 0 )) && echo -n "${minutes}m "
-  echo "${seconds}s"
-}
-
-prompt_slimline_check_cmd_exec_time() {
-  local integer elapsed
-  (( elapsed = EPOCHSECONDS - ${_prompt_slimline_cmd_timestamp:-$EPOCHSECONDS} ))
-  _prompt_slimline_cmd_exec_time=
-  if (( elapsed > ${SLIMLINE_MAX_EXEC_TIME:-5} )); then
-    _prompt_slimline_cmd_exec_time="$(prompt_slimline_human_time $elapsed)"
-  fi
-}
-
-prompt_slimline_section_aws_profile() {
-  if [[ -z "${AWS_PROFILE}" ]]; then return; fi
-  local profile="${AWS_PROFILE}"
-  local format="%F{white}[AWS:%F{blue}|profile|%F{white}]%f"
-  echo "${${SLIMLINE_AWS_PROFILE_FORMAT:-${format}}/|profile|/${profile}}"
-}
-
-prompt_slimline_section_user_host_info() {
-  if (( ! ${SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO:-0} )) && [[ -z "${SSH_TTY}" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
-
-  local user="%n"
-  local host="%m"
-  local format_root="%F{red}|user|%F{white}@%F{yellow}|host|%f"
-  local format="%F{green}|user|%F{white}@%F{yellow}|host|%f"
-  local selected=''
-  if [[ ${UID} -eq 0 ]]; then
-    selected="${SLIMLINE_USER_HOST_INFO_ROOT_FORMAT:-${format_root}}"
-  else
-    selected="${SLIMLINE_USER_HOST_INFO_FORMAT:-${format}}"
-  fi
-  echo "${${selected/|user|/${user}}/|host|/${host}}"
-}
-
-prompt_slimline_section_cwd() {
-  local path="%3~"
-  local format_root="%F{red}|path|%f"
-  local format="%F{cyan}|path|%f"
-  local selected=''
-  if [[ "$(builtin pwd)" == "/" ]]; then
-    selected="${SLIMLINE_CWD_ROOT_FORMAT:-${format_root}}"
-  else
-    selected="${SLIMLINE_CWD_FORMAT:-${format}}"
-  fi
-  echo "${selected/|path|/${path}}"
-}
-
-prompt_slimline_section_symbol() {
-  local stage=${1}
-  local format_working="%F{red}∙%f"
-  local format_ready="%F{white}∙%f"
-  if [[ "${stage}" == "async_callback" ]]; then
-    echo "${SLIMLINE_SYMBOL_READY_FORMAT:-${format_ready}}"
-  else
-    echo "${SLIMLINE_SYMBOL_WORKING_FORMAT:-${format_working}}"
-  fi
-}
-
-prompt_slimline_section_execution_time() {
-  # add elapsed time if threshold is exceeded
-  if [[ -z "${_prompt_slimline_cmd_exec_time}" ]]; then return; fi
-  local exec_time="${_prompt_slimline_cmd_exec_time}"
-  local format="%F{yellow}|exec_time|%f"
-  echo "${${SLIMLINE_EXECUTION_TIME_FORMAT:-${format}}/|exec_time|/${exec_time}}"
-}
-
-prompt_slimline_section_exit_status() {
-  if (( _prompt_slimline_last_exit_status == 0 )); then return; fi
-  local exit_status=${_prompt_slimline_last_exit_status}
-  local format="%F{red}|exit_status| ↵%f"
-  echo "${${SLIMLINE_EXIT_STATUS_FORMAT:-${format}}/|exit_status|/${exit_status}}"
-}
-
-prompt_slimline_section_git() {
-  if [[ -z "${_prompt_slimline_git_output}" ]]; then return; fi
-  local output="${_prompt_slimline_git_output}"
-  local format="|output|"
-  echo "${${SLIMLINE_GIT_FORMAT:-${format}}/|output|/${output}}"
-}
-
-prompt_slimline_section_virtual_env() {
-  if [[ -z "${VIRTUAL_ENV}" ]]; then return; fi
-
-  local virtual_env="${VIRTUAL_ENV##*/}"
-  local format="%F{white}[VENV:%F{cyan}|virtual_env|%F{white}]%f"
-  echo "${${SLIMLINE_VIRTUAL_ENV_FORMAT:-${format}}/|virtual_env|/${virtual_env}}"
-}
-
-prompt_slimline_section_nodejs() {
-  if [[ ! -f "package.json" && ! -d "node_modules" ]]; then return; fi
-  local version="$(node -v 2>/dev/null)"
-  local format="%F{white}[%F{green}⬢ |version|%F{white}]%f"
-  echo "${${SLIMLINE_NODE_FORMAT:-${format}}/|version|/${version}}"
-}
-
 prompt_slimline_get_sections() {
   local var=${1}
   local sections=${2}
@@ -165,51 +57,43 @@ prompt_slimline_set_spelling_prompt() {
   SPROMPT="${${selected/|from|/${from}}/|to|/${to}}"
 }
 
-prompt_slimline_chpwd() {
-  prompt_slimline_async_tasks
+prompt_slimline_set_prompts() {
+  local stage="${1}"
+  prompt_slimline_set_left_prompt "${stage}"
+  prompt_slimline_set_right_prompt "${stage}"
 }
 
-prompt_slimline_precmd() {
-  prompt_slimline_check_cmd_exec_time
-
-  unset _prompt_slimline_cmd_timestamp
-  unset _prompt_slimline_git_output
-
-  if (( EPOCHREALTIME - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
-    prompt_slimline_set_left_prompt "precmd"
-    prompt_slimline_set_right_prompt "precmd"
-
+prompt_slimline_chpwd() {
+  if (( ${#_prompt_slimline_async_tasks[@]} )); then
     prompt_slimline_async_tasks
   fi
 }
 
-prompt_slimline_preexec() {
-  _prompt_slimline_cmd_timestamp=$EPOCHSECONDS
+prompt_slimline_precmd() {
+  if (( EPOCHREALTIME - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
+    # In case no tasks need to be executed signal the sections that all tasks are finished.
+    if (( ${#_prompt_slimline_async_tasks[@]} )); then
+      prompt_slimline_set_prompts "precmd"
+      prompt_slimline_async_tasks
+    else
+      prompt_slimline_set_prompts "tasks_complete"
+    fi
+  fi
 }
 
 prompt_slimline_exit_status() {
-  _prompt_slimline_last_exit_status=$?
-}
-
-prompt_slimline_async_git() {
-  if (( ! _prompt_slimline_enable_git_task )); then return; fi
-  command python "${prompt_slimline_path}/gitline/gitline.py" --shell=zsh "$*"
+  prompt_slimline_last_exit_status=$?
 }
 
 prompt_slimline_async_callback() {
   local job=${1}
-  local output=${3}
   local has_next=${6}
 
-  case "${job}" in
-    prompt_slimline_async_git)
-      _prompt_slimline_git_output="${output}"
-    ;;
-  esac
+  local complete_function="${job}_complete"
+  ${complete_function} $*
 
   if (( ! has_next )); then
-    prompt_slimline_set_left_prompt "async_callback"
-    prompt_slimline_set_right_prompt "async_callback"
+    prompt_slimline_set_prompts "tasks_complete"
     zle && zle .reset-prompt
   fi
 }
@@ -217,11 +101,13 @@ prompt_slimline_async_callback() {
 prompt_slimline_async_tasks() {
   _prompt_slimline_last_async_call=${EPOCHREALTIME}
   async_flush_jobs "prompt_slimline"
-  async_job "prompt_slimline" prompt_slimline_async_git "$(builtin pwd)"
+  for task in ${_prompt_slimline_async_tasks}; do
+    async_job "prompt_slimline" "${task}" "$(builtin pwd)"
+  done
 }
 
 prompt_slimline_async_init() {
-  if (( ${SLIMLINE_ENABLE_ASYNC_AUTOLOAD:-1} && !$+functions[async_init] && !$+functions[async_start_worker] )); then
+  if (( ${SLIMLINE_ENABLE_ASYNC_AUTOLOAD:-1} && ! ${+functions[async_init]} && ! ${+functions[async_start_worker]} )); then
     source "${prompt_slimline_path}/zsh-async/async.zsh"
   fi
   async_init
@@ -229,80 +115,42 @@ prompt_slimline_async_init() {
   async_register_callback "prompt_slimline" prompt_slimline_async_callback
 }
 
-prompt_slimline_evaluate_legacy_options() {
-  local left_prompt_sections=()
-  local right_prompt_sections=()
-
-  if (( ${SLIMLINE_DISPLAY_USER_HOST_INFO:-1} )); then
-    SLIMLINE_USER_HOST_INFO_ROOT_FORMAT="%F{${SLIMLINE_USER_ROOT_COLOR:-red}}|user|%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}|host|%f"
-    SLIMLINE_USER_HOST_INFO_FORMAT="%F{${SLIMLINE_USER_COLOR:-green}}|user|%f@%F{${SLIMLINE_HOST_COLOR:-yellow}}|host|%f"
-    left_prompt_sections+=("user_host_info")
-  fi
-
-  SLIMLINE_CWD_ROOT_FORMAT="%F{${SLIMLINE_CWD_ROOT_COLOR:-red}}|path|%f"
-  SLIMLINE_CWD_FORMAT="%F{${SLIMLINE_CWD_COLOR:-cyan}}|path|%f"
-  left_prompt_sections+=("cwd")
-
-  if (( ${SLIMLINE_DISPLAY_AWS_INFO:-0} )); then
-    SLIMLINE_AWS_PROFILE_FORMAT="%F{${SLIMLINE_AWS_COLOR:-blue}}|profile|%f"
-    left_prompt_sections+=("aws_profile");
-  fi
-
-  SLIMLINE_SYMBOL_READY_FORMAT="%F{${SLIMLINE_PROMPT_SYMBOL_COLOR_READY:-white}}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
-  SLIMLINE_SYMBOL_WORKING_FORMAT="%F{${SLIMLINE_PROMPT_SYMBOL_COLOR_WORKING:-red}}${SLIMLINE_PROMPT_SYMBOL:-∙}%f"
-  left_prompt_sections+=("symbol")
-
-  if (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )); then
-    SLIMLINE_EXECUTION_TIME_FORMAT="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}|exec_time|%f"
-    right_prompt_sections+=("execution_time")
-  fi
-
-  if (( ${SLIMLINE_DISPLAY_EXIT_STATUS:-1} )); then
-    SLIMLINE_EXIT_STATUS_FORMAT="%F{${SLIMLINE_EXIT_STATUS_COLOR:-red}}|exit_status| ${SLIMLINE_EXIT_STATUS_SYMBOL:-↵}%f"
-    right_prompt_sections+=("exit_status")
-  fi
-
-  if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
-    SLIMLINE_GIT_FORMAT="|output|"
-    right_prompt_sections+=("git")
-  fi
-
-  if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
-    local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
-    SLIMLINE_VIRTUAL_ENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|virtual_env|%f%F{$parens_color})%f"
-    right_prompt_sections+=("virtual_env")
-  fi
-
-  SLIMLINE_AUTOCORRECT_FORMAT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}|from|%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}|to|%f [nyae]? "
-
-  SLIMLINE_LEFT_PROMPT_SECTIONS="${(j: :)left_prompt_sections}"
-  SLIMLINE_RIGHT_PROMPT_SECTIONS="${(j: :)right_prompt_sections}"
-}
-
-prompt_slimline_check_git_support() {
-  if (( ${=_prompt_slimline_left_prompt_sections[(I)git]} || ${=_prompt_slimline_right_prompt_sections[(I)git]} )); then
-    # If python or git are not installed, disable the git functionality.
-    if (( $+commands[python] && $+commands[git] )); then
-      _prompt_slimline_enable_git_task=1
-    else
-      print -P "%F{red}slimline%f: python and/or git not installed or not in PATH, disabling git information"
-      _prompt_slimline_enable_git_task=0
-    fi
-  else
-    _prompt_slimline_enable_git_task=0
-  fi
-}
-
-prompt_slimline_expand_sections() {
+prompt_slimline_load_sections() {
   local var=${1}
   local expanded_sections=()
   for section in ${=${(P)var}}; do
-    local function_name="prompt_slimline_section_${section}"
-    if (( ! $+functions[${function_name}] )); then
+    local section_file="${prompt_slimline_path}/sections/${section}.zsh"
+    if [[ -f "${section_file}" ]]; then
+      source "${section_file}"
+    fi
+
+    local section_function="prompt_slimline_section_${section}"
+    if (( ! $+functions[${section_function}] )); then
       print -P "%F{red}slimline%f: '${section}' is not a valid section!"
       continue
     fi
-    expanded_sections+=("${function_name}")
+
+    local section_check_function="${section_function}_check"
+    if (( $+functions[${section_check_function}] )); then
+      if ! ${section_check_function}; then continue; fi
+    fi
+
+    local section_preexec_function="${section_function}_preexec"
+    if (( $+functions[${section_preexec_function}] )); then
+      add-zsh-hook preexec "${section_preexec_function}"
+    fi
+
+    local section_precmd_function="${section_function}_precmd"
+    if (( $+functions[${section_precmd_function}] )); then
+      add-zsh-hook precmd "${section_precmd_function}"
+    fi
+
+    local section_async_task_function="${section_function}_async_task"
+    if (( $+functions[${section_async_task_function}] )); then
+      _prompt_slimline_async_tasks+=("${section_async_task_function}")
+    fi
+
+    expanded_sections+=("${section_function}")
   done
 
   typeset -g "${var}"="${(j: :)expanded_sections}"
@@ -310,32 +158,30 @@ prompt_slimline_expand_sections() {
 
 prompt_slimline_setup() {
   if (( ${SLIMLINE_PROMPT_VERSION:-1} < 2 )); then
+    source "${prompt_slimline_path}/lib/legacy_options.zsh"
     prompt_slimline_evaluate_legacy_options
   fi
 
   _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
   _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env nodejs}"
-  prompt_slimline_check_git_support
-  prompt_slimline_expand_sections "_prompt_slimline_left_prompt_sections"
-  prompt_slimline_expand_sections "_prompt_slimline_right_prompt_sections"
 
   prompt_opts=(cr percent subst)
-
   zmodload zsh/datetime
   zmodload zsh/zle
 
   autoload -Uz add-zsh-hook
-
   add-zsh-hook chpwd prompt_slimline_chpwd
   add-zsh-hook precmd prompt_slimline_precmd
-  add-zsh-hook preexec prompt_slimline_preexec
+
+  _prompt_slimline_async_tasks=()
+  prompt_slimline_load_sections "_prompt_slimline_left_prompt_sections"
+  prompt_slimline_load_sections "_prompt_slimline_right_prompt_sections"
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
 
   prompt_slimline_async_init
 
-  prompt_slimline_set_left_prompt "setup"
-  prompt_slimline_set_right_prompt "setup"
+  prompt_slimline_set_prompts "setup"
   prompt_slimline_set_spelling_prompt
 }
 
