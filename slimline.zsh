@@ -20,7 +20,7 @@ prompt_slimline_get_sections() {
   local separator=${3}
   shift 3
 
-  outputs=()
+  local outputs=()
   for section in ${=sections}; do
     local output="$(${section} $*)"
     if [[ -n ${output} ]]; then
