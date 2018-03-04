@@ -113,6 +113,13 @@ prompt_slimline_section_virtual_env() {
   echo "${${SLIMLINE_VIRTUAL_ENV_FORMAT:-${format}}/|virtual_env|/${virtual_env}}"
 }
 
+prompt_slimline_section_nodejs() {
+  if [[ ! -f "package.json" && ! -d "node_modules" ]]; then return; fi
+  local version="$(node -v 2>/dev/null)"
+  local format="%F{white}[%F{green}⬢ |version|%F{white}]%f"
+  echo "${${SLIMLINE_NODE_FORMAT:-${format}}/|version|/${version}}"
+}
+
 prompt_slimline_get_sections() {
   local var=${1}
   local sections=${2}
@@ -304,7 +311,7 @@ prompt_slimline_setup() {
   fi
 
   _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
-  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env}"
+  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env nodejs}"
   prompt_slimline_check_git_support
   prompt_slimline_expand_sections "_prompt_slimline_left_prompt_sections"
   prompt_slimline_expand_sections "_prompt_slimline_right_prompt_sections"
