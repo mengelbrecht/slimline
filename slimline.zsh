@@ -105,12 +105,12 @@ prompt_slimline_section_git() {
   echo "${_prompt_slimline_git_output}"
 }
 
-prompt_slimline_section_virtualenv() {
+prompt_slimline_section_virtual_env() {
   if [[ -z "${VIRTUAL_ENV}" ]]; then return; fi
 
-  local virtualenv="${VIRTUAL_ENV##*/}"
-  local format="%F{white}(%f%F{cyan}|virtualenv|%f%F{white})%f"
-  echo "${${SLIMLINE_VIRTUALENV_FORMAT:-${format}}/|virtualenv|/${virtualenv}}"
+  local virtual_env="${VIRTUAL_ENV##*/}"
+  local format="%F{white}(%f%F{cyan}|virtual_env|%f%F{white})%f"
+  echo "${${SLIMLINE_VIRTUAL_ENV_FORMAT:-${format}}/|virtual_env|/${virtual_env}}"
 }
 
 prompt_slimline_get_sections() {
@@ -259,8 +259,8 @@ prompt_slimline_evaluate_legacy_options() {
 
   if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
     local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
-    SLIMLINE_VIRTUALENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|virtualenv|%f%F{$parens_color})%f"
-    right_prompt_sections+=("virtualenv")
+    SLIMLINE_VIRTUAL_ENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|virtual_env|%f%F{$parens_color})%f"
+    right_prompt_sections+=("virtual_env")
   fi
 
   SLIMLINE_AUTOCORRECT_FORMAT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}|from|%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}|to|%f [nyae]? "
@@ -304,7 +304,7 @@ prompt_slimline_setup() {
   fi
 
   _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
-  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git virtualenv}"
+  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git virtual_env}"
   prompt_slimline_check_git_support
   prompt_slimline_expand_sections "_prompt_slimline_left_prompt_sections"
   prompt_slimline_expand_sections "_prompt_slimline_right_prompt_sections"
