@@ -102,7 +102,9 @@ prompt_slimline_section_exit_status() {
 
 prompt_slimline_section_git() {
   if [[ -z "${_prompt_slimline_git_output}" ]]; then return; fi
-  echo "${_prompt_slimline_git_output}"
+  local status="${_prompt_slimline_git_output}"
+  local format="|status|"
+  echo "${${SLIMLINE_GIT_FORMAT:-${format}}/|status|/${status}}"
 }
 
 prompt_slimline_section_virtual_env() {
@@ -261,6 +263,7 @@ prompt_slimline_evaluate_legacy_options() {
   fi
 
   if (( ${SLIMLINE_ENABLE_GIT:-1} )); then
+    SLIMLINE_GIT_FORMAT="|status|"
     right_prompt_sections+=("git")
   fi
 
