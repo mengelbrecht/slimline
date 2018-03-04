@@ -50,8 +50,8 @@ prompt_slimline_section_user_host_info() {
 
   local user="%n"
   local host="%m"
-  local format_root="%F{red}|user|%f@%F{yellow}|host|%f"
-  local format="%F{green}|user|%f@%F{yellow}|host|%f"
+  local format_root="%F{red}|user|%F{white}@%F{yellow}|host|%f"
+  local format="%F{green}|user|%F{white}@%F{yellow}|host|%f"
   local selected=''
   if [[ ${UID} -eq 0 ]]; then
     selected="${SLIMLINE_USER_HOST_INFO_ROOT_FORMAT:-${format_root}}"
