@@ -188,12 +188,13 @@ prompt_slimline_setup() {
   zmodload zsh/zle
 
   autoload -Uz add-zsh-hook
-  add-zsh-hook chpwd prompt_slimline_chpwd
-  add-zsh-hook precmd prompt_slimline_precmd
 
   _prompt_slimline_async_tasks=()
   prompt_slimline_load_sections "_prompt_slimline_left_prompt_sections"
   prompt_slimline_load_sections "_prompt_slimline_right_prompt_sections"
+
+  add-zsh-hook chpwd prompt_slimline_chpwd
+  add-zsh-hook precmd prompt_slimline_precmd
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
 
