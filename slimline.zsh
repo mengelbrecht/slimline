@@ -195,12 +195,12 @@ prompt_slimline_async_callback() {
   case "${job}" in
     prompt_slimline_async_git)
       _prompt_slimline_git_output="${output}"
-      prompt_slimline_set_prompt "async_callback"
-      prompt_slimline_set_rprompt "async_callback"
     ;;
   esac
 
   if (( ! has_next )); then
+    prompt_slimline_set_prompt "async_callback"
+    prompt_slimline_set_rprompt "async_callback"
     zle && zle .reset-prompt
   fi
 }
