@@ -76,7 +76,7 @@ prompt_slimline_precmd() {
       prompt_slimline_set_prompts "precmd"
       prompt_slimline_async_tasks
     else
-      prompt_slimline_set_prompts "tasks_complete"
+      prompt_slimline_set_prompts "all_tasks_complete"
     fi
   fi
 }
@@ -92,8 +92,16 @@ prompt_slimline_async_callback() {
   local complete_function="${job}_complete"
   ${complete_function} $*
 
+  _prompt_slimline_async_tasks_complete=$(( _prompt_slimline_async_tasks_complete + 1 ))
+
   if (( ! has_next )); then
-    prompt_slimline_set_prompts "tasks_complete"
+    local stage=''
+    if (( _prompt_slimline_async_tasks_complete == ${#_prompt_slimline_async_tasks} )); then
+      stage="all_tasks_complete"
+    else
+      stage="task_complete"
+    fi
+    prompt_slimline_set_prompts "${stage}"
     zle && zle .reset-prompt
   fi
 }
@@ -102,8 +110,9 @@ prompt_slimline_async_tasks() {
   if (( ! ${_prompt_slimline_async_init_done:-0} )); then
     prompt_slimline_async_init
   fi
-  _prompt_slimline_last_async_call=${EPOCHREALTIME}
   async_flush_jobs "prompt_slimline"
+  _prompt_slimline_last_async_call=${EPOCHREALTIME}
+  _prompt_slimline_async_tasks_complete=0
   for task in ${_prompt_slimline_async_tasks}; do
     async_job "prompt_slimline" "${task}" "$(builtin pwd)"
   done
