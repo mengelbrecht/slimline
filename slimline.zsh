@@ -108,7 +108,7 @@ prompt_slimline_section_git() {
 prompt_slimline_section_virtualenv() {
   if [[ -z "${VIRTUAL_ENV}" ]]; then return; fi
 
-  local virtualenv="$(basename "${VIRTUAL_ENV}")"
+  local virtualenv="${VIRTUAL_ENV##*/}"
   local format="%F{white}(%f%F{cyan}|virtualenv|%f%F{white})%f"
   echo "${${SLIMLINE_VIRTUALENV_FORMAT:-${format}}/|virtualenv|/${virtualenv}}"
 }
