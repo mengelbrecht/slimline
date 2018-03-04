@@ -46,7 +46,7 @@ prompt_slimline_section_aws_profile() {
 }
 
 prompt_slimline_section_user_host_info() {
-  if [[ -z "${SSH_TTY}" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
+  if (( ! ${SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO:-0} )) && [[ -z "${SSH_TTY}" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
 
   local user="%n"
   local host="%m"
