@@ -41,7 +41,7 @@ prompt_slimline_check_cmd_exec_time() {
 prompt_slimline_section_aws_profile() {
   if [[ -z "${AWS_PROFILE}" ]]; then return; fi
   local profile="${AWS_PROFILE}"
-  local format="%F{white}[%F{blue}|profile|%F{white}]%f"
+  local format="%F{white}[AWS:%F{blue}|profile|%F{white}]%f"
   echo "${${SLIMLINE_AWS_PROFILE_FORMAT:-${format}}/|profile|/${profile}}"
 }
 
@@ -109,7 +109,7 @@ prompt_slimline_section_virtual_env() {
   if [[ -z "${VIRTUAL_ENV}" ]]; then return; fi
 
   local virtual_env="${VIRTUAL_ENV##*/}"
-  local format="%F{white}[%F{cyan}|virtual_env|%F{white}]%f"
+  local format="%F{white}[VENV:%F{cyan}|virtual_env|%F{white}]%f"
   echo "${${SLIMLINE_VIRTUAL_ENV_FORMAT:-${format}}/|virtual_env|/${virtual_env}}"
 }
 
