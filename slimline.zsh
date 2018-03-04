@@ -107,9 +107,6 @@ prompt_slimline_async_callback() {
 }
 
 prompt_slimline_async_tasks() {
-  if (( ! ${_prompt_slimline_async_init_done:-0} )); then
-    prompt_slimline_async_init
-  fi
   async_flush_jobs "prompt_slimline"
   _prompt_slimline_last_async_call=${EPOCHREALTIME}
   _prompt_slimline_async_tasks_complete=0
@@ -125,7 +122,6 @@ prompt_slimline_async_init() {
   async_init
   async_start_worker "prompt_slimline" -u
   async_register_callback "prompt_slimline" prompt_slimline_async_callback
-  _prompt_slimline_async_init_done=1
 }
 
 prompt_slimline_load_sections() {
@@ -197,6 +193,8 @@ prompt_slimline_setup() {
   add-zsh-hook precmd prompt_slimline_precmd
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
+
+  prompt_slimline_async_init
 
   prompt_slimline_set_prompts "setup"
   prompt_slimline_set_spelling_prompt
