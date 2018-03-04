@@ -99,6 +99,9 @@ prompt_slimline_async_callback() {
 }
 
 prompt_slimline_async_tasks() {
+  if (( ! ${_prompt_slimline_async_init_done:-0} )); then
+    prompt_slimline_async_init
+  fi
   _prompt_slimline_last_async_call=${EPOCHREALTIME}
   async_flush_jobs "prompt_slimline"
   for task in ${_prompt_slimline_async_tasks}; do
@@ -113,6 +116,7 @@ prompt_slimline_async_init() {
   async_init
   async_start_worker "prompt_slimline" -u
   async_register_callback "prompt_slimline" prompt_slimline_async_callback
+  _prompt_slimline_async_init_done=1
 }
 
 prompt_slimline_load_sections() {
@@ -178,8 +182,6 @@ prompt_slimline_setup() {
   prompt_slimline_load_sections "_prompt_slimline_right_prompt_sections"
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
-
-  prompt_slimline_async_init
 
   prompt_slimline_set_prompts "setup"
   prompt_slimline_set_spelling_prompt
