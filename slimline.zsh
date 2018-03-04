@@ -138,20 +138,20 @@ prompt_slimline_load_sections() {
     fi
 
     local section_function="prompt_slimline_section_${section}"
-    if (( ! $+functions[${section_function}] )); then
+    if (( ! ${+functions[${section_function}]} )); then
       print -P "%F{red}slimline%f: '${section}' is not a valid section!"
       continue
     fi
 
     local section_check_function="${section_function}_check"
-    if (( $+functions[${section_check_function}] )); then
+    if (( ${+functions[${section_check_function}]} )); then
       if ! ${section_check_function}; then continue; fi
     fi
 
     local section_async_task_function="${section_function}_async_task"
-    if (( $+functions[${section_async_task_function}] )); then
+    if (( ${+functions[${section_async_task_function}]} )); then
       local section_async_task_complete_function="${section_async_task_function}_complete"
-      if (( ! $+functions[${section_async_task_complete_function}] )); then
+      if (( ! ${+functions[${section_async_task_complete_function}]} )); then
         print -P "%F{red}slimline%f: The async task of section '${section}' has no complete function!"
         continue
       fi
@@ -159,12 +159,12 @@ prompt_slimline_load_sections() {
     fi
 
     local section_preexec_function="${section_function}_preexec"
-    if (( $+functions[${section_preexec_function}] )); then
+    if (( ${+functions[${section_preexec_function}]} )); then
       add-zsh-hook preexec "${section_preexec_function}"
     fi
 
     local section_precmd_function="${section_function}_precmd"
-    if (( $+functions[${section_precmd_function}] )); then
+    if (( ${+functions[${section_precmd_function}]} )); then
       add-zsh-hook precmd "${section_precmd_function}"
     fi
 
