@@ -58,9 +58,9 @@ prompt_slimline_set_spelling_prompt() {
 }
 
 prompt_slimline_set_prompts() {
-  local stage="${1}"
-  prompt_slimline_set_left_prompt "${stage}"
-  prompt_slimline_set_right_prompt "${stage}"
+  local event="${1}"
+  prompt_slimline_set_left_prompt "${event}"
+  prompt_slimline_set_right_prompt "${event}"
 }
 
 prompt_slimline_chpwd() {
@@ -95,13 +95,13 @@ prompt_slimline_async_callback() {
   _prompt_slimline_async_tasks_complete=$(( _prompt_slimline_async_tasks_complete + 1 ))
 
   if (( ! has_next )); then
-    local stage=''
+    local event=''
     if (( _prompt_slimline_async_tasks_complete == ${#_prompt_slimline_async_tasks} )); then
-      stage="all_tasks_complete"
+      event="all_tasks_complete"
     else
-      stage="task_complete"
+      event="task_complete"
     fi
-    prompt_slimline_set_prompts "${stage}"
+    prompt_slimline_set_prompts "${event}"
     zle && zle .reset-prompt
   fi
 }
