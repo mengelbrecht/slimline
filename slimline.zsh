@@ -143,9 +143,9 @@ prompt_slimline_load_sections() {
       continue
     fi
 
-    local section_check_function="${section_function}_check"
-    if (( ${+functions[${section_check_function}]} )); then
-      if ! ${section_check_function}; then continue; fi
+    local section_init_function="${section_function}_init"
+    if (( ${+functions[${section_init_function}]} )); then
+      if ! ${section_init_function}; then continue; fi
     fi
 
     local section_async_task_function="${section_function}_async_task"

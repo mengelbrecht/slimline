@@ -11,7 +11,7 @@ prompt_slimline_section_git_async_task_complete() {
   _prompt_slimline_git_output="${output}"
 }
 
-prompt_slimline_section_git_check() {
+prompt_slimline_section_git_init() {
   # If python or git are not installed, disable the git functionality.
   if (( ${+commands[python]} && ${+commands[git]} )); then
       return 0
