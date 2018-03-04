@@ -303,8 +303,8 @@ prompt_slimline_setup() {
     prompt_slimline_evaluate_legacy_options
   fi
 
-  _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd aws_profile symbol}"
-  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git virtual_env}"
+  _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
+  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env}"
   prompt_slimline_check_git_support
   prompt_slimline_expand_sections "_prompt_slimline_left_prompt_sections"
   prompt_slimline_expand_sections "_prompt_slimline_right_prompt_sections"
