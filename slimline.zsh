@@ -24,7 +24,7 @@ prompt_slimline_get_sections() {
   for section in ${=sections}; do
     local output="$(${section} "$@")"
     if [[ -n ${output} ]]; then
-      outputs+=("${output}")
+      outputs+="${output}"
     fi
   done
 
@@ -125,9 +125,13 @@ prompt_slimline_async_init() {
 }
 
 prompt_slimline_load_sections() {
-  local var=${1}
+  local sections="${1}"
+  local section_var="${2}"
+  local async_tasks_var="${3}"
+
   local expanded_sections=()
-  for section in ${=${(P)var}}; do
+  local async_tasks=()
+  for section in ${=sections}; do
     local section_file="${prompt_slimline_path}/sections/${section}.zsh"
     if [[ -f "${section_file}" ]]; then
       source "${section_file}"
@@ -151,7 +155,7 @@ prompt_slimline_load_sections() {
         print -P "%F{red}slimline%f: The async task of section '${section}' has no complete function!"
         continue
       fi
-      _prompt_slimline_async_tasks+=("${section_async_task_function}")
+      async_tasks+="${section_async_task_function}"
     fi
 
     local section_preexec_function="${section_function}_preexec"
@@ -164,10 +168,11 @@ prompt_slimline_load_sections() {
       add-zsh-hook precmd "${section_precmd_function}"
     fi
 
-    expanded_sections+=("${section_function}")
+    expanded_sections+="${section_function}"
   done
 
-  typeset -g "${var}"="${(j: :)expanded_sections}"
+  typeset -g "${section_var}"="${(j: :)expanded_sections}"
+  : ${(PA)=async_tasks_var::=${(P)async_tasks_var} ${async_tasks}}
 }
 
 prompt_slimline_setup() {
@@ -176,8 +181,8 @@ prompt_slimline_setup() {
     prompt_slimline_evaluate_legacy_options
   fi
 
-  _prompt_slimline_left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
-  _prompt_slimline_right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env nodejs}"
+  local left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
+  local right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env nodejs}"
 
   prompt_opts=(cr percent subst)
   zmodload zsh/datetime
@@ -186,8 +191,8 @@ prompt_slimline_setup() {
   autoload -Uz add-zsh-hook
 
   _prompt_slimline_async_tasks=()
-  prompt_slimline_load_sections "_prompt_slimline_left_prompt_sections"
-  prompt_slimline_load_sections "_prompt_slimline_right_prompt_sections"
+  prompt_slimline_load_sections "${left_prompt_sections}" "_prompt_slimline_left_prompt_sections" "_prompt_slimline_async_tasks"
+  prompt_slimline_load_sections "${right_prompt_sections}" "_prompt_slimline_right_prompt_sections" "_prompt_slimline_async_tasks"
 
   add-zsh-hook chpwd prompt_slimline_chpwd
   add-zsh-hook precmd prompt_slimline_precmd
