@@ -1,4 +1,4 @@
-prompt_slimline_evaluate_legacy_options() {
+slimline::legacy::evaluate_options() {
   local left_prompt_sections=()
   local right_prompt_sections=()
 

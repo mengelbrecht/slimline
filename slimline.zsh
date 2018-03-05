@@ -18,7 +18,7 @@ source "${prompt_slimline_path}/lib/section.zsh"
 
 prompt_slimline_set_left_prompt() {
   local separator="${SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_section_output "${_prompt_slimline_left_prompt_sections}" "${separator}" "_prompt_slimline_left_prompt_sections_output" "$@"
+  slimline::section::get_output "${_prompt_slimline_left_prompt_sections}" "${separator}" "_prompt_slimline_left_prompt_sections_output" "$@"
 
   local format="|sections| "
   PROMPT="${${SLIMLINE_LEFT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_left_prompt_sections_output}}"
@@ -27,7 +27,7 @@ prompt_slimline_set_left_prompt() {
 
 prompt_slimline_set_right_prompt() {
   local separator="${SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_section_output "${_prompt_slimline_right_prompt_sections}" "${separator}" "_prompt_slimline_right_prompt_sections_output" "$@"
+  slimline::section::get_output "${_prompt_slimline_right_prompt_sections}" "${separator}" "_prompt_slimline_right_prompt_sections_output" "$@"
 
   local format="|sections|"
   RPROMPT="${${SLIMLINE_RIGHT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_right_prompt_sections_output}}"
@@ -111,8 +111,8 @@ prompt_slimline_async_init() {
 
 prompt_slimline_setup() {
   if (( ${SLIMLINE_PROMPT_VERSION:-1} < 2 )); then
-    source "${prompt_slimline_path}/lib/legacy_options.zsh"
-    prompt_slimline_evaluate_legacy_options
+    source "${prompt_slimline_path}/lib/legacy.zsh"
+    slimline::legacy::evaluate_options
   fi
 
   local left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
@@ -125,8 +125,8 @@ prompt_slimline_setup() {
   autoload -Uz add-zsh-hook
 
   _prompt_slimline_async_tasks=()
-  prompt_slimline_load_sections "${left_prompt_sections}" "_prompt_slimline_left_prompt_sections" "_prompt_slimline_async_tasks"
-  prompt_slimline_load_sections "${right_prompt_sections}" "_prompt_slimline_right_prompt_sections" "_prompt_slimline_async_tasks"
+  slimline::section::load "${left_prompt_sections}" "_prompt_slimline_left_prompt_sections" "_prompt_slimline_async_tasks"
+  slimline::section::load "${right_prompt_sections}" "_prompt_slimline_right_prompt_sections" "_prompt_slimline_async_tasks"
 
   add-zsh-hook chpwd prompt_slimline_chpwd
   add-zsh-hook precmd prompt_slimline_precmd
