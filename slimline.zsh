@@ -14,6 +14,7 @@
 prompt_slimline_path="${0:A:h}"
 prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
+source "${prompt_slimline_path}/lib/async.zsh"
 source "${prompt_slimline_path}/lib/section.zsh"
 
 prompt_slimline_set_left_prompt() {
@@ -49,58 +50,17 @@ prompt_slimline_set_prompts() {
 }
 
 prompt_slimline_precmd() {
-  if (( EPOCHREALTIME - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
-    # In case no tasks need to be executed signal the sections that all tasks are finished.
-    if (( ${#_prompt_slimline_async_tasks[@]} )); then
-      prompt_slimline_set_prompts "precmd"
-      prompt_slimline_async_tasks
-    else
-      prompt_slimline_set_prompts "all_tasks_complete"
-    fi
-  fi
+  slimline::async::start_tasks "precmd"
 }
 
 prompt_slimline_exit_status() {
   prompt_slimline_last_exit_status=$?
 }
 
-prompt_slimline_async_callback() {
-  local job=${1}
-  local has_next=${6}
-
-  local complete_function="${job}_complete"
-  ${complete_function} "$@"
-
-  _prompt_slimline_async_tasks_complete=$(( _prompt_slimline_async_tasks_complete + 1 ))
-
-  if (( ! has_next )); then
-    local event=''
-    if (( _prompt_slimline_async_tasks_complete == ${#_prompt_slimline_async_tasks} )); then
-      event="all_tasks_complete"
-    else
-      event="task_complete"
-    fi
-    prompt_slimline_set_prompts "${event}"
-    zle && zle .reset-prompt
-  fi
-}
-
-prompt_slimline_async_tasks() {
-  async_flush_jobs "prompt_slimline"
-  _prompt_slimline_last_async_call=${EPOCHREALTIME}
-  _prompt_slimline_async_tasks_complete=0
-  for task in ${_prompt_slimline_async_tasks}; do
-    async_job "prompt_slimline" "${task}" "$(builtin pwd)"
-  done
-}
-
-prompt_slimline_async_init() {
-  if (( ${SLIMLINE_ENABLE_ASYNC_AUTOLOAD:-1} && ! ${+functions[async_init]} && ! ${+functions[async_start_worker]} )); then
-    source "${prompt_slimline_path}/zsh-async/async.zsh"
-  fi
-  async_init
-  async_start_worker "prompt_slimline" -u
-  async_register_callback "prompt_slimline" prompt_slimline_async_callback
+prompt_slimline_async_task_complete() {
+  local event="${1}"
+  prompt_slimline_set_prompts "${event}"
+  zle && zle .reset-prompt
 }
 
 prompt_slimline_setup() {
@@ -126,7 +86,8 @@ prompt_slimline_setup() {
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
 
-  prompt_slimline_async_init
+  slimline::async::init "${_prompt_slimline_async_tasks}" "prompt_slimline_async_task_complete"
+  unset _prompt_slimline_async_tasks
 
   prompt_slimline_set_prompts "setup"
   prompt_slimline_set_spelling_prompt
