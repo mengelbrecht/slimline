@@ -47,16 +47,14 @@ prompt_slimline_setup() {
 
   autoload -Uz add-zsh-hook
 
-  slimline_async_tasks_functions=()
-  slimline::section::load "${left_prompt_sections}" "slimline_left_prompt_sections" "slimline_async_tasks_functions"
-  slimline::section::load "${right_prompt_sections}" "slimline_right_prompt_sections" "slimline_async_tasks_functions"
+  slimline::section::load "${left_prompt_sections}" "slimline_left_prompt_sections" "slimline_left_prompt_async_tasks"
+  slimline::section::load "${right_prompt_sections}" "slimline_right_prompt_sections" "slimline_right_prompt_async_tasks"
 
   add-zsh-hook precmd prompt_slimline_precmd
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
 
-  slimline::async::init "${slimline_async_tasks_functions}" "prompt_slimline_async_task_complete"
-  unset slimline_async_tasks_functions
+  slimline::async::init "${slimline_left_prompt_async_tasks} ${slimline_right_prompt_async_tasks}" "prompt_slimline_async_task_complete"
 
   slimline::prompt::set "setup" "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}"
   slimline::prompt::set_spelling

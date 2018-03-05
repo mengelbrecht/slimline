@@ -63,7 +63,5 @@ slimline::section::load() {
   done
 
   typeset -g "${section_var}"="${(j: :)expanded_sections}"
-  if (( ${#async_tasks[@]} )); then
-    : ${(PA)=async_tasks_var::=${(P)async_tasks_var} ${async_tasks}}
-  fi
+  typeset -g "${async_tasks_var}"="${(j: :)async_tasks}"
 }
