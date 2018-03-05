@@ -48,12 +48,6 @@ prompt_slimline_set_prompts() {
   prompt_slimline_set_right_prompt "${event}"
 }
 
-prompt_slimline_chpwd() {
-  if (( ${#_prompt_slimline_async_tasks[@]} )); then
-    prompt_slimline_async_tasks
-  fi
-}
-
 prompt_slimline_precmd() {
   if (( EPOCHREALTIME - ${_prompt_slimline_last_async_call:-0} > 0.5 )); then
     # In case no tasks need to be executed signal the sections that all tasks are finished.
@@ -128,7 +122,6 @@ prompt_slimline_setup() {
   slimline::section::load "${left_prompt_sections}" "_prompt_slimline_left_prompt_sections" "_prompt_slimline_async_tasks"
   slimline::section::load "${right_prompt_sections}" "_prompt_slimline_right_prompt_sections" "_prompt_slimline_async_tasks"
 
-  add-zsh-hook chpwd prompt_slimline_chpwd
   add-zsh-hook precmd prompt_slimline_precmd
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
