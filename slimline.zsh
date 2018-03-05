@@ -15,39 +15,8 @@ prompt_slimline_path="${0:A:h}"
 prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
 source "${prompt_slimline_path}/lib/async.zsh"
+source "${prompt_slimline_path}/lib/prompt.zsh"
 source "${prompt_slimline_path}/lib/section.zsh"
-
-prompt_slimline_set_left_prompt() {
-  local separator="${SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR:- }"
-  slimline::section::get_output "${_prompt_slimline_left_prompt_sections}" "${separator}" "_prompt_slimline_left_prompt_sections_output" "$@"
-
-  local format="|sections| "
-  PROMPT="${${SLIMLINE_LEFT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_left_prompt_sections_output}}"
-  unset _prompt_slimline_left_prompt_sections_output
-}
-
-prompt_slimline_set_right_prompt() {
-  local separator="${SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR:- }"
-  slimline::section::get_output "${_prompt_slimline_right_prompt_sections}" "${separator}" "_prompt_slimline_right_prompt_sections_output" "$@"
-
-  local format="|sections|"
-  RPROMPT="${${SLIMLINE_RIGHT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_right_prompt_sections_output}}"
-  unset _prompt_slimline_right_prompt_sections_output
-}
-
-prompt_slimline_set_spelling_prompt() {
-  local from="%R"
-  local to="%r"
-  local format="zsh: correct %F{red}|from|%f to %F{green}|to|%f [nyae]? "
-  local selected="${SLIMLINE_AUTOCORRECT_FORMAT:-${format}}"
-  SPROMPT="${${selected/|from|/${from}}/|to|/${to}}"
-}
-
-prompt_slimline_set_prompts() {
-  local event="${1}"
-  prompt_slimline_set_left_prompt "${event}"
-  prompt_slimline_set_right_prompt "${event}"
-}
 
 prompt_slimline_precmd() {
   slimline::async::start_tasks "precmd"
@@ -59,7 +28,7 @@ prompt_slimline_exit_status() {
 
 prompt_slimline_async_task_complete() {
   local event="${1}"
-  prompt_slimline_set_prompts "${event}"
+  slimline::prompt::set "${event}" "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}"
   zle && zle .reset-prompt
 }
 
@@ -78,19 +47,19 @@ prompt_slimline_setup() {
 
   autoload -Uz add-zsh-hook
 
-  _prompt_slimline_async_tasks=()
-  slimline::section::load "${left_prompt_sections}" "_prompt_slimline_left_prompt_sections" "_prompt_slimline_async_tasks"
-  slimline::section::load "${right_prompt_sections}" "_prompt_slimline_right_prompt_sections" "_prompt_slimline_async_tasks"
+  slimline_async_tasks_functions=()
+  slimline::section::load "${left_prompt_sections}" "slimline_left_prompt_sections" "slimline_async_tasks_functions"
+  slimline::section::load "${right_prompt_sections}" "slimline_right_prompt_sections" "slimline_async_tasks_functions"
 
   add-zsh-hook precmd prompt_slimline_precmd
 
   precmd_functions=("prompt_slimline_exit_status" ${precmd_functions[@]})
 
-  slimline::async::init "${_prompt_slimline_async_tasks}" "prompt_slimline_async_task_complete"
-  unset _prompt_slimline_async_tasks
+  slimline::async::init "${slimline_async_tasks_functions}" "prompt_slimline_async_task_complete"
+  unset slimline_async_tasks_functions
 
-  prompt_slimline_set_prompts "setup"
-  prompt_slimline_set_spelling_prompt
+  slimline::prompt::set "setup" "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}"
+  slimline::prompt::set_spelling
 }
 
 prompt_slimline_setup "$@"
