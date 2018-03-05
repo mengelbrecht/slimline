@@ -14,10 +14,10 @@
 prompt_slimline_path="${0:A:h}"
 prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
-prompt_slimline_get_sections() {
-  local var=${1}
-  local sections=${2}
-  local separator=${3}
+prompt_slimline_get_section_output() {
+  local sections="${1}"
+  local separator="${2}"
+  local var="${3}"
   shift 3
 
   local outputs=()
@@ -33,7 +33,7 @@ prompt_slimline_get_sections() {
 
 prompt_slimline_set_left_prompt() {
   local separator="${SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_sections "_prompt_slimline_left_prompt_sections_output" "${_prompt_slimline_left_prompt_sections}" "${separator}" "$@"
+  prompt_slimline_get_section_output "${_prompt_slimline_left_prompt_sections}" "${separator}" "_prompt_slimline_left_prompt_sections_output" "$@"
 
   local format="|sections| "
   PROMPT="${${SLIMLINE_LEFT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_left_prompt_sections_output}}"
@@ -42,7 +42,7 @@ prompt_slimline_set_left_prompt() {
 
 prompt_slimline_set_right_prompt() {
   local separator="${SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR:- }"
-  prompt_slimline_get_sections "_prompt_slimline_right_prompt_sections_output" "${_prompt_slimline_right_prompt_sections}" "${separator}" "$@"
+  prompt_slimline_get_section_output "${_prompt_slimline_right_prompt_sections}" "${separator}" "_prompt_slimline_right_prompt_sections_output" "$@"
 
   local format="|sections|"
   RPROMPT="${${SLIMLINE_RIGHT_PROMPT_FORMAT:-${format}}/|sections|/${_prompt_slimline_right_prompt_sections_output}}"
