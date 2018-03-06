@@ -16,7 +16,7 @@ slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
 source "${slimline_path}/lib/async.zsh"
 source "${slimline_path}/lib/prompt.zsh"
-source "${slimline_path}/lib/section.zsh"
+source "${slimline_path}/lib/sections.zsh"
 source "${slimline_path}/lib/utils.zsh"
 
 slimline_precmd_async_tasks() {
@@ -48,8 +48,8 @@ slimline_setup() {
 
   autoload -Uz add-zsh-hook
 
-  slimline::section::load "${left_prompt_sections}" "slimline_left_prompt_sections" "slimline_left_prompt_async_tasks"
-  slimline::section::load "${right_prompt_sections}" "slimline_right_prompt_sections" "slimline_right_prompt_async_tasks"
+  slimline::sections::load "${left_prompt_sections}" "slimline_left_prompt_sections" "slimline_left_prompt_async_tasks"
+  slimline::sections::load "${right_prompt_sections}" "slimline_right_prompt_sections" "slimline_right_prompt_async_tasks"
 
   add-zsh-hook precmd slimline_precmd_async_tasks
 

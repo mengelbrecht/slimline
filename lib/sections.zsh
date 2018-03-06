@@ -1,4 +1,4 @@
-slimline::section::get_output() {
+slimline::sections::get_output() {
   local sections="${1}"
   local separator="${2}"
   local var="${3}"
@@ -15,7 +15,7 @@ slimline::section::get_output() {
   typeset -g "${var}"="${(epj:${separator}:)outputs}"
 }
 
-slimline::section::load() {
+slimline::sections::load() {
   local sections="${1}"
   local section_var="${2}"
   local async_tasks_var="${3}"

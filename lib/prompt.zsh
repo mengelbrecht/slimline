@@ -2,7 +2,7 @@ slimline::prompt::set_left() {
   local sections="${1}"
   local separator="${SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR:- }"
   shift 1
-  slimline::section::get_output "${sections}" "${separator}" "slimline_left_prompt_sections_output" "$@"
+  slimline::sections::get_output "${sections}" "${separator}" "slimline_left_prompt_sections_output" "$@"
 
   local format="|sections| "
   PROMPT="${${SLIMLINE_LEFT_PROMPT_FORMAT:-${format}}/|sections|/${slimline_left_prompt_sections_output}}"
@@ -13,7 +13,7 @@ slimline::prompt::set_right() {
   local sections="${1}"
   local separator="${SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR:- }"
   shift 1
-  slimline::section::get_output "${sections}" "${separator}" "slimline_right_prompt_sections_output" "$@"
+  slimline::sections::get_output "${sections}" "${separator}" "slimline_right_prompt_sections_output" "$@"
 
   local format="|sections|"
   RPROMPT="${${SLIMLINE_RIGHT_PROMPT_FORMAT:-${format}}/|sections|/${slimline_right_prompt_sections_output}}"
