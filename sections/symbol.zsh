@@ -1,10 +1,8 @@
 slimline::section::symbol() {
-  local event=${1}
-  local format_working="%F{red}∙%f"
-  local format_ready="%F{white}∙%f"
+  local event="${1}"
   if [[ "${event}" == "all_tasks_complete" ]]; then
-    echo "${SLIMLINE_SYMBOL_READY_FORMAT:-${format_ready}}"
+    slimline::utils::expand "symbol_ready" "%F{white}∙%f"
   else
-    echo "${SLIMLINE_SYMBOL_WORKING_FORMAT:-${format_working}}"
+    slimline::utils::expand "symbol_working" "%F{red}∙%f"
   fi
 }

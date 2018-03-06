@@ -1,11 +1,8 @@
 slimline::section::cwd() {
-  local format_root="%F{red}|path|%f"
-  local format="%F{cyan}|path|%f"
-  local selected=''
+  local -A variables=("path" "%3~")
   if [[ "$(builtin pwd)" == "/" ]]; then
-    selected="${SLIMLINE_CWD_ROOT_FORMAT:-${format_root}}"
+    slimline::utils::expand "cwd_root" "%F{red}|path|%f" ${(kv)variables}
   else
-    selected="${SLIMLINE_CWD_FORMAT:-${format}}"
+    slimline::utils::expand "cwd" "%F{cyan}|path|%f" ${(kv)variables}
   fi
-  slimline::utils::expand "${selected}" "path" "%3~"
 }

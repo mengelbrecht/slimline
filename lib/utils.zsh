@@ -20,8 +20,10 @@ slimline::utils::pretty_time() {
 }
 
 slimline::utils::expand() {
-  local template="${1}"
-  for (( i=2; i < $# ; i+=2 )) ; do
+  local format_name="SLIMLINE_${1:u}_FORMAT"
+  local default_format="${2}"
+  local template="${(P)format_name:-${default_format}}"
+  for (( i=3; i < $# ; i+=2 )) ; do
     template="${template/|${@[i]}|/${@[i + 1]}}"
   done
   echo "${template}"
