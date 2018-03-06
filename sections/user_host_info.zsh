@@ -1,5 +1,5 @@
-prompt_slimline_section_user_host_info() {
-  if (( ! ${SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO:-0} )) && [[ -z "${SSH_TTY}" && "${USER}" == "${prompt_slimline_default_user}" ]]; then return; fi
+slimline_section_user_host_info() {
+  if (( ! ${SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO:-0} )) && [[ -z "${SSH_TTY}" && "${USER}" == "${slimline_default_user}" ]]; then return; fi
 
   local user="%n"
   local host="%m"

@@ -1,4 +1,4 @@
-prompt_slimline_section_symbol() {
+slimline_section_symbol() {
   local event=${1}
   local format_working="%F{red}∙%f"
   local format_ready="%F{white}∙%f"

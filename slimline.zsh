@@ -11,30 +11,31 @@
 # MIT License
 #-------------------------------------------------------------------------------
 
-prompt_slimline_path="${0:A:h}"
-prompt_slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
+slimline_path="${0:A:h}"
+slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
-source "${prompt_slimline_path}/lib/async.zsh"
-source "${prompt_slimline_path}/lib/prompt.zsh"
-source "${prompt_slimline_path}/lib/section.zsh"
+source "${slimline_path}/lib/async.zsh"
+source "${slimline_path}/lib/prompt.zsh"
+source "${slimline_path}/lib/section.zsh"
+source "${slimline_path}/lib/utils.zsh"
 
-prompt_slimline_precmd_async_tasks() {
+slimline_precmd_async_tasks() {
   slimline::async::start_tasks "precmd"
 }
 
-prompt_slimline_precmd_exit_status() {
-  prompt_slimline_last_exit_status=$?
+slimline_precmd_exit_status() {
+  slimline_last_exit_status=$?
 }
 
-prompt_slimline_async_task_complete() {
+slimline_async_task_complete() {
   local event="${1}"
-  slimline::prompt::set "${event}" "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}"
+  slimline::prompt::set "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}" "${event}"
   zle && zle .reset-prompt
 }
 
-prompt_slimline_setup() {
+slimline_setup() {
   if (( ${SLIMLINE_PROMPT_VERSION:-1} < 2 )); then
-    source "${prompt_slimline_path}/lib/legacy.zsh"
+    source "${slimline_path}/lib/legacy.zsh"
     slimline::legacy::evaluate_options
   fi
 
@@ -50,14 +51,14 @@ prompt_slimline_setup() {
   slimline::section::load "${left_prompt_sections}" "slimline_left_prompt_sections" "slimline_left_prompt_async_tasks"
   slimline::section::load "${right_prompt_sections}" "slimline_right_prompt_sections" "slimline_right_prompt_async_tasks"
 
-  add-zsh-hook precmd prompt_slimline_precmd_async_tasks
+  add-zsh-hook precmd slimline_precmd_async_tasks
 
-  precmd_functions=("prompt_slimline_precmd_exit_status" ${precmd_functions[@]})
+  precmd_functions=("slimline_precmd_exit_status" ${precmd_functions[@]})
 
-  slimline::async::init "${slimline_left_prompt_async_tasks} ${slimline_right_prompt_async_tasks}" "prompt_slimline_async_task_complete"
+  slimline::async::init "${slimline_left_prompt_async_tasks} ${slimline_right_prompt_async_tasks}" "slimline_async_task_complete"
 
-  slimline::prompt::set "setup" "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}"
+  slimline::prompt::set "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}" "setup"
   slimline::prompt::set_spelling
 }
 
-prompt_slimline_setup "$@"
+slimline_setup "$@"

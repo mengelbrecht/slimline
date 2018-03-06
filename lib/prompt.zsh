@@ -29,9 +29,9 @@ slimline::prompt::set_spelling() {
 }
 
 slimline::prompt::set() {
-  local event="${1}"
-  local sections_left="${2}"
-  local sections_right="${3}"
+  local sections_left="${1}"
+  local sections_right="${2}"
+  local event="${3}"
   slimline::prompt::set_left "${sections_left}" "${event}"
   slimline::prompt::set_right "${sections_right}" "${event}"
 }

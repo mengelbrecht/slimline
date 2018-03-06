@@ -1,6 +1,6 @@
 slimline::async::init() {
   if (( ${SLIMLINE_ENABLE_ASYNC_AUTOLOAD:-1} && ! ${+functions[async_init]} && ! ${+functions[async_start_worker]} )); then
-    source "${prompt_slimline_path}/zsh-async/async.zsh"
+    source "${slimline_path}/zsh-async/async.zsh"
   fi
 
   slimline_async_tasks="${1}"

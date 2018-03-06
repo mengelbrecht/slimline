@@ -23,12 +23,12 @@ slimline::section::load() {
   local expanded_sections=()
   local async_tasks=()
   for section in ${=sections}; do
-    local section_file="${prompt_slimline_path}/sections/${section}.zsh"
+    local section_file="${slimline_path}/sections/${section}.zsh"
     if [[ -f "${section_file}" ]]; then
       source "${section_file}"
     fi
 
-    local section_function="prompt_slimline_section_${section}"
+    local section_function="slimline_section_${section}"
     if (( ! ${+functions[${section_function}]} )); then
       print -P "%F{red}slimline%f: '${section}' is not a valid section!"
       continue

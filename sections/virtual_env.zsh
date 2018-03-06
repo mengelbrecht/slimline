@@ -1,4 +1,4 @@
-prompt_slimline_section_virtual_env() {
+slimline_section_virtual_env() {
   if [[ -z "${VIRTUAL_ENV}" ]]; then return; fi
 
   local virtual_env="${VIRTUAL_ENV##*/}"
