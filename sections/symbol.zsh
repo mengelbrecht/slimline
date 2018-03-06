@@ -1,4 +1,4 @@
-slimline_section_symbol() {
+slimline::section::symbol() {
   local event=${1}
   local format_working="%F{red}∙%f"
   local format_ready="%F{white}∙%f"

@@ -1,8 +1,8 @@
-slimline_section_execution_time_preexec() {
+slimline::section::execution_time::preexec() {
   slimline_section_execution_time_cmd_timestamp=$EPOCHSECONDS
 }
 
-slimline_section_execution_time_precmd() {
+slimline::section::execution_time::precmd() {
   local integer elapsed
   (( elapsed = EPOCHSECONDS - ${slimline_section_execution_time_cmd_timestamp:-$EPOCHSECONDS} ))
   slimline_section_execution_time_output=
@@ -13,7 +13,7 @@ slimline_section_execution_time_precmd() {
   unset slimline_section_execution_time_cmd_timestamp
 }
 
-slimline_section_execution_time() {
+slimline::section::execution_time() {
   # add elapsed time if threshold is exceeded
   if [[ -z "${slimline_section_execution_time_output}" ]]; then return; fi
   local exec_time="${slimline_section_execution_time_output}"

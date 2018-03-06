@@ -1,17 +1,17 @@
-slimline_section_git_precmd() {
+slimline::section::git::precmd() {
   unset slimline_section_git_output
 }
 
-slimline_section_git_async_task() {
+slimline::section::git::async_task() {
   command python "${slimline_path}/gitline/gitline.py" --shell=zsh "$*"
 }
 
-slimline_section_git_async_task_complete() {
+slimline::section::git::async_task_complete() {
   local output=${3}
   slimline_section_git_output="${output}"
 }
 
-slimline_section_git_init() {
+slimline::section::git::init() {
   # If python or git are not installed, disable the git functionality.
   if (( ${+commands[python]} && ${+commands[git]} )); then
       return 0
@@ -21,7 +21,7 @@ slimline_section_git_init() {
   return 1
 }
 
-slimline_section_git() {
+slimline::section::git() {
   if [[ -z "${slimline_section_git_output}" ]]; then return; fi
   local output="${slimline_section_git_output}"
   local format="|output|"
