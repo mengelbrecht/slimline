@@ -56,6 +56,8 @@ slimline_setup() {
   precmd_functions=("slimline_precmd_exit_status" ${precmd_functions[@]})
 
   slimline::async::init "${slimline_left_prompt_async_tasks} ${slimline_right_prompt_async_tasks}" "slimline_async_task_complete"
+  unset slimline_left_prompt_async_tasks
+  unset slimline_right_prompt_async_tasks
 
   slimline::prompt::set "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}" "setup"
   slimline::prompt::set_spelling
