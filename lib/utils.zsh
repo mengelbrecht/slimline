@@ -28,3 +28,15 @@ slimline::utils::expand() {
   done
   echo "${template}"
 }
+
+slimline::utils::error() {
+  print -P "%F{red}slimline%f: ${1}"
+}
+
+slimline::utils::warning() {
+  print -P "%F{yellow}slimline%f: ${1}"
+}
+
+slimline::utils::info() {
+  print -P "%F{blue}slimline%f: ${1}"
+}

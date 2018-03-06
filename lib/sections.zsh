@@ -30,7 +30,7 @@ slimline::sections::load() {
 
     local section_function="slimline::section::${section}"
     if (( ! ${+functions[${section_function}]} )); then
-      print -P "%F{red}slimline%f: '${section}' is not a valid section!"
+      slimline::utils::error "'${section}' is not a valid section!"
       continue
     fi
 
@@ -43,7 +43,7 @@ slimline::sections::load() {
     if (( ${+functions[${section_async_task_function}]} )); then
       local section_async_task_complete_function="${section_async_task_function}_complete"
       if (( ! ${+functions[${section_async_task_complete_function}]} )); then
-        print -P "%F{red}slimline%f: The async task of section '${section}' has no complete function!"
+        slimline::utils::error "The async task of section '${section}' has no complete function!"
         continue
       fi
       async_tasks+="${section_async_task_function}"
