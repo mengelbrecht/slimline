@@ -23,7 +23,6 @@ slimline::section::git::init() {
 
 slimline::section::git() {
   if [[ -z "${slimline_section_git_output}" ]]; then return; fi
-  local output="${slimline_section_git_output}"
   local format="|output|"
-  echo "${${SLIMLINE_GIT_FORMAT:-${format}}/|output|/${output}}"
+  slimline::utils::expand "${SLIMLINE_GIT_FORMAT:-${format}}" "output" "${slimline_section_git_output}"
 }

@@ -1,5 +1,4 @@
 slimline::section::cwd() {
-  local path="%3~"
   local format_root="%F{red}|path|%f"
   local format="%F{cyan}|path|%f"
   local selected=''
@@ -8,5 +7,5 @@ slimline::section::cwd() {
   else
     selected="${SLIMLINE_CWD_FORMAT:-${format}}"
   fi
-  echo "${selected/|path|/${path}}"
+  slimline::utils::expand "${selected}" "path" "%3~"
 }

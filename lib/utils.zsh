@@ -18,3 +18,11 @@ slimline::utils::pretty_time() {
 
   echo "$human"
 }
+
+slimline::utils::expand() {
+  local template="${1}"
+  for (( i=2; i < $# ; i+=2 )) ; do
+    template="${template/|${@[i]}|/${@[i + 1]}}"
+  done
+  echo "${template}"
+}

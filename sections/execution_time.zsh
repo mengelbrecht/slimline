@@ -16,7 +16,6 @@ slimline::section::execution_time::precmd() {
 slimline::section::execution_time() {
   # add elapsed time if threshold is exceeded
   if [[ -z "${slimline_section_execution_time_output}" ]]; then return; fi
-  local exec_time="${slimline_section_execution_time_output}"
-  local format="%F{yellow}|exec_time|%f"
-  echo "${${SLIMLINE_EXECUTION_TIME_FORMAT:-${format}}/|exec_time|/${exec_time}}"
+  local format="%F{yellow}|time|%f"
+  slimline::utils::expand "${SLIMLINE_EXECUTION_TIME_FORMAT:-${format}}" "time" "${slimline_section_execution_time_output}"
 }

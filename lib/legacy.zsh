@@ -22,7 +22,7 @@ slimline::legacy::evaluate_options() {
   left_prompt_sections+=("symbol")
 
   if (( ${SLIMLINE_DISPLAY_EXEC_TIME:-1} )); then
-    SLIMLINE_EXECUTION_TIME_FORMAT="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}|exec_time|%f"
+    SLIMLINE_EXECUTION_TIME_FORMAT="%F{${SLIMLINE_EXEC_TIME_COLOR:-yellow}}|time|%f"
     right_prompt_sections+=("execution_time")
   fi
 
@@ -38,7 +38,7 @@ slimline::legacy::evaluate_options() {
 
   if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
     local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
-    SLIMLINE_VIRTUAL_ENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|virtual_env|%f%F{$parens_color})%f"
+    SLIMLINE_VIRTUAL_ENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|basename|%f%F{$parens_color})%f"
     right_prompt_sections+=("virtual_env")
   fi
 

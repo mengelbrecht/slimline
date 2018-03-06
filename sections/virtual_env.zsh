@@ -1,7 +1,5 @@
 slimline::section::virtual_env() {
   if [[ -z "${VIRTUAL_ENV}" ]]; then return; fi
-
-  local virtual_env="${VIRTUAL_ENV##*/}"
-  local format="%F{white}[VENV:%F{cyan}|virtual_env|%F{white}]%f"
-  echo "${${SLIMLINE_VIRTUAL_ENV_FORMAT:-${format}}/|virtual_env|/${virtual_env}}"
+  local format="%F{white}[VENV:%F{cyan}|basename|%F{white}]%f"
+  slimline::utils::expand "${SLIMLINE_VIRTUAL_ENV_FORMAT:-${format}}" "basename" "${VIRTUAL_ENV##*/}"
 }
