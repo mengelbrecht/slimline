@@ -13,7 +13,7 @@ slimline::section::git::async_task_complete() {
 
 slimline::section::git::init() {
   # If python or git are not installed, disable the git functionality.
-  if (( ${+commands[python]} && ${+commands[git]} )); then
+  if slimline::utils::callable "python" && slimline::utils::callable "git"; then
     return 0
   fi
 

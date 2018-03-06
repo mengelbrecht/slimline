@@ -19,6 +19,10 @@ slimline::utils::pretty_time() {
   echo "$human"
 }
 
+slimline::utils::callable() {
+  (( $+commands[$1] || $+functions[$1] ))
+}
+
 slimline::utils::expand() {
   local format_name="SLIMLINE_${1:u}_FORMAT"
   local default_format="${2}"

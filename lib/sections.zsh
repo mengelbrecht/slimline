@@ -29,20 +29,20 @@ slimline::sections::load() {
     fi
 
     local section_function="slimline::section::${section}"
-    if (( ! ${+functions[${section_function}]} )); then
+    if ! slimline::utils::callable "${section_function}"; then
       slimline::utils::error "'${section}' is not a valid section!"
       continue
     fi
 
     local section_init_function="${section_function}::init"
-    if (( ${+functions[${section_init_function}]} )); then
+    if slimline::utils::callable "${section_init_function}"; then
       if ! ${section_init_function}; then continue; fi
     fi
 
     local section_async_task_function="${section_function}::async_task"
-    if (( ${+functions[${section_async_task_function}]} )); then
+    if slimline::utils::callable "${section_async_task_function}"; then
       local section_async_task_complete_function="${section_async_task_function}_complete"
-      if (( ! ${+functions[${section_async_task_complete_function}]} )); then
+      if ! slimline::utils::callable "${section_async_task_complete_function}"; then
         slimline::utils::error "The async task of section '${section}' has no complete function!"
         continue
       fi
@@ -50,12 +50,12 @@ slimline::sections::load() {
     fi
 
     local section_preexec_function="${section_function}::preexec"
-    if (( ${+functions[${section_preexec_function}]} )); then
+    if slimline::utils::callable "${section_preexec_function}"; then
       add-zsh-hook preexec "${section_preexec_function}"
     fi
 
     local section_precmd_function="${section_function}::precmd"
-    if (( ${+functions[${section_precmd_function}]} )); then
+    if slimline::utils::callable "${section_precmd_function}"; then
       add-zsh-hook precmd "${section_precmd_function}"
     fi
 
