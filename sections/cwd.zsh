@@ -1,4 +1,4 @@
-slimline::section::cwd() {
+slimline::section::cwd::render() {
   local -A variables=("path" "%3~")
   if [[ "$(builtin pwd)" == "/" ]]; then
     slimline::utils::expand "cwd_root" "%F{red}|path|%f" ${(kv)variables}

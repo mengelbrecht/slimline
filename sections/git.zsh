@@ -21,7 +21,7 @@ slimline::section::git::init() {
   return 1
 }
 
-slimline::section::git() {
+slimline::section::git::render() {
   if [[ -z "${slimline_section_git_output}" ]]; then return; fi
   slimline::utils::expand "git" "|output|" "output" "${slimline_section_git_output}"
 }

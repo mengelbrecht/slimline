@@ -11,7 +11,7 @@ slimline::section::nodejs::async_task_complete() {
   slimline_section_nodejs_output="${output}"
 }
 
-slimline::section::nodejs() {
+slimline::section::nodejs::render() {
   if [[ ! -f "package.json" && ! -d "node_modules" ]]; then return; fi
   if [[ -z "${slimline_section_nodejs_output}" ]]; then return; fi
   slimline::utils::expand "nodejs" "%F{white}[%F{green}⬢ |version|%F{white}]%f" \

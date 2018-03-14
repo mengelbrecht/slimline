@@ -28,38 +28,39 @@ slimline::sections::load() {
       source "${section_file}"
     fi
 
-    local section_function="slimline::section::${section}"
-    if ! slimline::utils::callable "${section_function}"; then
+    local section_namespace="slimline::section::${section}"
+    local render_function="${section_namespace}::render"
+    if ! slimline::utils::callable "${render_function}"; then
       slimline::utils::error "'${section}' is not a valid section!"
       continue
     fi
 
-    local section_init_function="${section_function}::init"
-    if slimline::utils::callable "${section_init_function}"; then
-      if ! ${section_init_function}; then continue; fi
+    local init_function="${section_namespace}::init"
+    if slimline::utils::callable "${init_function}"; then
+      if ! ${init_function}; then continue; fi
     fi
 
-    local section_async_task_function="${section_function}::async_task"
-    if slimline::utils::callable "${section_async_task_function}"; then
-      local section_async_task_complete_function="${section_async_task_function}_complete"
-      if ! slimline::utils::callable "${section_async_task_complete_function}"; then
+    local async_task_function="${section_namespace}::async_task"
+    if slimline::utils::callable "${async_task_function}"; then
+      local async_task_complete_function="${async_task_function}_complete"
+      if ! slimline::utils::callable "${async_task_complete_function}"; then
         slimline::utils::error "The async task of section '${section}' has no complete function!"
         continue
       fi
-      async_tasks+="${section_async_task_function}"
+      async_tasks+="${async_task_function}"
     fi
 
-    local section_preexec_function="${section_function}::preexec"
-    if slimline::utils::callable "${section_preexec_function}"; then
-      add-zsh-hook preexec "${section_preexec_function}"
+    local preexec_function="${section_namespace}::preexec"
+    if slimline::utils::callable "${preexec_function}"; then
+      add-zsh-hook preexec "${preexec_function}"
     fi
 
-    local section_precmd_function="${section_function}::precmd"
-    if slimline::utils::callable "${section_precmd_function}"; then
-      add-zsh-hook precmd "${section_precmd_function}"
+    local precmd_function="${section_namespace}::precmd"
+    if slimline::utils::callable "${precmd_function}"; then
+      add-zsh-hook precmd "${precmd_function}"
     fi
 
-    expanded_sections+="${section_function}"
+    expanded_sections+="${render_function}"
   done
 
   typeset -g "${section_var}"="${(j: :)expanded_sections}"
