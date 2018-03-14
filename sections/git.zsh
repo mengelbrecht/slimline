@@ -17,7 +17,7 @@ slimline::section::git::init() {
     return 0
   fi
 
-  slimline::utils::warning "python and/or git not installed or not in PATH, disabling git information"
+  slimline::utils::warning "python and/or git not installed or not in PATH, disabling git section"
   return 1
 }
 
