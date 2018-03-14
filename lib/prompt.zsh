@@ -19,7 +19,7 @@ slimline::prompt::set_right() {
 }
 
 slimline::prompt::set_spelling() {
-  SPROMPT="$(slimline::utils::expand "autocorrect" \
+  SPROMPT="$(slimline::utils::expand "spelling_prompt" \
       "zsh: correct %F{red}|from|%f to %F{green}|to|%f [nyae]? " \
       "from" "%R" "to" "%r")"
 }
