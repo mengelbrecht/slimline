@@ -12,7 +12,6 @@
 #-------------------------------------------------------------------------------
 
 slimline_path="${0:A:h}"
-slimline_default_user="${SLIMLINE_DEFAULT_USER:-${USER}}"
 
 source "${slimline_path}/lib/async.zsh"
 source "${slimline_path}/lib/prompt.zsh"

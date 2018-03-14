@@ -1,6 +1,10 @@
+slimline::section::user_host_info::init() {
+  slimline_section_user_host_info_default_user="${SLIMLINE_USER_HOST_INFO_DEFAULT_USER:-${USER}}"
+}
+
 slimline::section::user_host_info() {
   if (( ! ${SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO:-0} )) && \
-      [[ -z "${SSH_TTY}" && "${USER}" == "${slimline_default_user}" ]]; then
+      [[ -z "${SSH_TTY}" && "${USER}" == "${slimline_section_user_host_info_default_user}" ]]; then
     return;
   fi
 
