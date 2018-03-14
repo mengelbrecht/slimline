@@ -3,7 +3,7 @@ slimline::section::nodejs::precmd() {
 }
 
 slimline::section::nodejs::async_task() {
-  echo "$(node -v 2>/dev/null)"
+  command node -v 2>/dev/null
 }
 
 slimline::section::nodejs::async_task_complete() {
