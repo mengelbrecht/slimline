@@ -33,7 +33,7 @@ slimline_async_task_complete() {
 }
 
 slimline_setup() {
-  if (( ${SLIMLINE_PROMPT_VERSION:-1} < 2 )); then
+  if (( ${SLIMLINE_PROMPT_VERSION:-2} < 2 )); then
     source "${slimline_path}/lib/legacy.zsh"
     slimline::legacy::evaluate_options
   fi
