@@ -256,15 +256,17 @@ This section displays the nodejs version if the current directory contains a `pa
 
 <table>
   <thead>
-    <tr>Variable</tr>
-    <tr>Default and Description</tr>
+    <tr>
+      <th>Variable</th>
+      <th>Default and Description</th>
+    </tr>
   </thead>
   <tbody>
     <tr>
-      <td rowspan=2>`SLIMLINE_NODEJS_FORMAT`</td>
-      <td align="center">`%F{white}[%F{green}⬢ |version|%F{white}]%f`</td>
+      <td rowspan=2><code>SLIMLINE_NODEJS_FORMAT</code></td>
+      <td align="center"><code>%F{white}[%F{green}⬢ |version|%F{white}]%f</code></td>
     </tr>
-    <tr><td>The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `|version|`.</tr>
+    <tr><td>The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is <code>|version|</code>.</tr>
   </tbody>
 </table>
 
