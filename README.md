@@ -220,10 +220,10 @@ default user or if there is an active ssh session.
 
 | Variable | Default and Description |
 | :------- | ----------------------- |
-| `SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO` | `0` <hr/> Defines whether the user and host information should always be displayed. |
-| `SLIMLINE_USER_HOST_INFO_DEFAULT_USER` | `$USER` <hr/> The default user for this prompt. This is used to hide the user and host name if the current user is the same as the default user. |
-| `SLIMLINE_USER_HOST_INFO_FORMAT` | `%F{green}\|user\|%F{white}@%F{yellow}\|host\|%f` <hr/> The format of user and host info if the user is **not** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
-| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | `%F{red}\|user\|%F{white}@%F{yellow}\|host\|%f` <hr/> The format of user and host info if the user **is** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
+| `SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO` | <p align="center">`0`</p> Defines whether the user and host information should always be displayed. |
+| `SLIMLINE_USER_HOST_INFO_DEFAULT_USER` | <p align="center">`$USER`</p> The default user for this prompt. This is used to hide the user and host name if the current user is the same as the default user. |
+| `SLIMLINE_USER_HOST_INFO_FORMAT` | <p align="center">`%F{green}\|user\|%F{white}@%F{yellow}\|host\|%f`</p> The format of user and host info if the user is **not** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
+| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | <p align="center">`%F{red}\|user\|%F{white}@%F{yellow}\|host\|%f`</p> The format of user and host info if the user **is** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
 
 ### Time (`time`)
 
