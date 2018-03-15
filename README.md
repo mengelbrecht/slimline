@@ -218,12 +218,55 @@ The *root* format is used if the current user is root.
 By default the user and host information is only displayed if the user is different than the
 default user or if there is an active ssh session.
 
-| Variable | Default and Description |
-| :------- | ----------------------- |
-| `SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO` | <p align="center">`0`</p> Defines whether the user and host information should always be displayed. |
-| `SLIMLINE_USER_HOST_INFO_DEFAULT_USER` | <p align="center">`$USER`</p> The default user for this prompt. This is used to hide the user and host name if the current user is the same as the default user. |
-| `SLIMLINE_USER_HOST_INFO_FORMAT` | <p align="center">`%F{green}\|user\|%F{white}@%F{yellow}\|host\|%f`</p> The format of user and host info if the user is **not** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
-| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | <p align="center">`%F{red}\|user\|%F{white}@%F{yellow}\|host\|%f`</p> The format of user and host info if the user **is** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO</code></td>
+      <td align="center"><code>0</code></td>
+    </tr>
+    <tr>
+      <td>
+        Defines whether the user and host information should always be displayed.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_USER_HOST_INFO_DEFAULT_USER</code></td>
+      <td align="center"><code>$USER</code></td>
+    </tr>
+    <tr>
+      <td>
+        The default user for this prompt. This is used to hide the user and host name
+        if the current user is the same as the default user.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_USER_HOST_INFO_FORMAT</code></td>
+      <td align="center"><code>%F{green}|user|%F{white}@%F{yellow}|host|%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format of user and host info if the user is <i>not</i> root.
+        The placeholder for the username is <code>|user|</code> and for the hostname is <code>|host|</code>.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_USER_HOST_INFO_ROOT_FORMAT</code></td>
+      <td align="center"><code>%F{red}|user|%F{white}@%F{yellow}|host|%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format of user and host info if the user <i>is</i> root.
+        The placeholder for the username is <code>|user|</code> and for the hostname is <code>|host|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Time (`time`)
 
@@ -266,7 +309,12 @@ This section displays the nodejs version if the current directory contains a `pa
       <td rowspan=2><code>SLIMLINE_NODEJS_FORMAT</code></td>
       <td align="center"><code>%F{white}[%F{green}⬢ |version|%F{white}]%f</code></td>
     </tr>
-    <tr><td>The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is <code>|version|</code>.</tr>
+    <tr>
+      <td>
+        The format to use for displaying the nodejs information.
+        The placeholder for the configured version of nodejs is <code>|version|</code>.
+      </td>
+    </tr>
   </tbody>
 </table>
 
