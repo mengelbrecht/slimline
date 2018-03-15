@@ -156,7 +156,7 @@ The legacy options are described [here](legacy_options.md).
 | :------- | :-----: | ------- |
 | `SLIMLINE_LEFT_PROMPT_SECTIONS` | `user_host_info cwd symbol` | The sections to use in the left prompt. |
 | `SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR` | ` ` | The separator between each section. |
-| `SLIMLINE_LEFT_PROMPT_FORMAT` | `|sections| ` | The format string for the left prompt (notice the space at the end). The `|sections|` placeholder will be replaced with the section output. |
+| `SLIMLINE_LEFT_PROMPT_FORMAT` | `\|sections\| ` | The format string for the left prompt (notice the space at the end). The `\|sections\|` placeholder will be replaced with the section output. |
 
 ### Right Prompt
 
@@ -164,13 +164,13 @@ The legacy options are described [here](legacy_options.md).
 | :------- | :-----: | ------- |
 | `SLIMLINE_RIGHT_PROMPT_SECTIONS` | `execution_time exit_status git aws_profile virtual_env nodejs` | The sections to use in the right prompt. |
 | `SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR` | ` ` | The separator between each section. |
-| `SLIMLINE_RIGHT_PROMPT_FORMAT` | `|sections|` | The format string for the right prompt. The `|sections|` placeholder will be replaced with the section output. |
+| `SLIMLINE_RIGHT_PROMPT_FORMAT` | `\|sections\|` | The format string for the right prompt. The `\|sections\|` placeholder will be replaced with the section output. |
 
 ### Spelling Prompt
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_SPELLING_PROMPT_FORMAT` | `zsh: correct %F{red}|from|%f to %F{green}|to|%f [nyae]? ` | The format string for spelling prompt which is shown for auto correction. The `|from|` placeholder will be replaced with the incorrect command and `|to|` with the correction. |
+| `SLIMLINE_SPELLING_PROMPT_FORMAT` | `zsh: correct %F{red}\|from\|%f to %F{green}\|to\|%f [nyae]? ` | The format string for spelling prompt which is shown for auto correction. The `\|from\|` placeholder will be replaced with the incorrect command and `\|to\|` with the correction. |
 
 ## Built-in Sections
 
@@ -200,7 +200,7 @@ The section displays the exit status of the last command if it is != 0.
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_EXIT_STATUS_FORMAT` | `%F{red}|exit_status| ↵%f` | The format to use when the exit status of the last command is != 0. The placeholder for the exit status value is `|exit_status|`. |
+| `SLIMLINE_EXIT_STATUS_FORMAT` | `%F{red}\|exit_status\| ↵%f` | The format to use when the exit status of the last command is != 0. The placeholder for the exit status value is `\|exit_status\|`. |
 
 ### Execution Time (`execution_time`)
 
@@ -209,7 +209,7 @@ The execution time of the last command if it exceeds the configurable threshold.
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
 | `SLIMLINE_MAX_EXEC_TIME` | `5` | The maximum execution time of a process in seconds until its run time is displayed on exit. |
-| `SLIMLINE_EXECUTION_TIME_FORMAT` | `%F{yellow}|time|%f` | The format of the execution time display. The placeholder for the execution time in seconds is `|time|`. |
+| `SLIMLINE_EXECUTION_TIME_FORMAT` | `%F{yellow}\|time\|%f` | The format of the execution time display. The placeholder for the execution time in seconds is `\|time\|`. |
 
 ### User and Host Info (`user_host_info`)
 
@@ -222,8 +222,8 @@ default user or if there is an active ssh session.
 | :------- | :-----: | ------- |
 | `SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO` | `0` | Defines whether the user and host information should always be displayed. |
 | `SLIMLINE_USER_HOST_INFO_DEFAULT_USER` | `$USER` | The default user for this prompt. This is used to hide the user and host name if the current user is the same as the default user. |
-| `SLIMLINE_USER_HOST_INFO_FORMAT` | `%F{green}|user|%F{white}@%F{yellow}|host|%f` | The format of user and host info if the user is **not** root. The placeholder for the username is `|user|` and for the hostname is `|host|`. |
-| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | `%F{red}|user|%F{white}@%F{yellow}|host|%f` | The format of user and host info if the user **is** root. The placeholder for the username is `|user|` and for the hostname is `|host|`. |
+| `SLIMLINE_USER_HOST_INFO_FORMAT` | `%F{green}\|user\|%F{white}@%F{yellow}\|host\|%f` | The format of user and host info if the user is **not** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
+| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | `%F{red}\|user\|%F{white}@%F{yellow}\|host\|%f` | The format of user and host info if the user **is** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
 
 ### Time (`time`)
 
@@ -232,7 +232,7 @@ To use it add it to your left or right prompt manually. To use the 12h time form
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_TIME_FORMAT` | `%F{white}|time24|%f` | The format to use for displaying the time of day. The placeholder for the time in 24h format is `|time24|`. The placeholder for the time in 12h format is `|time12|`. |
+| `SLIMLINE_TIME_FORMAT` | `%F{white}\|time24\|%f` | The format to use for displaying the time of day. The placeholder for the time in 24h format is `\|time24\|`. The placeholder for the time in 12h format is `\|time12\|`. |
 
 ### AWS Profile (`aws_profile`)
 
@@ -240,7 +240,7 @@ This section displays the current aws profile detected via the `$AWS_PROFILE` en
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_AWS_PROFILE_FORMAT` | `%F{white}[AWS:%F{blue}|profile|%F{white}]%f` | The format to use for displaying the aws profile. The placeholder for the profile is `|profile|`. |
+| `SLIMLINE_AWS_PROFILE_FORMAT` | `%F{white}[AWS:%F{blue}\|profile\|%F{white}]%f` | The format to use for displaying the aws profile. The placeholder for the profile is `\|profile\|`. |
 
 ### Python Virtualenv (`virtualenv`)
 
@@ -248,7 +248,7 @@ This section displays the current python virtual env detected via the `$VIRTUAL_
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_VIRTUALENV_FORMAT` | `%F{white}[VENV:%F{cyan}|basename|%F{white}]%f` | The format to use for displaying the virtual env information. The placeholder for the basename of the virtual env is `|basename|`. |
+| `SLIMLINE_VIRTUALENV_FORMAT` | `%F{white}[VENV:%F{cyan}\|basename\|%F{white}]%f` | The format to use for displaying the virtual env information. The placeholder for the basename of the virtual env is `\|basename\|`. |
 
 ### Node.js (`nodejs`) *async*
 
@@ -256,7 +256,7 @@ This section displays the nodejs version if the current directory contains a `pa
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ |version|%F{white}]%f` | The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `|version|`. |
+| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ \|version\|%F{white}]%f` | The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `\|version\|`. |
 
 ### Git (`git`) *async*
 
@@ -268,7 +268,7 @@ Additionally this section has the following options:
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_GIT_FORMAT` | `|output|` | The format to use for the git status information. The placeholder `|output|` is
+| `SLIMLINE_GIT_FORMAT` | `\|output\|` | The format to use for the git status information. The placeholder `\|output\|` is
 replaced with the output from gitline.
 
 ## Custom Sections
