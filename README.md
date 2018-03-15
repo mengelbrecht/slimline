@@ -284,11 +284,11 @@ A section can have the following functions:
 | Function | Required | Meaning |
 | :------- | :-----: | ------- |
 | `slimline::section::<name>::render` | **yes** | This function is used to display information in the prompt. |
-| `slimline::section::<name>::init` | **no** | This function can initialize data and check for requirements for the section. If the function returns `0` the section will be loaded. In case the section shall be deactivated return `1` instead. |
-| `slimline::section::<name>::preexec` | **no** | If the function is defined it will be executed right before a new command in zsh is executed. |
-| `slimline::section::<name>::precmd` | **no** | If the function is defined it will be executed before the prompt render functions. |
-| `slimline::section::<name>::async_task` | **no** | This function will be executed asynchronously by zsh-async and its output will be available in the `async_task_complete` function.
-| `slimline::section::<name>::async_task_complete` | **no** | This function is not required except when the `async_task` function is defined. This function will receive the output of the `async_task` function and other information. |
+| `slimline::section::<name>::init` | no | This function can initialize data and check for requirements for the section. If the function returns `0` the section will be loaded. In case the section shall be deactivated return `1` instead. |
+| `slimline::section::<name>::preexec` | no | If the function is defined it will be executed right before a new command in zsh is executed. |
+| `slimline::section::<name>::precmd` | no | If the function is defined it will be executed before the prompt render functions. |
+| `slimline::section::<name>::async_task` | no | This function will be executed asynchronously by zsh-async and its output will be available in the `async_task_complete` function.
+| `slimline::section::<name>::async_task_complete` | no | This function is not required except when the `async_task` function is defined. This function will receive the output of the `async_task` function and other information. |
 
 ### Functions
 
