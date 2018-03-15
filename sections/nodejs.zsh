@@ -3,6 +3,7 @@ slimline::section::nodejs::precmd() {
 }
 
 slimline::section::nodejs::async_task() {
+  if [[ ! -f "package.json" && ! -d "node_modules" ]]; then return; fi
   command node -v 2>/dev/null
 }
 
@@ -12,7 +13,6 @@ slimline::section::nodejs::async_task_complete() {
 }
 
 slimline::section::nodejs::render() {
-  if [[ ! -f "package.json" && ! -d "node_modules" ]]; then return; fi
   if [[ -z "${slimline_section_nodejs_output}" ]]; then return; fi
   slimline::utils::expand "nodejs" "%F{white}[%F{green}⬢ |version|%F{white}]%f" \
       "version" "${slimline_section_nodejs_output}"
