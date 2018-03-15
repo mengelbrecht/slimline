@@ -145,32 +145,144 @@ The legacy options are described [here](legacy_options.md).
 
 ## Global Options
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_PROMPT_VERSION` | `2` | The version of the prompt options. To use the legacy options described [here](legacy_options.md) set it to `1`. |
-| `SLIMLINE_ENABLE_ASYNC_AUTOLOAD` | `1` | Defines whether [zsh-async](https://github.com/mafredri/zsh-async) should be automatically sourced if it was not already sourced. Disabling the automatic loading is useful if zsh-async is installed globally and therefore already loaded (e.g. via antigen or zplugin). |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_PROMPT_VERSION</code></td>
+      <td align="center"><code>2</code></td>
+    </tr>
+    <tr>
+      <td>
+        The version of the prompt options.
+        To use the legacy options described <a href="legacy_options.md">here</a> set it to <code>1</code>.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_ENABLE_ASYNC_AUTOLOAD</code></td>
+      <td align="center"><code>1</code></td>
+    </tr>
+    <tr>
+      <td>
+        Defines whether <a href="https://github.com/mafredri/zsh-async">zsh-async</a> should be
+        automatically sourced if it was not already sourced.
+        Disabling the automatic loading is useful if zsh-async is installed globally
+        and therefore already loaded (e.g. via antigen or zplugin).
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Left Prompt
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_LEFT_PROMPT_SECTIONS` | `user_host_info cwd symbol` | The sections to use in the left prompt. |
-| `SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR` | ` ` | The separator between each section. |
-| `SLIMLINE_LEFT_PROMPT_FORMAT` | `\|sections\| ` | The format string for the left prompt (notice the space at the end). The `\|sections\|` placeholder will be replaced with the section output. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_LEFT_PROMPT_SECTIONS</code></td>
+      <td align="center"><code>user_host_info cwd symbol</code></td>
+    </tr>
+    <tr>
+      <td>
+        The sections to use in the left prompt.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_LEFT_PROMPT_SECTION_SEPARATOR</code></td>
+      <td align="center"><code> </code></td>
+    </tr>
+    <tr>
+      <td>
+        The separator between each section.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_LEFT_PROMPT_FORMAT</code></td>
+      <td align="center"><code>|sections| </code></td>
+    </tr>
+    <tr>
+      <td>
+        The format string for the left prompt (notice the space at the end).
+        The placeholder <code>|sections|</code> will be replaced with the section output.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Right Prompt
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_RIGHT_PROMPT_SECTIONS` | `execution_time exit_status git aws_profile virtual_env nodejs` | The sections to use in the right prompt. |
-| `SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR` | ` ` | The separator between each section. |
-| `SLIMLINE_RIGHT_PROMPT_FORMAT` | `\|sections\|` | The format string for the right prompt. The `\|sections\|` placeholder will be replaced with the section output. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_RIGHT_PROMPT_SECTIONS</code></td>
+      <td align="center"><code>execution_time exit_status git aws_profile virtual_env nodejs</code></td>
+    </tr>
+    <tr>
+      <td>
+        The sections to use in the right prompt.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_RIGHT_PROMPT_SECTION_SEPARATOR</code></td>
+      <td align="center"><code> </code></td>
+    </tr>
+    <tr>
+      <td>
+        The separator between each section.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_RIGHT_PROMPT_FORMAT</code></td>
+      <td align="center"><code>|sections|</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format string for the right prompt.
+        The <code>|sections|</code> placeholder will be replaced with the section output.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Spelling Prompt
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_SPELLING_PROMPT_FORMAT` | `zsh: correct %F{red}\|from\|%f to %F{green}\|to\|%f [nyae]? ` | The format string for spelling prompt which is shown for auto correction. The `\|from\|` placeholder will be replaced with the incorrect command and `\|to\|` with the correction. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_SPELLING_PROMPT_FORMAT</code></td>
+      <td align="center"><code>zsh: correct %F{red}|from|%f to %F{green}|to|%f [nyae]? </code></td>
+    </tr>
+    <tr>
+      <td>
+        The format string for spelling prompt which is shown for auto correction.
+        The <code>|from|</code> placeholder will be replaced with the incorrect command
+        and <code>|to|</code> with the correction.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Built-in Sections
 
@@ -179,37 +291,130 @@ The legacy options are described [here](legacy_options.md).
 The section displayes the prompt symbol. It supports two formats. The *working* format is used when asynchronous tasks are
 pending and the *ready format for when all tasks are completed.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_SYMBOL_WORKING_FORMAT` | `%F{red}∙%f` | The format to use for the symbol when there are asynchronous tasks pending. |
-| `SLIMLINE_SYMBOL_READY_FORMAT` | `%F{white}∙%f` | The format to use for the symbol when all asynchronous tasks have completed. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_SYMBOL_WORKING_FORMAT</code></td>
+      <td align="center"><code>%F{red}∙%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for the symbol when there are asynchronous tasks pending.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_SYMBOL_READY_FORMAT</code></td>
+      <td align="center"><code>%F{white}∙%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for the symbol when all asynchronous tasks have completed.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Current Working Directory (`cwd`)
 
 This section displays the current working directory. It supports two formats.
 The *root* format is used when the cwd is the root path and the other format when it is not.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_CWD_FORMAT` | `%F{cyan}\|path\|%f` | The format to use when the current working directory is in a normal directory (not the root path `/`). The placeholder for the path is `\|path\|`. |
-| `SLIMLINE_CWD_ROOT_FORMAT` | `%F{red}\|path\|%f` | The format to use when the current working directory is in the root path `/`. The placeholder for the path is `\|path\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_CWD_FORMAT</code></td>
+      <td align="center"><code>%F{cyan}|path|%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use when the current working directory is in a
+        normal directory (not the root path <code>/</code>).
+        The placeholder for the path is <code>|path|</code>.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_CWD_ROOT_FORMAT</code></td>
+      <td align="center"><code>%F{red}|path|%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use when the current working directory is in the root path <code>/</code>.
+        The placeholder for the path is <code>|path|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Exit Status (`exit_status`)
 
 The section displays the exit status of the last command if it is != 0.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_EXIT_STATUS_FORMAT` | `%F{red}\|exit_status\| ↵%f` | The format to use when the exit status of the last command is != 0. The placeholder for the exit status value is `\|exit_status\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_EXIT_STATUS_FORMAT</code></td>
+      <td align="center"><code>%F{red}|exit_status| ↵%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use when the exit status of the last command is != 0.
+        The placeholder for the exit status value is <code>|exit_status|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Execution Time (`execution_time`)
 
 The execution time of the last command if it exceeds the configurable threshold.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_MAX_EXEC_TIME` | `5` | The maximum execution time of a process in seconds until its run time is displayed on exit. |
-| `SLIMLINE_EXECUTION_TIME_FORMAT` | `%F{yellow}\|time\|%f` | The format of the execution time display. The placeholder for the execution time in seconds is `\|time\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_MAX_EXEC_TIME</code></td>
+      <td align="center"><code>5</code></td>
+    </tr>
+    <tr>
+      <td>
+        The maximum execution time of a process in seconds until its run time is displayed on exit.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_EXECUTION_TIME_FORMAT</code></td>
+      <td align="center"><code>%F{yellow}|time|%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format of the execution time display.
+        The placeholder for the execution time in seconds is <code>|time|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### User and Host Info (`user_host_info`)
 
@@ -222,7 +427,7 @@ default user or if there is an active ssh session.
   <thead>
     <tr>
       <th>Variable</th>
-      <th>Default and Description</th>
+      <th>Default Value and Description</th>
     </tr>
   </thead>
   <tbody>
@@ -273,25 +478,77 @@ default user or if there is an active ssh session.
 This section displays the current time in 24h format and is disabled by default.
 To use it add it to your left or right prompt manually. To use the 12h time format use the `|time12|` placeholder.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_TIME_FORMAT` | `%F{white}\|time24\|%f` | The format to use for displaying the time of day. The placeholder for the time in 24h format is `\|time24\|`. The placeholder for the time in 12h format is `\|time12\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_TIME_FORMAT</code></td>
+      <td align="center"><code>%F{white}|time24|%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for displaying the time of day.
+        The placeholder for the time in 24h format is <code>|time24|</code>.
+        The placeholder for the time in 12h format is <code>|time12|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### AWS Profile (`aws_profile`)
 
 This section displays the current aws profile detected via the `$AWS_PROFILE` environment variable.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_AWS_PROFILE_FORMAT` | `%F{white}[AWS:%F{blue}\|profile\|%F{white}]%f` | The format to use for displaying the aws profile. The placeholder for the profile is `\|profile\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_AWS_PROFILE_FORMAT</code></td>
+      <td align="center"><code>%F{white}[AWS:%F{blue}|profile|%F{white}]%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for displaying the aws profile.
+        The placeholder for the profile is <code>|profile|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Python Virtualenv (`virtualenv`)
 
 This section displays the current python virtual env detected via the `$VIRTUAL_ENV` environment variable.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_VIRTUALENV_FORMAT` | `%F{white}[VENV:%F{cyan}\|basename\|%F{white}]%f` | The format to use for displaying the virtual env information. The placeholder for the basename of the virtual env is `\|basename\|`. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_VIRTUALENV_FORMAT</code></td>
+      <td align="center"><code>%F{white}[VENV:%F{cyan}|basename|%F{white}]%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for displaying the virtualenv information.
+        The placeholder for the basename of the virtualenv is <code>|basename|</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Node.js (`nodejs`) *async*
 
@@ -301,7 +558,7 @@ This section displays the nodejs version if the current directory contains a `pa
   <thead>
     <tr>
       <th>Variable</th>
-      <th>Default and Description</th>
+      <th>Default Value and Description</th>
     </tr>
   </thead>
   <tbody>
@@ -326,9 +583,26 @@ gitline can be extensively customized. Have a look at the [gitline options](http
 
 Additionally this section has the following options:
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_GIT_FORMAT` | `\|output\|` | The format to use for the git status information. The placeholder `\|output\|` is replaced with the output from gitline. |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_GIT_FORMAT</code></td>
+      <td align="center"><code>|output|</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for the git status information.
+        The placeholder <code>|output|</code> is replaced with the output from gitline.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Custom Sections
 
@@ -341,7 +615,7 @@ For a section with the name `foo` the render function is named `slimline::sectio
 
 A section can have the following functions:
 
-| Function | Required | Meaning |
+| Function | Required | Description |
 | :------- | :-----: | ------- |
 | `slimline::section::<name>::render` | **yes** | This function is used to display information in the prompt. |
 | `slimline::section::<name>::init` | no | This function can initialize data and check for requirements for the section. If the function returns `0` the section will be loaded. In case the section shall be deactivated return `1` instead. |
