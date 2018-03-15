@@ -268,8 +268,7 @@ Additionally this section has the following options:
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_GIT_FORMAT` | `\|output\|` | The format to use for the git status information. The placeholder `\|output\|` is
-replaced with the output from gitline.
+| `SLIMLINE_GIT_FORMAT` | `\|output\|` | The format to use for the git status information. The placeholder `\|output\|` is replaced with the output from gitline. |
 
 ## Custom Sections
 
@@ -281,6 +280,7 @@ section name. Each section needs at least a `render` function.
 For a section with the name `foo` the render function is named `slimline::section::foo::render`.
 
 A section can have the following functions:
+
 | Function | Required | Meaning |
 | :------- | :-----: | ------- |
 | `slimline::section::<name>::render` | **yes** | This function is used to display information in the prompt. |
