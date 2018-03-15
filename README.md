@@ -218,12 +218,12 @@ The *root* format is used if the current user is root.
 By default the user and host information is only displayed if the user is different than the
 default user or if there is an active ssh session.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO` | `0` | Defines whether the user and host information should always be displayed. |
-| `SLIMLINE_USER_HOST_INFO_DEFAULT_USER` | `$USER` | The default user for this prompt. This is used to hide the user and host name if the current user is the same as the default user. |
-| `SLIMLINE_USER_HOST_INFO_FORMAT` | `%F{green}\|user\|%F{white}@%F{yellow}\|host\|%f` | The format of user and host info if the user is **not** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
-| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | `%F{red}\|user\|%F{white}@%F{yellow}\|host\|%f` | The format of user and host info if the user **is** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
+| Variable | Default and Description |
+| :------- | ----------------------- |
+| `SLIMLINE_ALWAYS_SHOW_USER_HOST_INFO` | `0` <hr/> Defines whether the user and host information should always be displayed. |
+| `SLIMLINE_USER_HOST_INFO_DEFAULT_USER` | `$USER` <hr/> The default user for this prompt. This is used to hide the user and host name if the current user is the same as the default user. |
+| `SLIMLINE_USER_HOST_INFO_FORMAT` | `%F{green}\|user\|%F{white}@%F{yellow}\|host\|%f` <hr/> The format of user and host info if the user is **not** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
+| `SLIMLINE_USER_HOST_INFO_ROOT_FORMAT` | `%F{red}\|user\|%F{white}@%F{yellow}\|host\|%f` <hr/> The format of user and host info if the user **is** root. The placeholder for the username is `\|user\|` and for the hostname is `\|host\|`. |
 
 ### Time (`time`)
 
@@ -254,9 +254,9 @@ This section displays the current python virtual env detected via the `$VIRTUAL_
 
 This section displays the nodejs version if the current directory contains a `package.json` file or `node_modules` directory.
 
-| Variable | Default | Meaning |
-| :------- | :-----: | ------- |
-| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ \|version\|%F{white}]%f` | The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `\|version\|`. |
+| Variable | Default and Description |
+| :------- | ----------------------- |
+| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ \|version\|%F{white}]%f`<hr/> The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `\|version\|`. |
 
 ### Git (`git`) *async*
 
