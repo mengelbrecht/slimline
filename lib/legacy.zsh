@@ -38,8 +38,8 @@ slimline::legacy::evaluate_options() {
 
   if (( ${SLIMLINE_DISPLAY_VIRTUALENV:-1} )); then
     local parens_color="${SLIMLINE_VIRTUALENV_PARENS_COLOR:-white}"
-    SLIMLINE_VIRTUAL_ENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|basename|%f%F{$parens_color})%f"
-    right_prompt_sections+=("virtual_env")
+    SLIMLINE_VIRTUALENV_FORMAT="%F{$parens_color}(%f%F{${SLIMLINE_VIRTUALENV_COLOR:-cyan}}|basename|%f%F{$parens_color})%f"
+    right_prompt_sections+=("virtualenv")
   fi
 
   SLIMLINE_AUTOCORRECT_FORMAT="zsh: correct %F{${SLIMLINE_AUTOCORRECT_MISSPELLED_COLOR:-red}}|from|%f to %F{${SLIMLINE_AUTOCORRECT_PROPOSED_COLOR:-green}}|to|%f [nyae]? "
