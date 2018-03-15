@@ -254,9 +254,19 @@ This section displays the current python virtual env detected via the `$VIRTUAL_
 
 This section displays the nodejs version if the current directory contains a `package.json` file or `node_modules` directory.
 
-| Variable | Default and Description |
-| :------- | ----------------------- |
-| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ \|version\|%F{white}]%f` ------ The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `\|version\|`. |
+<table>
+  <thead>
+    <tr>Variable</tr>
+    <tr>Default and Description</tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2>`SLIMLINE_NODEJS_FORMAT`</td>
+      <td align="center">`%F{white}[%F{green}⬢ |version|%F{white}]%f`</td>
+    </tr>
+    <tr><td>The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `|version|`.</tr>
+  </tbody>
+</table>
 
 ### Git (`git`) *async*
 
