@@ -2,6 +2,8 @@
 
 Modular, fast and elegant ZSH prompt. Displays the right information at the right time.
 
+<img src="screenshot.png" width="682" height="298">
+
 Features:
 - sleek look
 - modular layout using configurable sections in the left and right prompt
@@ -21,11 +23,9 @@ Sections:
 - nodejs version configured for the current directory
 - customizable git information display
 
-<img src="screenshot.png" width="682" height="299">
+With more information (connected to ssh server, runtime and exit status from last command, aws profile and nodejs version):
 
-With most information (connected to ssh server, runtime and exit status from last command):
-
-<img src="screenshot_full.png" width="682" height="299">
+<img src="screenshot_full.png" width="857" height="298">
 
 <!-- TOC -->
 
@@ -374,7 +374,7 @@ export GITLINE_BRANCH='[${blue}${branch}${reset}]'
 source "<path-to-slimline>/slimline.zsh"
 ```
 
-<img src="screenshot_example.png" width="682" height="299">
+<img src="screenshot_example.png" width="682" height="298">
 
 ## Thanks
 
