@@ -191,8 +191,8 @@ The *root* format is used when the cwd is the root path and the other format whe
 
 | Variable | Default | Meaning |
 | :------- | :-----: | ------- |
-| `SLIMLINE_CWD_FORMAT` | `%F{cyan}|path|%f` | The format to use when the current working directory is in a normal directory (not the root path `/`). The placeholder for the path is `|path|`. |
-| `SLIMLINE_CWD_ROOT_FORMAT` | `%F{red}|path|%f` | The format to use when the current working directory is in the root path `/`. The placeholder for the path is `|path|`. |
+| `SLIMLINE_CWD_FORMAT` | `%F{cyan}\|path\|%f` | The format to use when the current working directory is in a normal directory (not the root path `/`). The placeholder for the path is `\|path\|`. |
+| `SLIMLINE_CWD_ROOT_FORMAT` | `%F{red}\|path\|%f` | The format to use when the current working directory is in the root path `/`. The placeholder for the path is `\|path\|`. |
 
 ### Exit Status (`exit_status`)
 
