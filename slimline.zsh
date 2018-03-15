@@ -39,7 +39,7 @@ slimline_setup() {
   fi
 
   local left_prompt_sections="${SLIMLINE_LEFT_PROMPT_SECTIONS-user_host_info cwd symbol}"
-  local right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtual_env nodejs}"
+  local right_prompt_sections="${SLIMLINE_RIGHT_PROMPT_SECTIONS-execution_time exit_status git aws_profile virtualenv nodejs}"
 
   prompt_opts=(cr percent subst)
   zmodload zsh/datetime
