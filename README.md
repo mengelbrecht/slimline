@@ -256,7 +256,7 @@ This section displays the nodejs version if the current directory contains a `pa
 
 | Variable | Default and Description |
 | :------- | ----------------------- |
-| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ \|version\|%F{white}]%f`<hr/> The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `\|version\|`. |
+| `SLIMLINE_NODEJS_FORMAT` | `%F{white}[%F{green}⬢ \|version\|%F{white}]%f` ------ The format to use for displaying the nodejs information. The placeholder for the configured version of nodejs is `\|version\|`. |
 
 ### Git (`git`) *async*
 
