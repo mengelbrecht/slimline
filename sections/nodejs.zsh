@@ -3,6 +3,7 @@ slimline::section::nodejs::precmd() {
 }
 
 slimline::section::nodejs::async_task() {
+  builtin cd "${1}"
   if [[ ! -f "package.json" && ! -d "node_modules" ]]; then return; fi
   command node -v 2>/dev/null
 }
