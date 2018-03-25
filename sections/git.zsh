@@ -7,7 +7,7 @@ slimline::section::git::async_task() {
 }
 
 slimline::section::git::async_task_complete() {
-  local output=${3}
+  local output="${2}"
   slimline_section_git_output="${output}"
 }
 

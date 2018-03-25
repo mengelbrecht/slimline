@@ -14,10 +14,14 @@ slimline::async::init() {
 
 slimline::async::callback() {
   local job=${1}
+  local return_code=${2}
+  local stdout="${3}"
+  local execution_time=${4}
+  local stderr="${5}"
   local has_next=${6}
 
   local complete_function="${job}_complete"
-  ${complete_function} "$@"
+  ${complete_function} ${return_code} "${stdout}" "${stderr}" ${execution_time}
 
   slimline_async_tasks_complete=$(( slimline_async_tasks_complete + 1 ))
 
