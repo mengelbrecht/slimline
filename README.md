@@ -20,7 +20,7 @@ Sections:
 - current time of day in 24h or 12h format
 - current aws profile
 - current python virtualenv
-- nodejs version configured for the current directory
+- nodejs version
 - customizable git information display
 
 With more information (connected to ssh server, runtime and exit status from last command, aws profile and nodejs version):
@@ -61,11 +61,12 @@ With more information (connected to ssh server, runtime and exit status from las
         - [Preexec](#preexec)
         - [Precmd](#precmd)
         - [Async Task](#async-task)
+        - [Async Task Complete](#async-task-complete)
     - [Utility Functions](#utility-functions)
         - [Section Format Expansion](#section-format-expansion)
         - [Logging](#logging)
         - [Callable Check](#callable-check)
-    - [Examples](#examples)
+    - [Complete Examples](#complete-examples)
         - [Minimal Section](#minimal-section)
         - [Section with init function](#section-with-init-function)
         - [Section with asynchronous task](#section-with-asynchronous-task)
@@ -628,13 +629,106 @@ A section can have the following functions:
 
 #### Render
 
+The render function `slimline::section::<name>::render` is responsible for emitting a string
+which will be displayed in the prompt.
+
+The function receives the following parameters:
+| Parameter | Description |
+| :-------: | ----------- |
+| `$1`      | The event which triggered the render function. This can be one of the following: `setup`, `precmd`, `task_complete`, `all_tasks_complete`. |
+
+Example:
+```shell
+slimline::section::foo::render() {
+  echo "%F{blue}bar%f"
+}
+```
+
 #### Init
+
+The init function `slimline::section::<name>::init` is optional and initializes the section if necessary.
+The function receives no parameters and returns 0 on success or 1 on failure.
+If the function returns 1 the section will be disabled.
+
+Example:
+```shell
+slimline::section::foo::init() {
+  if slimline::utils::callable "ruby"; then
+    return 0 # Ok, section can be loaded
+  fi
+
+  slimline::utils::warning "ruby not installed or not in PATH, disabling foo section"
+  return 1 # Disable the section
+}
+```
 
 #### Preexec
 
+The prexec function `slimline::section::<name>::preexec` is called on the preexec hook of zsh
+which is before a command is executed. This can be useful to capture the state if a command changes it.
+For an example see the [`execution_time` section](sections/execution_time.zsh).
+
+The function receives no parameters.
+
 #### Precmd
 
+The precmd function `slimline::section::<name>::precmd` is executed before each prompt.
+It can be used to reset variables which are set in the async task function.
+This way the render function does not display old data in case the async task is not completed yet.
+
+The function receives no parameters.
+
+Example:
+```shell
+slimline::section::foo::precmd() {
+  unset slimline_section_foo_output
+}
+```
+
 #### Async Task
+
+The async task function `slimline::section::<name>::async_task` can be used to execute
+a blocking command asynchronously. This greatly improves the speed of the prompt because
+the prompt can be instantly rendered and only updated when the task is ready.
+
+For an example see the [`git` section](sections/git.zsh) or [`nodejs` section](sections/nodejs.zsh).
+
+The function receives the following parameters:
+| Parameter | Description |
+| :-------: | ----------- |
+| `$1`      | The current directory of the prompt. This is important for executing commands because the task function is called from a different context and thus may have a different working directory. |
+
+```shell
+slimline::section::foo::async_task() {
+  sleep 2
+  echo "in directory $1"
+}
+```
+
+#### Async Task Complete
+
+The async task complete function `slimline::section::<name>::async_task_complete` is responsible
+for handling the result of the async task.
+If the async task function is defined the async task complete function needs to be defined too.
+This function can be used to save the stdout output of a command in a global variable which
+can be used in the render function.
+
+For an example see the [`git` section](sections/git.zsh) or [`nodejs` section](sections/nodejs.zsh).
+
+The function receives the following parameters:
+| Parameter | Description |
+| :-------: | ----------- |
+| `$1`      | The return code of the task. |
+| `$2`      | The stdout output of the task. |
+| `$3`      | The stderr output of the task. |
+| `$4`      | The execution time of the task as floating point value in seconds, e.g. 0.0258 seconds. |
+
+Example:
+```shell
+slimline::section::foo::async_task_complete() {
+  slimline_section_foo_output=$2
+}
+```
 
 ### Utility Functions
 
@@ -644,9 +738,15 @@ A section can have the following functions:
 
 #### Callable Check
 
-### Examples
+### Complete Examples
 
 #### Minimal Section
+
+```shell
+slimline::section::foo::render() {
+  echo "%F{blue}bar%f"
+}
+```
 
 #### Section with init function
 
@@ -681,7 +781,7 @@ slimline::section::foo::async_task() {
 }
 
 slimline::section::foo::async_task_complete() {
-  slimline_section_foo_output=$3
+  slimline_section_foo_output=$2
 }
 
 slimline::section::foo::render() {
