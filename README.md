@@ -633,6 +633,7 @@ The render function `slimline::section::<name>::render` is responsible for emitt
 which will be displayed in the prompt.
 
 The function receives the following parameters:
+
 | Parameter | Description |
 | :-------: | ----------- |
 | `$1`      | The event which triggered the render function. This can be one of the following: `setup`, `precmd`, `task_complete`, `all_tasks_complete`. |
@@ -694,6 +695,7 @@ the prompt can be instantly rendered and only updated when the task is ready.
 For an example see the [`git` section](sections/git.zsh) or [`nodejs` section](sections/nodejs.zsh).
 
 The function receives the following parameters:
+
 | Parameter | Description |
 | :-------: | ----------- |
 | `$1`      | The current directory of the prompt. This is important for executing commands because the task function is called from a different context and thus may have a different working directory. |
@@ -716,6 +718,7 @@ can be used in the render function.
 For an example see the [`git` section](sections/git.zsh) or [`nodejs` section](sections/nodejs.zsh).
 
 The function receives the following parameters:
+
 | Parameter | Description |
 | :-------: | ----------- |
 | `$1`      | The return code of the task. |
