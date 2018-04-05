@@ -66,7 +66,7 @@ With more information (connected to ssh server, runtime and exit status from las
         - [Section Format Expansion](#section-format-expansion)
         - [Logging](#logging)
         - [Callable Check](#callable-check)
-    - [Complete Examples](#complete-examples)
+    - [Complete Section Examples](#complete-section-examples)
         - [Minimal Section](#minimal-section)
         - [Section with init function](#section-with-init-function)
         - [Section with asynchronous task](#section-with-asynchronous-task)
@@ -621,7 +621,7 @@ A section can have the following functions:
 | `slimline::section::<name>::render` | **yes** | This function is used to display information in the prompt. |
 | `slimline::section::<name>::init` | no | This function can initialize data and check for requirements for the section. If the function returns `0` the section will be loaded. In case the section shall be deactivated return `1` instead. |
 | `slimline::section::<name>::preexec` | no | If the function is defined it will be executed right before a new command in zsh is executed. |
-| `slimline::section::<name>::precmd` | no | If the function is defined it will be executed before the prompt render functions. |
+| `slimline::section::<name>::precmd` | no | If the function is defined it will be executed before the prompt render and async task functions. |
 | `slimline::section::<name>::async_task` | no | This function will be executed asynchronously by zsh-async and its output will be available in the `async_task_complete` function.
 | `slimline::section::<name>::async_task_complete` | no | This function is not required except when the `async_task` function is defined. This function will receive the output of the `async_task` function and other information. |
 
@@ -665,16 +665,17 @@ slimline::section::foo::init() {
 
 #### Preexec
 
-The prexec function `slimline::section::<name>::preexec` is called on the preexec hook of zsh
-which is before a command is executed. This can be useful to capture the state if a command changes it.
+The prexec function `slimline::section::<name>::preexec` is called using the preexec hook of zsh
+before a command is executed. This can be useful to capture the state if a command changes it.
 For an example see the [`execution_time` section](sections/execution_time.zsh).
 
 The function receives no parameters.
 
 #### Precmd
 
-The precmd function `slimline::section::<name>::precmd` is executed before each prompt.
-It can be used to reset variables which are set in the async task function.
+The precmd function `slimline::section::<name>::precmd` is executed before each prompt and before
+all asynchronous task functions.
+It can be used to reset variables which are set in an async task function.
 This way the render function does not display old data in case the async task is not completed yet.
 
 The function receives no parameters.
@@ -689,8 +690,9 @@ slimline::section::foo::precmd() {
 #### Async Task
 
 The async task function `slimline::section::<name>::async_task` can be used to execute
-a blocking command asynchronously. This greatly improves the speed of the prompt because
-the prompt can be instantly rendered and only updated when the task is ready.
+a blocking command asynchronously. This can greatly improve the speed of the prompt when the
+section calls a long-running command. Due to the asynchronous execution the prompt can be instantly
+rendered and is automatically updated when the task is ready.
 
 For an example see the [`git` section](sections/git.zsh) or [`nodejs` section](sections/nodejs.zsh).
 
@@ -735,15 +737,58 @@ slimline::section::foo::async_task_complete() {
 
 ### Utility Functions
 
+Slimline provides some utility functions to simplify the development of sections.
+
 #### Section Format Expansion
+
+The function `slimline::utils::expand` is used to expand a format string using a set of variables.
+The format string is automatically read from an environment variable or uses a default format
+when the variable is not set.
+
+The function has the following signature:
+
+```shell
+slimline::utils::expand <name> <default-format> <variable-name-1> <variable-value-1> <variable-name-2> <variable-value-2> ...
+```
+
+The `name` parameter is used to read the format string from the environment variable
+`SLIMLINE_name_FORMAT` (the name is transformed to uppercase for this).
+
+In the following example the format string is read from the environment variable
+`SLIMLINE_FOO_FORMAT` and the default of `%F{red}|output|%f` is used when it is not set.
+Additionally the format string can contain a placeholder `|output|` which is automatically
+replaced with `bar`.
+
+```shell
+slimline::utils::expand "foo" "%F{red}|output|%f" "output" "bar"
+```
 
 #### Logging
 
+The following functions can be used to log information. Each function accepts a message as parameter.
+
+| Function Signature | Description |
+| ------------------ | ----------- |
+| `slimline::utils::info <message>`    | Logs an information. |
+| `slimline::utils::warning <message>` | Logs a warning. |
+| `slimline::utils::error <message>`   | Logs an error. |
+
 #### Callable Check
 
-### Complete Examples
+The function `slimline::utils::callable` can be used to check if the a function or command
+with the given name exists and can be called. This is useful to check if e.g. a specific program is installed.
+
+The function has the following signature:
+
+```shell
+slimline::utils::callable <name>
+```
+
+### Complete Section Examples
 
 #### Minimal Section
+
+This is a minimal section which only implements the required render function.
 
 ```shell
 slimline::section::foo::render() {
@@ -755,6 +800,9 @@ export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_pr
 ```
 
 #### Section with init function
+
+This section implements the init function to check if ruby is installed. In case it is not
+installed a warning is logged and the section will be disabled.
 
 ```shell
 slimline::section::foo::init() {
@@ -776,9 +824,16 @@ export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_pr
 
 #### Section with asynchronous task
 
+This section uses and asynchronous task to emit a string with a 2 second delay.
+The asynchronous task output is captured in a global variable in the async task complete function.
+To prevent displaying old output the global variable is cleared in the precmd function.
+Finally in the render function the content of the global variable and the execution time
+of the async task is displayed. To simplify the render output the expand function is used.
+
 ```shell
 slimline::section::foo::precmd() {
   unset slimline_section_foo_output
+  unset slimline_section_foo_time
 }
 
 slimline::section::foo::async_task() {
@@ -788,10 +843,14 @@ slimline::section::foo::async_task() {
 
 slimline::section::foo::async_task_complete() {
   slimline_section_foo_output=$2
+  slimline_section_foo_time=$4
 }
 
 slimline::section::foo::render() {
-  echo "${slimline_section_foo_output}"
+  if [[ -z "${slimline_section_foo_output}" ]]; then return; fi
+  slimline::utils::expand "foo" "%F{blue}|output|%f - %F{green}|time|%f" \
+      "output" "${slimline_section_foo_output}" \
+      "time" "${slimline_section_foo_time}"
 }
 
 # Add it to the right prompt
