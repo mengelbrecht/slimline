@@ -232,7 +232,7 @@ The legacy options are described [here](legacy_options.md).
   <tbody>
     <tr>
       <td rowspan=2><code>SLIMLINE_RIGHT_PROMPT_SECTIONS</code></td>
-      <td align="center"><code>execution_time exit_status git aws_profile virtual_env nodejs</code></td>
+      <td align="center"><code>execution_time exit_status git aws_profile virtualenv nodejs</code></td>
     </tr>
     <tr>
       <td>
@@ -749,6 +749,9 @@ slimline::section::foo::async_task_complete() {
 slimline::section::foo::render() {
   echo "%F{blue}bar%f"
 }
+
+# Add it to the right prompt
+export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtualenv nodejs"
 ```
 
 #### Section with init function
@@ -768,7 +771,7 @@ slimline::section::foo::render() {
 }
 
 # Add it to the right prompt
-export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtual_env nodejs"
+export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtualenv nodejs"
 ```
 
 #### Section with asynchronous task
@@ -792,7 +795,7 @@ slimline::section::foo::render() {
 }
 
 # Add it to the right prompt
-export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtual_env nodejs"
+export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtualenv nodejs"
 ```
 
 ## Example
