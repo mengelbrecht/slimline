@@ -136,8 +136,8 @@ in the [`cwd` section](#current-working-directory-cwd).
 
 ## Legacy Options
 
-Slimline uses a new option format but supports the previous options as fallback by setting
-`SLIMLINE_PROMPT_VERSION` to `1`:
+Slimline uses a new option format but supports the previous options as fallback by setting the
+variable `SLIMLINE_PROMPT_VERSION` to `1`:
 ```shell
 export SLIMLINE_PROMPT_VERSION=1 # Activate legacy option format
 ```
@@ -173,7 +173,7 @@ The legacy options are described [here](legacy_options.md).
         Defines whether <a href="https://github.com/mafredri/zsh-async">zsh-async</a> should be
         automatically sourced if it was not already sourced.
         Disabling the automatic loading is useful if zsh-async is installed globally
-        and therefore already loaded (e.g. via antigen or zplugin).
+        and loaded using a plugin manager (e.g. via antigen or zplugin).
       </td>
     </tr>
   </tbody>
@@ -204,7 +204,7 @@ The legacy options are described [here](legacy_options.md).
     </tr>
     <tr>
       <td>
-        The separator between each section.
+        The separator between each section (a space symbol).
       </td>
     </tr>
     <tr>
@@ -245,7 +245,7 @@ The legacy options are described [here](legacy_options.md).
     </tr>
     <tr>
       <td>
-        The separator between each section.
+        The separator between each section (a space symbol).
       </td>
     </tr>
     <tr>
@@ -277,7 +277,7 @@ The legacy options are described [here](legacy_options.md).
     </tr>
     <tr>
       <td>
-        The format string for spelling prompt which is shown for auto correction.
+        The format string for the spelling prompt which is shown for auto correction.
         The <code>|from|</code> placeholder will be replaced with the incorrect command
         and <code>|to|</code> with the correction.
       </td>
@@ -289,8 +289,8 @@ The legacy options are described [here](legacy_options.md).
 
 ### Prompt Symbol (`symbol`)
 
-The section displayes the prompt symbol. It supports two formats. The *working* format is used when asynchronous tasks are
-pending and the *ready format for when all tasks are completed.
+This section displays the prompt symbol. It supports two formats. The *working* format is used when asynchronous tasks are
+pending and the *ready* format for when all tasks are completed.
 
 <table>
   <thead>
@@ -351,7 +351,7 @@ The *root* format is used when the cwd is the root path and the other format whe
     </tr>
     <tr>
       <td>
-        The format to use when the current working directory is in the root path <code>/</code>.
+        The format to use when the current working directory is the root path <code>/</code>.
         The placeholder for the path is <code>|path|</code>.
       </td>
     </tr>
@@ -360,7 +360,7 @@ The *root* format is used when the cwd is the root path and the other format whe
 
 ### Exit Status (`exit_status`)
 
-The section displays the exit status of the last command if it is != 0.
+This section displays the exit status of the last command if it is != 0.
 
 <table>
   <thead>
@@ -401,7 +401,7 @@ The execution time of the last command if it exceeds the configurable threshold.
     </tr>
     <tr>
       <td>
-        The maximum execution time of a process in seconds until its run time is displayed on exit.
+        The maximum execution time of a command in seconds until its run time is displayed on exit.
       </td>
     </tr>
     <tr>
@@ -570,7 +570,7 @@ This section displays the nodejs version if the current directory contains a `pa
     <tr>
       <td>
         The format to use for displaying the nodejs information.
-        The placeholder for the configured version of nodejs is <code>|version|</code>.
+        The placeholder for the version of nodejs is <code>|version|</code>.
       </td>
     </tr>
   </tbody>
@@ -612,7 +612,8 @@ This way sections are automatically discovered and can execute asynchronous task
 
 Sections use the namespace `slimline::section::<name>` where name is replaced by the
 section name. Each section needs at least a `render` function.
-For a section with the name `foo` the render function is named `slimline::section::foo::render`.
+For example a section with the name `foo` needs to implement a render function
+named `slimline::section::foo::render`.
 
 A section can have the following functions:
 
@@ -636,7 +637,7 @@ The function receives the following parameters:
 
 | Parameter | Description |
 | :-------: | ----------- |
-| `$1`      | The event which triggered the render function. This can be one of the following: `setup`, `precmd`, `task_complete`, `all_tasks_complete`. |
+| `$1`      | The event which triggered the render function. This will be one of the following: `setup`, `precmd`, `task_complete`, `all_tasks_complete`. |
 
 Example:
 ```shell
@@ -648,8 +649,8 @@ slimline::section::foo::render() {
 #### Init
 
 The init function `slimline::section::<name>::init` is optional and initializes the section if necessary.
-The function receives no parameters and returns 0 on success or 1 on failure.
-If the function returns 1 the section will be disabled.
+The function receives no parameters and returns `0` on success or `1` on failure.
+If the function returns `1` the section will be disabled.
 
 Example:
 ```shell
@@ -676,7 +677,7 @@ The function receives no parameters.
 The precmd function `slimline::section::<name>::precmd` is executed before each prompt and before
 all asynchronous task functions.
 It can be used to reset variables which are set in an async task function.
-This way the render function does not display old data in case the async task is not completed yet.
+This way the render function does not display old data in case the async task has not completed yet.
 
 The function receives no parameters.
 
@@ -690,7 +691,7 @@ slimline::section::foo::precmd() {
 #### Async Task
 
 The async task function `slimline::section::<name>::async_task` can be used to execute
-a blocking command asynchronously. This can greatly improve the speed of the prompt when the
+a command asynchronously. This can greatly improve the speed of the prompt when the
 section calls a long-running command. Due to the asynchronous execution the prompt can be instantly
 rendered and is automatically updated when the task is ready.
 
@@ -755,7 +756,7 @@ The `name` parameter is used to read the format string from the environment vari
 `SLIMLINE_name_FORMAT` (the name is transformed to uppercase for this).
 
 In the following example the format string is read from the environment variable
-`SLIMLINE_FOO_FORMAT` and the default of `%F{red}|output|%f` is used when it is not set.
+`SLIMLINE_FOO_FORMAT` and the default value of `%F{red}|output|%f` is used when it is not set.
 Additionally the format string can contain a placeholder `|output|` which is automatically
 replaced with `bar`.
 
@@ -775,8 +776,8 @@ The following functions can be used to log information. Each function accepts a 
 
 #### Callable Check
 
-The function `slimline::utils::callable` can be used to check if the a function or command
-with the given name exists and can be called. This is useful to check if e.g. a specific program is installed.
+The function `slimline::utils::callable` can be used to check if a function or command
+with the given name exists and can be called. This is useful to check if e.g. a specific executable is available.
 
 The function has the following signature:
 
@@ -824,11 +825,12 @@ export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_pr
 
 #### Section with asynchronous task
 
-This section uses and asynchronous task to emit a string with a 2 second delay.
-The asynchronous task output is captured in a global variable in the async task complete function.
-To prevent displaying old output the global variable is cleared in the precmd function.
-Finally in the render function the content of the global variable and the execution time
-of the async task is displayed. To simplify the render output the expand function is used.
+This section uses an asynchronous task to emit a string with an artificial 2 second delay.
+The asynchronous task output is captured in a global variable in the `async_task_complete` function.
+
+To prevent displaying old output the global variable is cleared in the `precmd` function.
+Finally in the `render` function the content of the global variable and the execution time
+of the async task is displayed. To simplify the render output the `expand` function is used.
 
 ```shell
 slimline::section::foo::precmd() {
