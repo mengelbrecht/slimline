@@ -476,7 +476,7 @@ default user or if there is an active ssh session.
 
 ### Time (`time`)
 
-This section displays the current time in 24h format and is disabled by default.
+This section displays the current time in 24h format and is *disabled* by default.
 To use it add it to your left or right prompt manually. To use the 12h time format use the `|time12|` placeholder.
 
 <table>
