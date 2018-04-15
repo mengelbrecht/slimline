@@ -22,6 +22,7 @@ Sections:
 - current python virtualenv
 - nodejs version
 - customizable git information display
+- vi mode indicator
 
 With more information (connected to ssh server, runtime and exit status from last command, aws profile and nodejs version):
 
