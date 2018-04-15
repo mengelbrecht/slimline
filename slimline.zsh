@@ -26,7 +26,7 @@ slimline_precmd_exit_status() {
   slimline_last_exit_status=$?
 }
 
-slimline_async_task_complete() {
+slimline_render_prompt() {
   local event="${1}"
   slimline::prompt::set "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}" "${event}"
   zle && zle .reset-prompt
@@ -54,7 +54,7 @@ slimline_setup() {
 
   precmd_functions=("slimline_precmd_exit_status" ${precmd_functions[@]})
 
-  slimline::async::init "${slimline_left_prompt_async_tasks} ${slimline_right_prompt_async_tasks}" "slimline_async_task_complete"
+  slimline::async::init "${slimline_left_prompt_async_tasks} ${slimline_right_prompt_async_tasks}" "slimline_render_prompt"
   unset slimline_left_prompt_async_tasks
   unset slimline_right_prompt_async_tasks
 

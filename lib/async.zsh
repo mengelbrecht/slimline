@@ -4,7 +4,7 @@ slimline::async::init() {
   fi
 
   slimline_async_tasks="${1}"
-  slimline_async_task_complete_callback="${2}"
+  slimline_render_prompt_callback="${2}"
   slimline_async_worker_name="prompt_slimline"
 
   async_init
@@ -27,23 +27,23 @@ slimline::async::callback() {
 
   if (( ! has_next )); then
     if (( slimline_async_tasks_complete == ${#${=slimline_async_tasks}} )); then
-      ${slimline_async_task_complete_callback} "all_tasks_complete"
+      ${slimline_render_prompt_callback} "all_tasks_complete"
     else
-      ${slimline_async_task_complete_callback} "task_complete"
+      ${slimline_render_prompt_callback} "task_complete"
     fi
   fi
 }
 
 slimline::async::start_tasks() {
   if (( ! ${#${=slimline_async_tasks}} )); then
-    ${slimline_async_task_complete_callback} "all_tasks_complete"
+    ${slimline_render_prompt_callback} "all_tasks_complete"
     return
   fi
 
   local event="${1}"
   if [[ "${event}" == "precmd" ]]; then
     if (( EPOCHREALTIME - ${slimline_async_last_call:-0} <= 0.5 )); then return; fi
-    ${slimline_async_task_complete_callback} "precmd"
+    ${slimline_render_prompt_callback} "precmd"
   fi
 
   async_flush_jobs "${slimline_async_worker_name}"
