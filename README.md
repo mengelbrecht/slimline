@@ -195,7 +195,10 @@ The legacy options are described [here](legacy_options.md).
     </tr>
     <tr>
       <td>
-        The sections to use in the left prompt.
+        The sections to use in the left prompt. The placeholder <code>|default|</code> expands to
+        the sections above and can be used to extend the default set of sections.
+        The following example prepends the section foo to the the default sections of the left prompt:
+        <code>export SLIMLINE_LEFT_PROMPT_SECTIONS="foo |default|"</code>
       </td>
     </tr>
     <tr>
@@ -236,7 +239,10 @@ The legacy options are described [here](legacy_options.md).
     </tr>
     <tr>
       <td>
-        The sections to use in the right prompt.
+        The sections to use in the right prompt. The placeholder <code>|default|</code> expands to
+        the sections above and can be used to extend the default set of sections.
+        The following example appends the section foo to the the default sections of the right prompt:
+        <code>export SLIMLINE_RIGHT_PROMPT_SECTIONS="|default| foo"</code>
       </td>
     </tr>
     <tr>
@@ -797,7 +803,7 @@ slimline::section::foo::render() {
 }
 
 # Add it to the right prompt
-export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtualenv nodejs"
+export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo |default|"
 ```
 
 #### Section with init function
@@ -820,7 +826,7 @@ slimline::section::foo::render() {
 }
 
 # Add it to the right prompt
-export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtualenv nodejs"
+export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo |default|"
 ```
 
 #### Section with asynchronous task
@@ -856,7 +862,7 @@ slimline::section::foo::render() {
 }
 
 # Add it to the right prompt
-export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo execution_time exit_status git aws_profile virtualenv nodejs"
+export SLIMLINE_RIGHT_PROMPT_SECTIONS="foo |default|"
 ```
 
 ## Example
