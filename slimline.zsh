@@ -39,7 +39,7 @@ slimline_setup() {
   fi
 
   local left_prompt_default_sections="user_host_info cwd symbol"
-  local right_prompt_default_sections="execution_time exit_status git aws_profile virtualenv nodejs"
+  local right_prompt_default_sections="execution_time exit_status git aws_profile virtualenv nodejs vi_mode"
   local left_prompt_sections="${${SLIMLINE_LEFT_PROMPT_SECTIONS-${left_prompt_default_sections}}/|default|/${left_prompt_default_sections}}"
   local right_prompt_sections="${${SLIMLINE_RIGHT_PROMPT_SECTIONS-${right_prompt_default_sections}}/|default|/${right_prompt_default_sections}}"
 

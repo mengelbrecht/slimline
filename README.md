@@ -54,6 +54,7 @@ With more information (connected to ssh server, runtime and exit status from las
     - [Python Virtualenv (`virtualenv`)](#python-virtualenv-virtualenv)
     - [Node.js (`nodejs`) *async*](#nodejs-nodejs-async)
     - [Git (`git`) *async*](#git-git-async)
+    - [Vi Mode (`vi_mode`)](#vi-mode-vi_mode)
 - [Custom Sections](#custom-sections)
     - [Functions](#functions)
         - [Render](#render)
@@ -606,6 +607,48 @@ Additionally this section has the following options:
       <td>
         The format to use for the git status information.
         The placeholder <code>|output|</code> is replaced with the output from gitline.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Vi Mode (`vi_mode`)
+
+This section displays the current vi mode (if active).
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default Value and Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_VI_MODE_NORMAL_FORMAT</code></td>
+      <td align="center"><code>%F{white}[%F{blue}N%F{white}]%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for the normal mode.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_VI_MODE_INSERT_FORMAT</code></td>
+      <td align="center"><code>%F{white}[%F{yellow}I%F{white}]%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for the insert mode.
+      </td>
+    </tr>
+    <tr>
+      <td rowspan=2><code>SLIMLINE_VI_MODE_REPLACE_FORMAT</code></td>
+      <td align="center"><code>%F{white}[%F{red}R%F{white}]%f</code></td>
+    </tr>
+    <tr>
+      <td>
+        The format to use for the replace mode.
       </td>
     </tr>
   </tbody>
