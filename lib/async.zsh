@@ -26,7 +26,7 @@ slimline::async::callback() {
   slimline_async_tasks_complete=$(( slimline_async_tasks_complete + 1 ))
 
   if (( ! has_next )); then
-    if (( slimline_async_tasks_complete == ${#${=slimline_async_tasks}} )); then
+    if slimline::async::all_tasks_complete; then
       ${slimline_render_prompt_callback} "all_tasks_complete"
     else
       ${slimline_render_prompt_callback} "task_complete"
@@ -52,4 +52,8 @@ slimline::async::start_tasks() {
   for task in ${=slimline_async_tasks}; do
     async_job "${slimline_async_worker_name}" "${task}" "$(builtin pwd)"
   done
+}
+
+slimline::async::all_tasks_complete() {
+  (( slimline_async_tasks_complete == ${#${=slimline_async_tasks}} ))
 }
