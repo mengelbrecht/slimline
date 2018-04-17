@@ -26,11 +26,7 @@ slimline::async::callback() {
   slimline_async_tasks_complete=$(( slimline_async_tasks_complete + 1 ))
 
   if (( ! has_next )); then
-    if slimline::async::all_tasks_complete; then
-      ${slimline_render_prompt_callback} "all_tasks_complete"
-    else
-      ${slimline_render_prompt_callback} "task_complete"
-    fi
+    ${slimline_render_prompt_callback} "task_complete"
   fi
 }
 

@@ -687,7 +687,7 @@ The function receives the following parameters:
 
 | Parameter | Description |
 | :-------: | ----------- |
-| `$1`      | The event which triggered the render function. This will be one of the following: `setup`, `precmd`, `task_complete`, `all_tasks_complete`. |
+| `$1`      | The event which triggered the render function. This will be one of the following: `setup`, `precmd`, `task_complete`, `editor_info`. |
 
 Example:
 ```shell
