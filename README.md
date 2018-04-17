@@ -237,7 +237,7 @@ The legacy options are described [here](legacy_options.md).
   <tbody>
     <tr>
       <td rowspan=2><code>SLIMLINE_RIGHT_PROMPT_SECTIONS</code></td>
-      <td align="center"><code>execution_time exit_status git aws_profile virtualenv nodejs</code></td>
+      <td align="center"><code>execution_time exit_status git aws_profile virtualenv nodejs vi_mode</code></td>
     </tr>
     <tr>
       <td>
