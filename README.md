@@ -199,8 +199,8 @@ The legacy options are described [here](legacy_options.md).
       <td>
         The sections to use in the left prompt. The placeholder <code>|default|</code> expands to
         the sections above and can be used to extend the default set of sections.
-        The following example prepends the section foo to the the default sections of the left prompt:
-        <code>export SLIMLINE_LEFT_PROMPT_SECTIONS="foo |default|"</code>
+        The following example prepends the section <code>foo</code> to the the default sections of the left prompt:
+        <pre>export SLIMLINE_LEFT_PROMPT_SECTIONS="foo |default|"</pre>
       </td>
     </tr>
     <tr>
@@ -243,8 +243,8 @@ The legacy options are described [here](legacy_options.md).
       <td>
         The sections to use in the right prompt. The placeholder <code>|default|</code> expands to
         the sections above and can be used to extend the default set of sections.
-        The following example appends the section foo to the the default sections of the right prompt:
-        <code>export SLIMLINE_RIGHT_PROMPT_SECTIONS="|default| foo"</code>
+        The following example appends the section <code>foo</code> to the the default sections of the right prompt:
+        <pre>export SLIMLINE_RIGHT_PROMPT_SECTIONS="|default| foo"</pre>
       </td>
     </tr>
     <tr>
