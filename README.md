@@ -200,7 +200,7 @@ The legacy options are described [here](legacy_options.md).
         The sections to use in the left prompt. The placeholder <code>|default|</code> expands to
         the sections above and can be used to extend the default set of sections.
         The following example prepends the section <code>foo</code> to the the default sections of the left prompt:
-        <pre language="shell">export SLIMLINE_LEFT_PROMPT_SECTIONS="foo |default|"</pre>
+        <pre language="shell"><code>export SLIMLINE_LEFT_PROMPT_SECTIONS="foo |default|"</code></pre>
       </td>
     </tr>
     <tr>
@@ -244,7 +244,7 @@ The legacy options are described [here](legacy_options.md).
         The sections to use in the right prompt. The placeholder <code>|default|</code> expands to
         the sections above and can be used to extend the default set of sections.
         The following example appends the section <code>foo</code> to the the default sections of the right prompt:
-        <pre language="shell">export SLIMLINE_RIGHT_PROMPT_SECTIONS="|default| foo"</pre>
+        <pre language="shell"><code>export SLIMLINE_RIGHT_PROMPT_SECTIONS="|default| foo"</code></pre>
       </td>
     </tr>
     <tr>
