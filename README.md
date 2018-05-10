@@ -13,7 +13,7 @@ Features:
 
 Sections:
 - prompt symbol which indicates if asynchronous tasks are running
-- current working directory which highlights if it is the root `/` directory
+- current working directory which highlights if it is outside the home directory `~`
 - exit code of last command if the exit code is not zero
 - runtime of executed command if it exceeds a threshold
 - username and hostname if connected to a ssh server or optionally always
@@ -331,8 +331,9 @@ pending and the *ready* format for when all tasks are completed.
 
 ### Current Working Directory (`cwd`)
 
-This section displays the current working directory. It supports two formats.
-The *root* format is used when the cwd is the root path and the other format when it is not.
+This section displays the current working directory (cwd). It supports two formats.
+The *root* format is used when the cwd is outside of the home directory and
+the other format if the cwd is inside the home directory.
 
 <table>
   <thead>
@@ -348,8 +349,7 @@ The *root* format is used when the cwd is the root path and the other format whe
     </tr>
     <tr>
       <td>
-        The format to use when the current working directory is in a
-        normal directory (not the root path <code>/</code>).
+        The format to use when the current working directory is inside the home directory <code>~</code>.
         The placeholder for the path is <code>|path|</code>.
       </td>
     </tr>
@@ -359,7 +359,7 @@ The *root* format is used when the cwd is the root path and the other format whe
     </tr>
     <tr>
       <td>
-        The format to use when the current working directory is the root path <code>/</code>.
+        The format to use when the current working directory is outside the home directory <code>~</code>.
         The placeholder for the path is <code>|path|</code>.
       </td>
     </tr>
