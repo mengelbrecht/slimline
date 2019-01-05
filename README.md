@@ -93,19 +93,19 @@ Choose one of the methods below.
 ### antigen
 
 ```
-antigen bundle mgee/slimline
+antigen bundle mengelbrecht/slimline
 ```
 
 ### zplugin
 
 ```
-zplugin load mgee/slimline
+zplugin load mengelbrecht/slimline
 ```
 
 ### zgen
 
 ```
-zgen load mgee/slimline
+zgen load mengelbrecht/slimline
 ```
 
 ### Manually
@@ -113,7 +113,7 @@ zgen load mgee/slimline
 Clone the repository:
 
 ```shell
-git clone --recursive https://github.com/mgee/slimline.git
+git clone --recursive https://github.com/mengelbrecht/slimline.git
 ```
 
 Source the prompt in your `.zshrc` (or other appropriate) file:
