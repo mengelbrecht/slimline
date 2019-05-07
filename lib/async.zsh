@@ -8,6 +8,10 @@ slimline::async::init() {
   slimline_async_worker_name="prompt_slimline"
 
   async_init
+  slimline::async::register_worker
+}
+
+slimline::async::register_worker() {
   async_start_worker "${slimline_async_worker_name}" -u
   async_register_callback "${slimline_async_worker_name}" slimline::async::callback
 }
