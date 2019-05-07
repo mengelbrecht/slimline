@@ -24,8 +24,17 @@ slimline::async::callback() {
   local stderr="${5}"
   local has_next=${6}
 
-  local complete_function="${job}_complete"
-  ${complete_function} ${return_code} "${stdout}" "${stderr}" ${execution_time}
+  if [[ "${job}" == "[async]" ]]; then
+    echo "Error from async worker: ${stderr}"
+    if [[ $return_code -eq 2 ]]; then
+      slimline::async::register_worker
+      ${slimline_render_prompt_callback} "all_tasks_complete"
+      return
+    fi
+  else
+    local complete_function="${job}_complete"
+    ${complete_function} ${return_code} "${stdout}" "${stderr}" ${execution_time}
+  fi
 
   slimline_async_tasks_complete=$(( slimline_async_tasks_complete + 1 ))
 
