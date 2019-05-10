@@ -25,7 +25,6 @@ slimline::async::callback() {
   local has_next=${6}
 
   if [[ "${job}" == "[async]" ]]; then
-    echo "Error from async worker: ${stderr}"
     if [[ $return_code -eq 2 ]]; then
       slimline::async::register_worker
       ${slimline_render_prompt_callback} "all_tasks_complete"
