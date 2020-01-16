@@ -655,6 +655,12 @@ This section displays the current vi mode (if active).
   </tbody>
 </table>
 
+### Newline (`newline`)
+
+This section adds a newline to the prompt which is useful when only a left prompt is used.
+When setting the right prompt to contain no sections the left prompt can be split into multiple lines using this section.
+The section can be used multiple times to produce more than two lines.
+
 ## Custom Sections
 
 Custom sections can be easily written by following the slimline section naming scheme.
