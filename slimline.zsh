@@ -29,7 +29,7 @@ slimline_precmd_exit_status() {
 slimline_render_prompt() {
   local event="${1}"
   slimline::prompt::set "${slimline_left_prompt_sections}" "${slimline_right_prompt_sections}" "${event}"
-  zle && zle .reset-prompt
+  zle -R && zle .reset-prompt
 }
 
 slimline_setup() {
