@@ -35,7 +35,7 @@ With more information (connected to ssh server, runtime and exit status from las
     - [Optional](#optional)
 - [Installation](#installation)
     - [antigen](#antigen)
-    - [zplugin](#zplugin)
+    - [zinit](#zinit)
     - [zgen](#zgen)
     - [Manually](#manually)
 - [Sections and Formats](#sections-and-formats)
@@ -96,10 +96,15 @@ Choose one of the methods below.
 antigen bundle mengelbrecht/slimline
 ```
 
-### zplugin
+### zinit
 
 ```
-zplugin load mengelbrecht/slimline
+zinit light mengelbrecht/slimline
+```
+
+To compile all source files of slimline use the following command instead:
+```
+zinit light-mode compile"{*.zsh,lib/*.zsh,sections/*.zsh,zsh-async/*.zsh}" for mengelbrecht/slimline
 ```
 
 ### zgen
