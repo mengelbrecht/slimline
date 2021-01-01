@@ -2,7 +2,7 @@
 
 Modular, fast and elegant ZSH prompt. Displays the right information at the right time.
 
-<p align="center"><img src="screenshot.png" width="682" height="298"></p>
+<p align="center"><img src="screenshot.png" width="682"></p>
 
 Features:
 - sleek look
@@ -26,7 +26,7 @@ Sections:
 
 With more information (connected to ssh server, runtime and exit status from last command, aws profile and nodejs version):
 
-<p align="center"><img src="screenshot_full.png" width="857" height="298"></p>
+<p align="center"><img src="screenshot_full.png" width="857"></p>
 
 <!-- TOC -->
 
@@ -936,7 +936,7 @@ export GITLINE_BRANCH='[${blue}${branch}${reset}]'
 source "<path-to-slimline>/slimline.zsh"
 ```
 
-<p align="center"><img src="screenshot_example.png" width="682" height="298"></p>
+<p align="center"><img src="screenshot_example.png" width="682"></p>
 
 ## Thanks
 
